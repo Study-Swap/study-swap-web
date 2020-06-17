@@ -1,0 +1,10 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# VSCode
+.vscode
+
+# macOS
+.DS_Store
