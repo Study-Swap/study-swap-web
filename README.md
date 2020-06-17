@@ -28,6 +28,7 @@ After that, create the PR and update the project board
 ## Other resources:
 
 Figma link: <br />
+<a href="https://www.figma.com/file/8zw3KBGDJYy8gjxdvF6eYt/StudySwap-Mockup?node-id=0%3A1" target="_blank">Click Here</a>
 [Click Here](https://www.figma.com/file/8zw3KBGDJYy8gjxdvF6eYt/StudySwap-Mockup?node-id=0%3A1)
 
 Material UI Docs: <br />
