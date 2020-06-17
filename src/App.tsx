@@ -25,7 +25,7 @@ function App() {
           <AppLayout menuList={menuList} />
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            <Container maxWidth='lg' className={classes.container}>
+            <Container maxWidth="lg" className={classes.container}>
               <Switch>
                 {routes.map((element: any) => (
                   <Route

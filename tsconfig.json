@@ -16,7 +16,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "extends": ["tslint:recommended", "tslint-config-prettier"]
   },
   "include": ["src"]
 }
