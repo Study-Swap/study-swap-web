@@ -10,7 +10,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 ## When working on a commit:
 
 ```bash
-git checkout -b issue_number-short-description
+git checkout -b "issue_number-short-description"
 git add files or .
 git commit -m "Descriptive message"
 git push --set-upstream origin master
