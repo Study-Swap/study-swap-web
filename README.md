@@ -13,7 +13,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 git checkout -b "issue_number-short-description"
 git add files or .
 git commit -m "Descriptive message"
-git push --set-upstream origin master
+git push --set-upstream origin branch_name
 
 # and then later on
 git push
