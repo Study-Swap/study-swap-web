@@ -62,8 +62,8 @@ function something(numericParam, stringParam, randomParam) {
 // Type hinting
 function something(
   numericParam: number /*Specifies input type*/,
-  stringParam: string,
-  randomParam: any
+  stringParam: string /*Specifies input type*/,
+  randomParam: any /*Specifies input type*/
 ): object /*Specifies output type*/ {
   return { numericParam, stringParam, randomParam };
 }
@@ -93,4 +93,5 @@ const something = (
 
 Name files _.tsx if they use React else name them _.ts <br />
 When you want to export a React component use `export default` else use `export` <br />
-...
+Material UI components are made to copy and paste, so use them a lot <br />
+Try to use comments before imports to organize them
