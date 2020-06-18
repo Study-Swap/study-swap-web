@@ -48,3 +48,49 @@ Firebase Console: <br />
 
 React Hooks: <br />
 [Click Here](https://reactjs.org/docs/hooks-intro.html)
+
+## Random reference
+
+Typescript types are a lot like C
+
+```javascript
+// No type hinting
+function something(numericParam, stringParam, randomParam) {
+  return { numericParam, stringParam, randomParam };
+}
+
+// Type hinting
+function something(
+  numericParam: number /*Specifies input type*/,
+  stringParam: string,
+  randomParam: any
+): object /*Specifies output type*/ {
+  return { numericParam, stringParam, randomParam };
+}
+```
+
+Try to use arrow functions whenever you can
+
+```javascript
+// Non arrow function
+function something(
+  numericParam: number,
+  stringParam: string,
+  randomParam: any
+): object {
+  return { numericParam, stringParam, randomParam };
+}
+
+// Arrow function
+const something = (
+  numericParam: number,
+  stringParam: string,
+  randomParam: any
+): object => {
+  return { numericParam, stringParam, randomParam };
+};
+```
+
+Name files _.tsx if they use React else name them _.ts <br />
+When you want to export a React component use `export default` else use `export` <br />
+...
