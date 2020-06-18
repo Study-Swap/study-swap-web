@@ -40,6 +40,7 @@ git commit -m "Descriptive message" # commit auto-formats files
 git push --set-upstream origin branch_name
 # Then later on
 git push
+
 ```
 
 After that, create the PR and update the project board
