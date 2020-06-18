@@ -2,7 +2,7 @@
 
 ## To run the app on the web:
 
-## `yarn start`
+### `yarn start`
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
@@ -28,28 +28,11 @@ git push
 
 After that, create the PR and update the project board
 
-## To reformat files:
+### To reformat files:
 
 `yarn pretty-quick`
 
-## Other resources:
-
-Figma link: <br />
-[Click Here](https://www.figma.com/file/8zw3KBGDJYy8gjxdvF6eYt/StudySwap-Mockup?node-id=0%3A1)
-
-Material UI Docs: <br />
-[Click Here](https://material-ui.com/)
-
-Firebase Docs: <br />
-[Click Here](https://firebase.google.com/docs)
-
-Firebase Console: <br />
-[Click Here](https://console.firebase.google.com/u/0/project/study-swap/overview)
-
-React Hooks: <br />
-[Click Here](https://reactjs.org/docs/hooks-intro.html)
-
-## Random reference
+## Code + Style reference:
 
 Typescript types are a lot like C
 
@@ -95,3 +78,20 @@ Name files _.tsx if they use React else name them _.ts <br />
 When you want to export a React component use `export default` else use `export` <br />
 Material UI components are made to copy and paste, so use them a lot <br />
 Try to use comments before imports to organize them
+
+## Other resources:
+
+Figma link: <br />
+[Click Here](https://www.figma.com/file/8zw3KBGDJYy8gjxdvF6eYt/StudySwap-Mockup?node-id=0%3A1)
+
+Material UI Docs: <br />
+[Click Here](https://material-ui.com/)
+
+Firebase Docs: <br />
+[Click Here](https://firebase.google.com/docs)
+
+Firebase Console: <br />
+[Click Here](https://console.firebase.google.com/u/0/project/study-swap/overview)
+
+React Hooks: <br />
+[Click Here](https://reactjs.org/docs/hooks-intro.html)
