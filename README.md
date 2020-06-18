@@ -10,15 +10,19 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 ## When working on a commit:
 
 ```bash
+# Create a new branch
 git checkout -b "issue_number-short-description"
 # Before adding files
 yarn start # to make sure everything compiles
-git add files or .
-# Commit will auto-format files
-git commit -m "Descriptive message"
+# Add files
+git add .
+# or
+git add {filename}
+# Commit changes
+git commit -m "Descriptive message" # commit auto-formats files
+# First push to branch you must set upstream
 git push --set-upstream origin branch_name
-
-# and then later on
+# Then later on
 git push
 ```
 
@@ -41,3 +45,6 @@ Firebase Docs: <br />
 
 Firebase Console: <br />
 [Click Here](https://console.firebase.google.com/u/0/project/study-swap/overview)
+
+React Hooks: <br />
+[Click Here](https://reactjs.org/docs/hooks-intro.html)
