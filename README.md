@@ -2,7 +2,19 @@
 
 ## To run the app on the web:
 
-### `yarn start`
+```bash
+# Clone the repo into your directory
+git clone https://github.com/Study-Swap/study-swap-web.git
+
+# Install Yarn if you dont already have it
+brew install yarn # for mac
+
+# Install dependancies
+yarn
+
+# Start server
+yarn start
+```
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
