@@ -12,14 +12,18 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 ```bash
 # Create a new branch
 git checkout -b "issue_number-short-description"
+
 # Before adding files
 yarn start # to make sure everything compiles
+
 # Add files
 git add .
 # or
 git add {filename}
+
 # Commit changes
 git commit -m "Descriptive message" # commit auto-formats files
+
 # First push to branch you must set upstream
 git push --set-upstream origin branch_name
 # Then later on
@@ -78,6 +82,25 @@ Name files _.tsx if they use React else name them _.ts <br />
 When you want to export a React component use `export default` else use `export` <br />
 Material UI components are made to copy and paste, so use them a lot <br />
 Try to use comments before imports to organize them
+
+### Useful git commands:
+
+```bash
+# Switch to separate branch, type master to switch to master
+git checkout branch_name
+
+# Pull from master
+git pull origin master
+
+# Commit and add at the same time
+git commit -am "message"
+
+# Check status of your branch
+git status
+
+# Check status of your remote environment
+git remote -v
+```
 
 ## Other resources:
 
