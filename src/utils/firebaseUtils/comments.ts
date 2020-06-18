@@ -19,7 +19,7 @@ function getComments(postId: string): Promise<commentModel[] | void> {
     .then(
       (snapshot: any): Array<commentModel> => {
         const comments: Array<commentModel> = [];
-        snapshot.forEach((comment) => {
+        snapshot.forEach((comment: any): void => {
           const data = comment.data();
           comments.push({
             id: comment.id,

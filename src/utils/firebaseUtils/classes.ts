@@ -29,8 +29,9 @@ function getClassList(userId: string): Promise<string[] | void> {
 async function getClasses(classes: Array<string>): Promise<any> {
   // TODO Later: Fix 'any' in return...
   return Promise.all(
-    classes.map((id) => {
-      db.collection(collections.classes)
+    classes.map((id: string): any => {
+      return db
+        .collection(collections.classes)
         .doc(id)
         .get()
         .then(

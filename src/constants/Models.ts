@@ -1,21 +1,21 @@
-interface userModel {
+export interface userModel {
   id?: string;
   firstName: string;
   lastName: string;
   email: string;
-  grade: string;
-  bio: string;
+  grade?: string;
+  bio?: string;
   classes: Array<string>;
   chats: Array<string>;
 }
 
-interface classModel {
+export interface classModel {
   id?: string;
   className: string;
   classDescription: string;
 }
 
-interface postModel {
+export interface postModel {
   id?: string;
 
   // foreign key relations
@@ -30,7 +30,7 @@ interface postModel {
   edited: boolean;
 }
 
-interface commentModel {
+export interface commentModel {
   id?: string;
 
   // foreign key relations
@@ -43,7 +43,7 @@ interface commentModel {
   commentText: string;
 }
 
-interface notificationModel {
+export interface notificationModel {
   id?: string;
 
   // foreign key relations
@@ -57,7 +57,7 @@ interface notificationModel {
   read: boolean;
 }
 
-interface chatsModel {
+export interface chatsModel {
   id?: string;
 
   //foreign key relations
@@ -67,7 +67,7 @@ interface chatsModel {
   messages: Array<string>; // array of messageIds
 }
 
-interface messageModel {
+export interface messageModel {
   id?: string;
 
   //foreign key relations
@@ -79,13 +79,3 @@ interface messageModel {
   senderName: string;
   timestamp?: string;
 }
-
-export {
-  userModel,
-  classModel,
-  postModel,
-  commentModel,
-  notificationModel,
-  chatsModel,
-  messageModel,
-};

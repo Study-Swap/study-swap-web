@@ -11,7 +11,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ```bash
 git checkout -b "issue_number-short-description"
+# Before adding files
+yarn start # to make sure everything compiles
 git add files or .
+# Commit will auto-format files
 git commit -m "Descriptive message"
 git push --set-upstream origin branch_name
 

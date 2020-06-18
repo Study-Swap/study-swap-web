@@ -34,6 +34,8 @@ import {
   leaveChat,
 } from "./chats";
 
+import { addUser, loginUser } from "./users";
+
 /********** EXPORT **********/
 export {
   getPosts,
@@ -59,4 +61,6 @@ export {
   addChats,
   addMember,
   leaveChat,
+  addUser,
+  loginUser,
 };

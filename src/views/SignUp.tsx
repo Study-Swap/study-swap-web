@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,85 +12,121 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+// eslint-disable-next-line
+import { addUser } from "../utils/firebaseUtils";
+
 export default function SignUp() {
   const classes = useStyles();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleFirstName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFirstName(event.target.value);
+  };
+
+  const handleLastName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLastName(event.target.value);
+  };
+
+  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component='h1' variant='h5'>
+        <Typography component="h1" variant="h5">
           Sign up
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                autoComplete='fname'
-                name='firstName'
-                variant='outlined'
+                autoComplete="fname"
+                name="firstName"
+                value={firstName}
+                onChange={handleFirstName}
+                variant="outlined"
                 required
                 fullWidth
-                id='firstName'
-                label='First Name'
-                autoFocus
+                id="firstName"
+                label="First Name"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                variant='outlined'
+                variant="outlined"
                 required
                 fullWidth
-                id='lastName'
-                label='Last Name'
-                name='lastName'
-                autoComplete='lname'
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                value={lastName}
+                onChange={handleLastName}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant='outlined'
+                variant="outlined"
                 required
                 fullWidth
-                id='email'
-                label='Email Address'
-                name='email'
-                autoComplete='email'
+                id="email"
+                label="Email Address"
+                name="email"
+                value={email}
+                onChange={handleEmail}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant='outlined'
+                variant="outlined"
                 required
                 fullWidth
-                name='password'
-                label='Password'
-                type='password'
-                id='password'
-                autoComplete='current-password'
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                value={password}
+                onChange={handlePassword}
               />
             </Grid>
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value='allowExtraEmails' color='primary' />}
-                label='I want to receive email notifications'
+                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                label="I want to receive email notifications"
               />
             </Grid>
           </Grid>
           <Button
             fullWidth
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             className={classes.submit}
+            onClick={(): void => {
+              addUser(email, password, {
+                firstName,
+                lastName,
+                email,
+                classes: [],
+                chats: [],
+              });
+            }}
           >
             Sign Up
           </Button>
-          <Grid container justify='flex-end'>
+          <Grid container justify="flex-end">
             <Grid item>
-              <Link href='/login' variant='body2'>
+              <Link href="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
