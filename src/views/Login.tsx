@@ -10,14 +10,19 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
-// eslint-disable-next-line
 import { loginUser } from "../utils/firebaseUtils";
+import history from "../utils/historyUtils";
 
 export default function Login() {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -30,6 +35,16 @@ export default function Login() {
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
+        <Snackbar
+          open={showError}
+          autoHideDuration={6000}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          onClose={() => {
+            setShowError(false);
+          }}
+        >
+          <Alert severity="error">{errorMessage}</Alert>
+        </Snackbar>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -73,7 +88,15 @@ export default function Login() {
             color="primary"
             className={classes.submit}
             onClick={() => {
-              loginUser(email, password);
+              loginUser(email, password)
+                .then((user: any) => {
+                  console.log(user);
+                  history.push("/home");
+                })
+                .catch((error) => {
+                  setErrorMessage(error);
+                  setShowError(true);
+                });
             }}
           >
             Sign In

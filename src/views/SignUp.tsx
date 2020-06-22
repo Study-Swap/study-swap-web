@@ -17,6 +17,8 @@ import Alert from "@material-ui/lab/Alert";
 // eslint-disable-next-line
 import { addUser, getUser } from "../utils/firebaseUtils";
 
+import history from "../utils/historyUtils";
+
 export default function SignUp() {
   const classes = useStyles();
   const [firstName, setFirstName] = useState("");
@@ -152,15 +154,19 @@ export default function SignUp() {
                 email,
                 classes: [],
                 chats: [],
-              }).catch((err) => {
-                if (err) {
-                  setErrorMessage(err);
-                  setShowError(true);
-                }
-              });
-              await getUser().then((user: any) => {
-                console.log(user);
-              });
+              })
+                .then(async () => {
+                  await getUser().then((user: any) => {
+                    console.log(user);
+                    history.push("/home");
+                  });
+                })
+                .catch((err) => {
+                  if (err) {
+                    setErrorMessage(err);
+                    setShowError(true);
+                  }
+                });
             }}
           >
             Sign Up

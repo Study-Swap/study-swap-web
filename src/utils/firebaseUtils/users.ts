@@ -56,13 +56,14 @@ function getUser(): any {
 }
 
 async function loginUser(email: string, password: string): Promise<void> {
-  await firebase
+  return firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
     .then(() => {
       const user = firebaseApp.auth().currentUser;
       if (user) {
-        db.collection(collections.users)
+        return db
+          .collection(collections.users)
           .doc(user.uid)
           .get()
           .then(

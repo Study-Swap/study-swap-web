@@ -1,6 +1,5 @@
 import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
-import { createBrowserHistory } from "history";
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -12,7 +11,7 @@ import { menuList, routes } from "./views";
 import { Copyright } from "./components/Copyright";
 import AppLayout from "./components/AppLayout";
 
-const history = createBrowserHistory();
+import history from "./utils/historyUtils";
 
 function App() {
   const classes = useStyles();
