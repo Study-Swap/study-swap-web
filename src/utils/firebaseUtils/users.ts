@@ -12,15 +12,15 @@ async function addUser(
   email: string,
   password: string,
   userInfo: userModel
-): Promise<void> {
+): Promise<any> {
   const { firstName, lastName, classes, chats } = userInfo;
   await firebaseApp
     .auth()
     .createUserWithEmailAndPassword(email, password)
-    .then((): void => {
+    .then((): any => {
       const user = firebaseApp.auth().currentUser;
       if (user) {
-        db.collection(collections.users).doc(user.uid).set({
+        return db.collection(collections.users).doc(user.uid).set({
           firstName,
           lastName,
           //grade,
@@ -33,9 +33,26 @@ async function addUser(
         throw Error;
       }
     })
-    .catch((err: any): void => {
-      console.log(err);
-    });
+    .catch(
+      (err: any): Promise<any> => {
+        return Promise.reject(err.message);
+      }
+    );
+}
+
+function getUser(): any {
+  const user = firebaseApp.auth().currentUser;
+  if (user) {
+    return db
+      .collection(collections.users)
+      .doc(user.uid)
+      .get()
+      .then(
+        (user: any): userModel => {
+          return { id: user.uid, ...user.data() };
+        }
+      );
+  }
 }
 
 async function loginUser(email: string, password: string): Promise<void> {
@@ -58,9 +75,11 @@ async function loginUser(email: string, password: string): Promise<void> {
         throw Error;
       }
     })
-    .catch((err: any): void => {
-      console.log(err);
-    });
+    .catch(
+      (err: any): Promise<any> => {
+        return Promise.reject(err.message);
+      }
+    );
 }
 
-export { addUser, loginUser };
+export { addUser, loginUser, getUser };

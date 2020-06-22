@@ -11,9 +11,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
 // eslint-disable-next-line
-import { addUser } from "../utils/firebaseUtils";
+import { addUser, getUser } from "../utils/firebaseUtils";
 
 export default function SignUp() {
   const classes = useStyles();
@@ -21,6 +23,13 @@ export default function SignUp() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const emailValidation = (event: React.FocusEvent<HTMLInputElement>) => {
+    //setEmailValidationError(true);
+  };
 
   const handleFirstName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFirstName(event.target.value);
@@ -41,6 +50,16 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Snackbar
+        open={showError}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        onClose={() => {
+          setShowError(false);
+        }}
+      >
+        <Alert severity="error">{errorMessage}</Alert>
+      </Snackbar>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -85,6 +104,7 @@ export default function SignUp() {
                 name="email"
                 value={email}
                 onChange={handleEmail}
+                onBlur={emailValidation}
               />
             </Grid>
             <Grid item xs={12}>
@@ -101,6 +121,19 @@ export default function SignUp() {
               />
             </Grid>
             <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Confirm Password"
+                type="password"
+                id="password2"
+                value={password}
+                onChange={handlePassword}
+              />
+            </Grid>
+            <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I want to receive email notifications"
@@ -112,13 +145,21 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={(): void => {
-              addUser(email, password, {
+            onClick={async (): Promise<any> => {
+              await addUser(email, password, {
                 firstName,
                 lastName,
                 email,
                 classes: [],
                 chats: [],
+              }).catch((err) => {
+                if (err) {
+                  setErrorMessage(err);
+                  setShowError(true);
+                }
+              });
+              await getUser().then((user: any) => {
+                console.log(user);
               });
             }}
           >
