@@ -13,24 +13,52 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Snackbar from "@material-ui/core/Snackbar";
 import Alert from "@material-ui/lab/Alert";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from "@material-ui/core/IconButton";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
 // eslint-disable-next-line
 import { addUser, getUser } from "../utils/firebaseUtils";
 
 import history from "../utils/historyUtils";
+import { emailValid } from "../utils/emailValidUtils";
+import { classesOffered } from "../constants/classesOffered";
 
 export default function SignUp() {
   const classes = useStyles();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [enrolledClasses, setEnrolledClasses] = useState<string[]>([]);
 
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [passwordError, setPasswordError] = useState(false);
 
-  const emailValidation = (event: React.FocusEvent<HTMLInputElement>) => {
-    //setEmailValidationError(true);
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
+  const emailValidation = () => {
+    setEmailError(!emailValid(email));
   };
 
   const handleFirstName = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,8 +73,32 @@ export default function SignUp() {
     setEmail(event.target.value);
   };
 
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const handlePasswordIcon = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setShowPassword(!showPassword);
+  };
+
   const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
+  };
+
+  const handleConfirm = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setConfirm(event.target.value);
+    if (event.target.value !== password) {
+      // bc setState is slow for some reason
+      setPasswordError(true);
+    } else {
+      setPasswordError(false);
+    }
+  };
+
+  const handleClasses = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setEnrolledClasses(event.target.value as string[]);
   };
 
   return (
@@ -107,34 +159,104 @@ export default function SignUp() {
                 value={email}
                 onChange={handleEmail}
                 onBlur={emailValidation}
+                error={emailError}
+                helperText={emailError ? "Please use your school email" : ""}
               />
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
+            <FormControl
+              fullWidth
+              variant="outlined"
+              className={classes.margin}
+            >
+              <InputLabel
+                htmlFor="outlined-adornment-password"
+                error={passwordError}
+              >
+                {"Password *"}
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-password"
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={handlePassword}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handlePasswordIcon}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                labelWidth={80}
+                error={passwordError}
               />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Confirm Password"
-                type="password"
-                id="password2"
-                value={password}
-                onChange={handlePassword}
+              <FormHelperText id="password-helper-text">
+                {passwordError ? "Passwords do not match" : ""}
+              </FormHelperText>
+            </FormControl>
+            <FormControl
+              fullWidth
+              variant="outlined"
+              className={classes.margin}
+            >
+              <InputLabel
+                htmlFor="outlined-adornment-confirm-password"
+                error={passwordError}
+              >
+                {"Confirm Password *"}
+              </InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-confirm-password"
+                type={showPassword ? "text" : "password"}
+                value={confirm}
+                onChange={handleConfirm}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handlePasswordIcon}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                labelWidth={145}
+                error={passwordError}
               />
-            </Grid>
+              <FormHelperText id="confirm-helper-text">
+                {passwordError ? "Passwords do not match" : ""}
+              </FormHelperText>
+            </FormControl>
+            <FormControl
+              fullWidth
+              variant="outlined"
+              className={classes.margin}
+            >
+              <InputLabel id="select-mutiple-classes">
+                Select Classes *
+              </InputLabel>
+              <Select
+                labelId="select-mutiple-classes-label"
+                id="select-mutiple-classes-id"
+                multiple
+                value={enrolledClasses}
+                onChange={handleClasses}
+                input={<OutlinedInput labelWidth={120} />}
+                MenuProps={MenuProps}
+              >
+                {classesOffered.map((class_) => (
+                  <MenuItem key={class_.value} value={class_.value}>
+                    {class_.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -152,7 +274,7 @@ export default function SignUp() {
                 firstName,
                 lastName,
                 email,
-                classes: [],
+                classes: enrolledClasses,
                 chats: [],
               })
                 .then(async () => {
@@ -201,5 +323,8 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  margin: {
+    margin: theme.spacing(1),
   },
 }));
