@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../constants/UserContext";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -24,10 +25,13 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
-// eslint-disable-next-line
-import { addUser, getUser } from "../utils/firebaseUtils";
+import {
+  addUser,
+  getUser,
+  sendEmail,
+  checkDuplicateEmail,
+} from "../utils/firebaseUtils";
 
-import history from "../utils/historyUtils";
 import { emailValid } from "../utils/emailValidUtils";
 import { classesOffered } from "../constants/classesOffered";
 
@@ -45,6 +49,8 @@ export default function SignUp() {
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+
+  const { setUser } = useContext(UserContext);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -269,26 +275,41 @@ export default function SignUp() {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={
+              !(
+                firstName.length > 0 &&
+                lastName.length > 0 &&
+                !emailError &&
+                !passwordError &&
+                enrolledClasses.length > 0
+              )
+            }
             onClick={async (): Promise<any> => {
-              await addUser(email, password, {
-                firstName,
-                lastName,
-                email,
-                classes: enrolledClasses,
-                chats: [],
-              })
-                .then(async () => {
-                  await getUser().then((user: any) => {
-                    console.log(user);
-                    history.push("/home");
-                  });
+              const methods = await checkDuplicateEmail(email);
+              if (methods.length === 0) {
+                sendEmail(email);
+                await addUser(email, password, {
+                  firstName,
+                  lastName,
+                  email,
+                  classes: enrolledClasses,
+                  chats: [],
                 })
-                .catch((err) => {
-                  if (err) {
-                    setErrorMessage(err);
-                    setShowError(true);
-                  }
-                });
+                  .then(async () => {
+                    await getUser().then((user: any) => {
+                      setUser(user);
+                    });
+                  })
+                  .catch((err) => {
+                    if (err) {
+                      setErrorMessage(err);
+                      setShowError(true);
+                    }
+                  });
+              } else {
+                setErrorMessage("This email is already in use");
+                setShowError(true);
+              }
             }}
           >
             Sign Up
@@ -318,7 +339,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(3),
   },
   submit: {

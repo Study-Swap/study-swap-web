@@ -34,7 +34,14 @@ import {
   leaveChat,
 } from "./chats";
 
-import { addUser, loginUser, getUser } from "./users";
+import {
+  addUser,
+  loginUser,
+  getUser,
+  sendEmail,
+  checkDuplicateEmail,
+  sendPasswordResetEmail,
+} from "./users";
 
 /********** EXPORT **********/
 export {
@@ -64,4 +71,7 @@ export {
   addUser,
   loginUser,
   getUser,
+  sendEmail,
+  checkDuplicateEmail,
+  sendPasswordResetEmail,
 };

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../constants/UserContext";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -20,6 +21,8 @@ export default function Login() {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { setUser } = useContext(UserContext);
 
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -84,13 +87,14 @@ export default function Login() {
           />
           <Button
             fullWidth
+            disabled={!(email.length > 0 && password.length > 0)}
             variant="contained"
             color="primary"
             className={classes.submit}
             onClick={() => {
               loginUser(email, password)
                 .then((user: any) => {
-                  console.log(user);
+                  setUser(user);
                   history.push("/home");
                 })
                 .catch((error) => {
@@ -103,7 +107,7 @@ export default function Login() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="/reset-password" variant="body2">
                 Forgot password?
               </Link>
             </Grid>

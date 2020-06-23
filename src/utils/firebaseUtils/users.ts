@@ -8,6 +8,47 @@ import { userModel } from "../../constants/Models";
 
 const db = firebase.firestore();
 
+var actionCodeSettings = {
+  // URL you want to redirect back to. The domain (www.example.com) for this
+  // URL must be whitelisted in the Firebase Console.
+  url: "http://localhost:3000/login",
+  // This must be true.
+  handleCodeInApp: true,
+};
+
+function sendEmail(email: string) {
+  firebase
+    .auth()
+    .sendSignInLinkToEmail(email, actionCodeSettings)
+    .then(function () {
+      console.log("email sent");
+      // The link was successfully sent. Inform the user.
+      // Save the email locally so you don't need to ask the user for it again
+      // if they open the link on the same device.
+      window.localStorage.setItem("emailForSignIn", email);
+    })
+    .catch(function (error) {
+      // Some error occurred, you can inspect the code: error.code
+      console.log(error);
+    });
+}
+
+async function checkDuplicateEmail(email: string) {
+  return firebase.auth().fetchSignInMethodsForEmail(email);
+}
+
+function sendPasswordResetEmail(email: string) {
+  return firebaseApp
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then(() => {
+      return "Email Sent!";
+    })
+    .catch((error) => {
+      return Promise.reject(error.message);
+    });
+}
+
 async function addUser(
   email: string,
   password: string,
@@ -48,8 +89,8 @@ function getUser(): any {
       .doc(user.uid)
       .get()
       .then(
-        (user: any): userModel => {
-          return { id: user.uid, ...user.data() };
+        (dbUser: any): userModel => {
+          return { id: user.uid, ...dbUser.data() };
         }
       );
   }
@@ -67,9 +108,8 @@ async function loginUser(email: string, password: string): Promise<void> {
           .doc(user.uid)
           .get()
           .then(
-            (user: any): userModel => {
-              console.log({ ...user.data(), id: user.id });
-              return { ...user.data(), id: user.id };
+            (dbUser: any): userModel => {
+              return { ...dbUser.data(), id: user.uid };
             }
           );
       } else {
@@ -83,4 +123,11 @@ async function loginUser(email: string, password: string): Promise<void> {
     );
 }
 
-export { addUser, loginUser, getUser };
+export {
+  addUser,
+  loginUser,
+  getUser,
+  sendEmail,
+  checkDuplicateEmail,
+  sendPasswordResetEmail,
+};

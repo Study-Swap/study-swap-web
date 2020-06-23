@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { Router, Switch, Route } from "react-router-dom";
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
 
@@ -10,11 +10,22 @@ import { theme } from "./constants/theme";
 import { menuList, routes } from "./views";
 import { Copyright } from "./components/Copyright";
 import AppLayout from "./components/AppLayout";
+import { UserContext } from "./constants/UserContext";
 
 import history from "./utils/historyUtils";
 
 function App() {
   const classes = useStyles();
+  const [user, setUser] = useState({
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    classes: [""],
+    chats: [""],
+  });
+
+  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -25,15 +36,17 @@ function App() {
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
-              <Switch>
-                {routes.map((element: any) => (
-                  <Route
-                    path={element.path}
-                    component={element.component}
-                    key={element.path}
-                  />
-                ))}
-              </Switch>
+              <UserContext.Provider value={value}>
+                <Switch>
+                  {routes.map((element: any) => (
+                    <Route
+                      path={element.path}
+                      component={element.component}
+                      key={element.path}
+                    />
+                  ))}
+                </Switch>
+              </UserContext.Provider>
               <Box pt={4}>
                 <Copyright />
               </Box>
