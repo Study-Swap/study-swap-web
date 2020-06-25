@@ -21,11 +21,10 @@ export default function Login() {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const { setUser } = useContext(UserContext);
-
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const { setUser } = useContext(UserContext);
 
   const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -97,7 +96,7 @@ export default function Login() {
                   setUser(user);
                   history.push("/home");
                 })
-                .catch((error) => {
+                .catch((error: string) => {
                   setErrorMessage(error);
                   setShowError(true);
                 });

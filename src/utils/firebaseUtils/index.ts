@@ -38,9 +38,9 @@ import {
   addUser,
   loginUser,
   getUser,
-  sendEmail,
   checkDuplicateEmail,
   sendPasswordResetEmail,
+  isUserSignedIn,
 } from "./users";
 
 /********** EXPORT **********/
@@ -71,7 +71,7 @@ export {
   addUser,
   loginUser,
   getUser,
-  sendEmail,
   checkDuplicateEmail,
   sendPasswordResetEmail,
+  isUserSignedIn,
 };

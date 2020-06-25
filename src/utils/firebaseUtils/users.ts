@@ -16,32 +16,15 @@ var actionCodeSettings = {
   handleCodeInApp: true,
 };
 
-function sendEmail(email: string) {
-  firebase
-    .auth()
-    .sendSignInLinkToEmail(email, actionCodeSettings)
-    .then(function () {
-      console.log("email sent");
-      // The link was successfully sent. Inform the user.
-      // Save the email locally so you don't need to ask the user for it again
-      // if they open the link on the same device.
-      window.localStorage.setItem("emailForSignIn", email);
-    })
-    .catch(function (error) {
-      // Some error occurred, you can inspect the code: error.code
-      console.log(error);
-    });
-}
-
 async function checkDuplicateEmail(email: string) {
   return firebase.auth().fetchSignInMethodsForEmail(email);
 }
 
-function sendPasswordResetEmail(email: string) {
+function sendPasswordResetEmail(email: string): Promise<string> {
   return firebaseApp
     .auth()
     .sendPasswordResetEmail(email)
-    .then(() => {
+    .then((): string => {
       return "Email Sent!";
     })
     .catch((error) => {
@@ -61,73 +44,96 @@ async function addUser(
     .then((): any => {
       const user = firebaseApp.auth().currentUser;
       if (user) {
-        return db.collection(collections.users).doc(user.uid).set({
-          firstName,
-          lastName,
-          //grade,
-          email,
-          //bio,
-          classes,
-          chats,
-        });
-      } else {
-        throw Error;
-      }
-    })
-    .catch(
-      (err: any): Promise<any> => {
-        return Promise.reject(err.message);
-      }
-    );
-}
-
-function getUser(): any {
-  const user = firebaseApp.auth().currentUser;
-  if (user) {
-    return db
-      .collection(collections.users)
-      .doc(user.uid)
-      .get()
-      .then(
-        (dbUser: any): userModel => {
-          return { id: user.uid, ...dbUser.data() };
-        }
-      );
-  }
-}
-
-async function loginUser(email: string, password: string): Promise<void> {
-  return firebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then(() => {
-      const user = firebaseApp.auth().currentUser;
-      if (user) {
+        // actionCodeSettings make the email link redirect to login
+        user.sendEmailVerification(actionCodeSettings);
         return db
           .collection(collections.users)
           .doc(user.uid)
-          .get()
-          .then(
-            (dbUser: any): userModel => {
-              return { ...dbUser.data(), id: user.uid };
-            }
-          );
+          .set({
+            firstName,
+            lastName,
+            //grade,
+            email,
+            //bio,
+            classes,
+            chats,
+          })
+          .then(() => {
+            // To make sure they validate email
+            firebaseApp.auth().signOut();
+          });
       } else {
         throw Error;
       }
     })
     .catch(
-      (err: any): Promise<any> => {
+      (err: any): Promise<string> => {
         return Promise.reject(err.message);
       }
     );
+}
+
+function getUser(userId: string): Promise<userModel> {
+  return db
+    .collection(collections.users)
+    .doc(userId)
+    .get()
+    .then(
+      (dbUser: any): userModel => {
+        return { id: userId, ...dbUser.data() };
+      }
+    );
+}
+
+async function loginUser(email: string, password: string): Promise<any> {
+  return (
+    firebase
+      .auth()
+      // User is logged in until tab closed
+      .setPersistence(firebaseApp.auth.Auth.Persistence.SESSION)
+      .then(
+        (): Promise<string | userModel> => {
+          return firebase
+            .auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(
+              (): Promise<userModel> => {
+                const user = firebaseApp.auth().currentUser;
+                if (user?.emailVerified) {
+                  return db
+                    .collection(collections.users)
+                    .doc(user.uid)
+                    .get()
+                    .then(
+                      (dbUser: any): userModel => {
+                        return { ...dbUser.data(), id: user.uid };
+                      }
+                    );
+                } else {
+                  throw Error("User Email not Verified");
+                }
+              }
+            )
+            .catch(
+              (err: any): Promise<string> => {
+                return Promise.reject(err.message);
+              }
+            );
+        }
+      )
+  );
+}
+
+function isUserSignedIn(): boolean {
+  const user = firebaseApp.auth().currentUser;
+  return user ? true : false;
 }
 
 export {
   addUser,
   loginUser,
   getUser,
-  sendEmail,
   checkDuplicateEmail,
   sendPasswordResetEmail,
+  isUserSignedIn,
 };

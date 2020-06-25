@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { UserContext } from "../constants/UserContext";
+import React, { useState } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -25,13 +24,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
-import {
-  addUser,
-  getUser,
-  sendEmail,
-  checkDuplicateEmail,
-} from "../utils/firebaseUtils";
-
+import { addUser, checkDuplicateEmail } from "../utils/firebaseUtils";
 import { emailValid } from "../utils/emailValidUtils";
 import { classesOffered } from "../constants/classesOffered";
 
@@ -49,8 +42,7 @@ export default function SignUp() {
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordError, setPasswordError] = useState(false);
-
-  const { setUser } = useContext(UserContext);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -119,6 +111,16 @@ export default function SignUp() {
         }}
       >
         <Alert severity="error">{errorMessage}</Alert>
+      </Snackbar>
+      <Snackbar
+        open={showSuccess}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        onClose={() => {
+          setShowSuccess(false);
+        }}
+      >
+        <Alert severity="success">Email Sent!</Alert>
       </Snackbar>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -287,7 +289,6 @@ export default function SignUp() {
             onClick={async (): Promise<any> => {
               const methods = await checkDuplicateEmail(email);
               if (methods.length === 0) {
-                sendEmail(email);
                 await addUser(email, password, {
                   firstName,
                   lastName,
@@ -295,10 +296,8 @@ export default function SignUp() {
                   classes: enrolledClasses,
                   chats: [],
                 })
-                  .then(async () => {
-                    await getUser().then((user: any) => {
-                      setUser(user);
-                    });
+                  .then(() => {
+                    setShowSuccess(true);
                   })
                   .catch((err) => {
                     if (err) {

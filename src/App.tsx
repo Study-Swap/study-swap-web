@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from "react";
-import { Router, Switch, Route } from "react-router-dom";
-import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect, useMemo } from "react";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
 
+import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
@@ -13,6 +13,8 @@ import AppLayout from "./components/AppLayout";
 import { UserContext } from "./constants/UserContext";
 
 import history from "./utils/historyUtils";
+import firebase from "./constants/Firebase";
+import { getUser } from "./utils/firebaseUtils";
 
 function App() {
   const classes = useStyles();
@@ -26,6 +28,19 @@ function App() {
   });
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+
+  useEffect(() => {
+    const subscriber = firebase.auth().onAuthStateChanged((authUser) => {
+      console.log("auth changed");
+      if (authUser) {
+        getUser(authUser.uid).then((res: any) => {
+          setUser(res);
+        });
+      }
+    });
+
+    return subscriber; // Unsubscribe on unmount
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
