@@ -40,7 +40,7 @@ import {
   getUser,
   checkDuplicateEmail,
   sendPasswordResetEmail,
-  isUserSignedIn,
+  logoutUser,
 } from "./users";
 
 /********** EXPORT **********/
@@ -73,5 +73,5 @@ export {
   getUser,
   checkDuplicateEmail,
   sendPasswordResetEmail,
-  isUserSignedIn,
+  logoutUser,
 };

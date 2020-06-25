@@ -1,16 +1,14 @@
+// eslint-disable-next-line
 import React, { useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
 
+// eslint-disable-next-line
 import history from "../utils/historyUtils";
-import { isUserSignedIn } from "../utils/firebaseUtils";
 
 export default function Chats() {
+  // eslint-disable-next-line
   const { user } = useContext(UserContext);
-
-  useEffect(() => {
-    if (isUserSignedIn()) history.push("/not-logged-in");
-  }, [user]);
 
   return (
     <Container component="main" maxWidth="md">

@@ -124,9 +124,22 @@ async function loginUser(email: string, password: string): Promise<any> {
   );
 }
 
-function isUserSignedIn(): boolean {
-  const user = firebaseApp.auth().currentUser;
-  return user ? true : false;
+function logoutUser(setUser: Function): Promise<string> {
+  return firebase
+    .auth()
+    .signOut()
+    .then(() => {
+      setUser({
+        // To make sure context does not deceive us
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        classes: [""],
+        chats: [""],
+      });
+      return "Logged Out";
+    });
 }
 
 export {
@@ -135,5 +148,5 @@ export {
   getUser,
   checkDuplicateEmail,
   sendPasswordResetEmail,
-  isUserSignedIn,
+  logoutUser,
 };
