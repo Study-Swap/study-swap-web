@@ -53,7 +53,7 @@ const NotificationDropDown = ({
               <ClickAwayListener onClickAway={handleClose}>
                 <>
                   <div className={classes.header}>Notifications</div>
-                  <MenuList autoFocusItem={open} id='menu-list-grow'>
+                  <MenuList autoFocusItem={open} id="menu-list-grow">
                     {nullNotifList.map((nullNotif) => {
                       return (
                         <MenuItem onClick={handleClose}>{nullNotif}</MenuItem>

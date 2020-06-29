@@ -42,21 +42,21 @@ const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
   }, [open]);
 
   return (
-    <AppBar position='fixed' className={clsx(classes.appBar)} color='secondary'>
+    <AppBar position="fixed" className={clsx(classes.appBar)} color="secondary">
       <Toolbar>
         <IconButton
-          edge='start'
+          edge="start"
           className={classes.menuButton}
           onClick={toggleDrawer(true)}
-          color='inherit'
-          aria-label='open drawer'
+          color="inherit"
+          aria-label="open drawer"
         >
           <MenuIcon />
         </IconButton>
         <Typography
-          component='h1'
-          variant='h6'
-          color='inherit'
+          component="h1"
+          variant="h6"
+          color="inherit"
           noWrap
           className={classes.title}
         >
@@ -67,7 +67,7 @@ const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
             <SearchIcon />
           </div>
           <InputBase
-            placeholder='Search…'
+            placeholder="Search…"
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
@@ -82,17 +82,17 @@ const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
           anchorRef={anchorRef}
         />
         <IconButton
-          color='inherit'
+          color="inherit"
           ref={anchorRef}
-          aria-controls={open ? "menu-list-grow" : undefined}
-          aria-haspopup='true'
+          aria-controls={open ? "notification-list-grow" : undefined}
+          aria-haspopup="true"
           onClick={handleToggle}
         >
-          <Badge badgeContent={5} color='error'>
+          <Badge badgeContent={5} color="error">
             <NotificationIcon />
           </Badge>
         </IconButton>
-        <IconButton color='inherit' component={Link} to={"/profile"}>
+        <IconButton color="inherit" component={Link} to={"/profile"}>
           <AccountIcon />
         </IconButton>
       </Toolbar>
