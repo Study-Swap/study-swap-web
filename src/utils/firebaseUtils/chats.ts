@@ -61,7 +61,9 @@ function getChats(userId: string): Promise<chatsModel[] | void> {
           chats.push({
             id: chat.id,
             members: data.members,
+            memberNames: data.memberNames,
             messages: data.messages,
+            chatName: data.chatName,
           });
         });
         return chats;
@@ -76,13 +78,21 @@ function getChats(userId: string): Promise<chatsModel[] | void> {
   @type     POST -> Chats
   @desc     add new chat
 */
-function addChats(userId: string, recepientId: string): any {
+function addChats(
+  userId: string,
+  recepientId: string,
+  userName: string,
+  recepientName: string,
+  chatName: string
+): any {
   //TODO Fix any return....
   // Make new chat
   db.collection(collections.chats)
     .add({
       members: [userId, recepientId],
+      memberNames: [userName, recepientName],
       messages: [],
+      chatName: chatName,
     })
     .then((chat: any): void => {
       // Then add chat to users chat list
@@ -112,13 +122,14 @@ function addChats(userId: string, recepientId: string): any {
   @type     POST -> Chats
   @desc     add new member to chat
 */
-function addMember(memberId: string, chatId: string): any {
+function addMember(memberId: string, chatId: string, memberName: string): any {
   //TODO Fix any return....
   const ref = db.collection(collections.chats).doc(chatId);
   // Add memberId to member array
   ref
     .update({
       members: firebaseApp.firestore.FieldValue.arrayUnion(memberId),
+      memberNames: firebaseApp.firestore.FieldValue.arrayUnion(memberName),
     })
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
@@ -143,18 +154,19 @@ function addMember(memberId: string, chatId: string): any {
   @type     PATCH -> Chats
   @desc     remove member from chat
 */
-function leaveChat(memberId: string, chatId: string): any {
+function leaveChat(memberId: string, chatId: string, memberName: string): any {
   //TODO Fix any return....
   const ref = db.collection(collections.chats).doc(chatId);
   // Delete memberId from member array
   ref
     .update({
       members: firebaseApp.firestore.FieldValue.arrayRemove(memberId),
+      memberNames: firebaseApp.firestore.FieldValue.arrayRemove(memberName),
     })
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
     });
-  // Remove chatId from old members chats array
+  // Remove chatId from removed member's chats array
   ref
     .get()
     .then((chat: any): void => {

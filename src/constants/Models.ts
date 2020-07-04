@@ -62,9 +62,11 @@ export interface chatsModel {
 
   //foreign key relations
   members: Array<string>; // array of userIds of members
+  memberNames: Array<string>; // array of memberNames
 
   // chats specific
   messages: Array<string>; // array of messageIds
+  chatName: string;
 }
 
 export interface messageModel {
