@@ -7,10 +7,12 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import { postModel } from "../constants/Models";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
+    minWidth: 400,
   },
   bullet: {
     display: "inline-block",
@@ -25,41 +27,41 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   media: {
-    height: 20,
+    height: 50,
+    width: 50,
   },
 });
 
-export default function Post() {
+export default function Post(props: postModel) {
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
       <CardContent>
-        <CardMedia
-          component="img"
-          alt="ProfPic"
-          height="10"
-          image="Headshot.png"
-          title="Profile Picture"
-        />
+        <Grid container>
+          <Grid item xs={2}>
+            <CardMedia
+              component="img"
+              className={classes.media}
+              src={require("./pic.jpg")}
+              title="Profile Picture"
+            />
+          </Grid>
 
-        <div>
-          <Typography className={classes.title} gutterBottom>
-            Ashish Mahuli in EECS 280
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            June 20 at 4:40 PM
-          </Typography>
-        </div>
+          <Grid item xs={9}>
+            <div>
+              <Typography className={classes.title} gutterBottom>
+                {props.postUserName} in {props.postClassName}
+              </Typography>
+              <Typography className={classes.pos} color="textSecondary">
+                {props.timestamp}
+              </Typography>
+            </div>
+          </Grid>
+        </Grid>
 
         <Typography variant="body2" component="p">
-          Lorem ipsum dolor sit amet, dicant noluisse definiebas eu pri, ea
-          erant corrumpit mei, vim labores luptatum senserit te. Ea malis
-          iudicabit vis, ne oblique honestatis vim, pro stet nominati
-          delicatissimi cu. Ad admodum intellegebat vix. Duo ne cetero legendos
-          instructior, id vel falli senserit deseruisse. Eu iudico labores
-          theophrastus nam. Ex constituam interesset sit, no suscipit posidonium
-          disputationi quo"
+          {props.postText}
         </Typography>
       </CardContent>
       <CardActions>
