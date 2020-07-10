@@ -14,6 +14,7 @@ import Profile from "./Profile";
 import SignUp from "./SignUp";
 import NotLoggedIn from "./NotLoggedIn";
 import PasswordReset from "./PasswordReset";
+import AdminDashboard from "./AdminDashboard";
 
 // Array of arrays in format "Name", ComponentIcon, "/route"
 export const menuList = [
@@ -31,6 +32,7 @@ export const routes: Array<RouteType> = [
   { path: "/chats", component: Chats },
   { path: "/profile", component: Profile },
   { path: "/signup", component: SignUp },
+  { path: "/dashboard", component: AdminDashboard },
   { path: "/not-logged-in", component: NotLoggedIn },
   { path: "/reset-password", component: PasswordReset },
 ];

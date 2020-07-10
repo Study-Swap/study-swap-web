@@ -62,6 +62,8 @@ function getChats(userId: string): Promise<chatsModel[] | void> {
             id: chat.id,
             members: data.members,
             messages: data.messages,
+            memberNames: data.memberNames,
+            chatName: data.chatName,
           });
         });
         return chats;
