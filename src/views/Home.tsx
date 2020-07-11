@@ -25,6 +25,7 @@ const useStyles = makeStyles({
 export default function Home() {
   // eslint-disable-next-line
   const { user } = useContext(UserContext);
+  // eslint-disable-next-line
   const classes = useStyles();
 
   return (

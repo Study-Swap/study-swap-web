@@ -1,6 +1,7 @@
 import React from "react";
 import CSVReader from "react-csv-reader";
 
+// eslint-disable-next-line
 import { addUsersByEmail } from "../utils/firebaseUtils";
 
 const papaparseOptions = {
