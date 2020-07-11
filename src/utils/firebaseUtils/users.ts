@@ -198,4 +198,5 @@ export {
   checkDuplicateEmail,
   sendPasswordResetEmail,
   logoutUser,
+  addUsersByEmail,
 };

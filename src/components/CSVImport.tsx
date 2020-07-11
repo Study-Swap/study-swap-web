@@ -1,6 +1,8 @@
 import React from "react";
 import CSVReader from "react-csv-reader";
 
+import { addUsersByEmail } from "../utils/firebaseUtils";
+
 const papaparseOptions = {
   header: true,
   dynamicTyping: true,
@@ -43,6 +45,8 @@ export default function CSVImport({ classId, setHasRoster }: CSVImportProps) {
           // TODO Change this to accept state
           if (setHasRoster) setHasRoster(true);
           console.log(emailList);
+          // Keep commented out till BE connects with FE
+          //addUsersByEmail(classId, emailList);
         }
       }}
       onError={(error) => {
