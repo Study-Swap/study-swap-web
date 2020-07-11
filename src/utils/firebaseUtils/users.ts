@@ -73,6 +73,7 @@ async function addUser(
                 .then(() => {
                   // To make sure they validate email
                   firebaseApp.auth().signOut();
+                  userDB.doc(email).delete(); // delete temp account
                 });
             } else {
               return userDB
