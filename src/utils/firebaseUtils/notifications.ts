@@ -3,15 +3,17 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { notificationModel } from "../../constants/Models";
 
-const db = firebase.firestore();
+// Makes code cleaner
+const notificationsDB = firebase
+  .firestore()
+  .collection(collections.notifications);
 
 /*
 @type     GET -> Notifications
 @desc     get all notifications for a certain userId
 */
 function getNotifications(userId: string): Promise<notificationModel[] | void> {
-  return db
-    .collection(collections.notifications)
+  return notificationsDB
     .where("userId", "==", userId)
     .orderBy("timestamp", "asc")
     .get()
@@ -42,7 +44,7 @@ function getNotifications(userId: string): Promise<notificationModel[] | void> {
   @desc     read notification
   */
 function readNotification(notificationId: string): void {
-  db.collection(collections.notifications)
+  notificationsDB
     .doc(notificationId)
     .update({ read: true })
     .catch((err: any): void => {

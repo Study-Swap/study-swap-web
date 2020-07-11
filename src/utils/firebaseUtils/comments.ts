@@ -6,15 +6,15 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { commentModel } from "../../constants/Models";
 
-const db = firebase.firestore();
+// Makes code cleaner
+const commentsDB = firebase.firestore().collection(collections.comments);
 
 /*
 @type     GET -> Comments
 @desc     get all comments for a certain post
 */
 function getComments(postId: string): Promise<commentModel[] | void> {
-  return db
-    .collection(collections.comments)
+  return commentsDB
     .where("postId", "==", postId)
     .orderBy("timestamp", "desc")
     .get()
@@ -44,7 +44,7 @@ function getComments(postId: string): Promise<commentModel[] | void> {
   @desc     add new comment
   */
 function addComment(comment: commentModel): void {
-  db.collection(collections.comments)
+  commentsDB
     .add({
       timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
       ...comment,
@@ -59,7 +59,7 @@ function addComment(comment: commentModel): void {
   @desc     delete old comment
   */
 function deleteComment(commentId: string): void {
-  db.collection(collections.comments)
+  commentsDB
     .doc(commentId)
     .delete()
     .catch((err: any): void => {
@@ -72,7 +72,7 @@ function deleteComment(commentId: string): void {
   @desc     edit old comment
   */
 function editComment(commentId: string, newText: string): void {
-  db.collection(collections.comments)
+  commentsDB
     .doc(commentId)
     .update({ commentText: newText })
     .catch((err: any): void => {
