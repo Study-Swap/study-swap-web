@@ -7,6 +7,7 @@ export interface userModel {
   bio?: string;
   classes: Array<string>;
   chats: Array<string>;
+  signedUp: boolean;
 }
 
 export interface classModel {
@@ -62,9 +63,11 @@ export interface chatsModel {
 
   //foreign key relations
   members: Array<string>; // array of userIds of members
+  memberNames: Array<string>; // array of member names
 
   // chats specific
   messages: Array<string>; // array of messageIds
+  chatName?: string;
 }
 
 export interface messageModel {
