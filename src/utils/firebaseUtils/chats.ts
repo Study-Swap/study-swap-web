@@ -60,7 +60,9 @@ function getChats(userId: string): Promise<chatsModel[] | void> {
           const data = chat.data();
           chats.push({
             id: chat.id,
+            chatName: data.chatName,
             members: data.members,
+            memberNames: data.memberNames,
             messages: data.messages,
           });
         });

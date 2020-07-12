@@ -59,10 +59,10 @@ export interface notificationModel {
 
 export interface chatsModel {
   id?: string;
-
+  chatName?: string;
   //foreign key relations
   members: Array<string>; // array of userIds of members
-
+  memberNames: Array<string>; //array of names of members
   // chats specific
   messages: Array<string>; // array of messageIds
 }

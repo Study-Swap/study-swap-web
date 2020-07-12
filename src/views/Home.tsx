@@ -1,11 +1,11 @@
 // eslint-disable-next-line
-import React, { useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Post from "../components/Post";
-
+import NewPost from "../components/NewPost";
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 
@@ -29,7 +29,6 @@ export default function Home() {
 
   return (
     <Container component="main" maxWidth="md">
-      <div>Home!</div>
       <Grid
         container
         direction="column"
@@ -37,6 +36,9 @@ export default function Home() {
         alignItems="center"
         spacing={3}
       >
+        <Grid item>
+          <NewPost />
+        </Grid>
         <Grid item>
           <Post />
         </Grid>

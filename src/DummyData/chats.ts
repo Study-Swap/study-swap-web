@@ -1,5 +1,4 @@
 import { chatsModel } from "../constants/Models";
-
 const dummyChatsData: Array<chatsModel> = [
   {
     id: "1",
