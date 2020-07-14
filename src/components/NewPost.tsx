@@ -5,6 +5,8 @@ import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import SendIcon from "@material-ui/icons/Send";
+import { normalize } from "path";
+import { Autorenew } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   input: {
     marginLeft: theme.spacing(2),
     flex: 1,
+    overflow: "auto",
   },
   iconButton: {
     padding: 10,
@@ -35,6 +38,7 @@ export default function CustomizedInputBase() {
         className={classes.input}
         placeholder="Type a post..."
         inputProps={{ "aria-label": "post to feed" }}
+        multiline={true}
       />
       <IconButton
         type="submit"
