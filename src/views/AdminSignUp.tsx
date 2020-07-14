@@ -5,7 +5,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -25,7 +24,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { addUser, checkDuplicateEmail } from "../utils/firebaseUtils";
 import { emailValid } from "../utils/emailValidUtils";
 
-export default function SignUp() {
+export default function AdminSignUp() {
   const classes = useStyles();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -108,7 +107,7 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Admin Sign up
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
@@ -149,7 +148,9 @@ export default function SignUp() {
                 onChange={handleEmail}
                 onBlur={emailValidation}
                 error={emailError}
-                helperText={emailError ? "Please use your school email" : ""}
+                helperText={
+                  emailError ? "Please use your university email" : ""
+                }
               />
             </Grid>
             <FormControl
@@ -271,13 +272,6 @@ export default function SignUp() {
           >
             Sign Up
           </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>

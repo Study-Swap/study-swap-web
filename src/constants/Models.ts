@@ -8,6 +8,8 @@ export interface userModel {
   classes: Array<string>;
   chats: Array<string>;
   signedUp: boolean;
+  AdminClasses?: Array<string>;
+  superUser?: Array<string>;
 }
 
 export interface classModel {
