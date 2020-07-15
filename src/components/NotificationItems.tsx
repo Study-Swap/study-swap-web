@@ -9,13 +9,6 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 import { notificationTypes } from "../constants/notificationTypes";
 
-/*
-
-    TODO:
-        edit Models
-        edit firebaseUtils to manage type
-*/
-
 const formatString = (text: string, maxSize: number): string => {
   return text.length > maxSize ? text.slice(0, maxSize) + "..." : text;
 };

@@ -58,7 +58,7 @@ const nullNotifList = [
     senderName: "Akul Vijayvargiya",
     notificationText: "This is a short post",
     timestamp: "1/2/2020",
-    read: false,
+    read: true,
     kind: notificationTypes.LIKE_COMMENT,
   },
   {
@@ -69,7 +69,7 @@ const nullNotifList = [
     notificationText:
       "This is a long post. This is a long post. This is a long post. This is a long post. This is a long post",
     timestamp: "1/2/2020",
-    read: false,
+    read: true,
     kind: notificationTypes.TRENDING_POST,
   },
 ];
