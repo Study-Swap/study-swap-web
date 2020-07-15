@@ -30,6 +30,7 @@ function getNotifications(userId: string): Promise<notificationModel[] | void> {
             notificationText: data.notificationText,
             id: notification.id,
             read: data.read,
+            kind: data.type, // will be a little different once db is populated
           });
         });
         return notifications;
