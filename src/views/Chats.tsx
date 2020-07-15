@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React, { useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,18 +13,32 @@ import Typography from "@material-ui/core/Typography";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
-import { FullscreenExit } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
-    maxWidth: "36ch",
     backgroundColor: theme.palette.background.paper,
-    flexDirection: "column",
+    flexDirection: "row",
     display: "flex",
+    maxHeight: 600,
+  },
+  chatSide: {
+    maxWidth: "36ch",
+    borderRight: "solid",
+    borderRightWidth: 1,
+    borderRightColor: "#D9D9D9",
   },
   inline: {
     display: "inline",
+  },
+  hover: {
+    "&:hover": {
+      backgroundColor: "#D3D3D3 !important",
+    },
+  },
+  list: {
+    maxHeight: 600,
+    overflow: "auto",
   },
 }));
 
@@ -32,12 +46,21 @@ export default function Chats() {
   // eslint-disable-next-line
   const { user } = useContext(UserContext);
   const classes = useStyles();
+  const [otherScreen, setOtherScreen] = useState<string>("Blank");
+
+  const onClick = (value: string) => {
+    setOtherScreen(value);
+  };
 
   return (
     <div className={classes.root}>
-      <div>
-        <List>
-          <ListItem alignItems="flex-start">
+      <div className={classes.chatSide}>
+        <List className={classes.list}>
+          <ListItem
+            alignItems="flex-start"
+            className={classes.hover}
+            onClick={() => onClick("Brunch this weekend?")}
+          >
             <ListItemAvatar>
               <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             </ListItemAvatar>
@@ -58,8 +81,12 @@ export default function Chats() {
               }
             />
           </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
+          <Divider variant="fullWidth" component="li" />
+          <ListItem
+            alignItems="flex-start"
+            className={classes.hover}
+            onClick={() => onClick("Summer BBQ")}
+          >
             <ListItemAvatar>
               <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
             </ListItemAvatar>
@@ -80,8 +107,11 @@ export default function Chats() {
               }
             />
           </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
+          <ListItem
+            alignItems="flex-start"
+            className={classes.hover}
+            onClick={() => onClick("Oui Oui")}
+          >
             <ListItemAvatar>
               <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
             </ListItemAvatar>
@@ -104,7 +134,7 @@ export default function Chats() {
           </ListItem>
         </List>
       </div>
-      <div>screen</div>
+      <div>{otherScreen}</div>
     </div>
   );
 }
