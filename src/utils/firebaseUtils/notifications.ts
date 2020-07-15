@@ -1,5 +1,6 @@
 import firebase from "../../constants/Firebase";
 
+import { notificationTypes } from "../../constants/notificationTypes";
 import { collections } from "../../constants/FirebaseStrings";
 import { notificationModel } from "../../constants/Models";
 
@@ -29,6 +30,7 @@ function getNotifications(userId: string): Promise<notificationModel[] | void> {
             notificationText: data.notificationText,
             id: notification.id,
             read: data.read,
+            kind: data.type, // will be a little different once db is populated
           });
         });
         return notifications;

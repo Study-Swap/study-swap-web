@@ -1,3 +1,5 @@
+import { notificationTypes } from "./notificationTypes";
+
 export interface userModel {
   id?: string;
   firstName: string;
@@ -52,10 +54,12 @@ export interface notificationModel {
   senderId: string; // points to sender of notification
 
   // notification specific
+  kind: notificationTypes; // Type of notif -> enum
   senderName: string;
   notificationText: string;
   timestamp?: any;
   read: boolean;
+  imageURI?: any; // image uri so we do not have to load sender profile
 }
 
 export interface chatsModel {

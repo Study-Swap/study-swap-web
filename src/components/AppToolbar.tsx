@@ -76,7 +76,6 @@ const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
           />
         </div>
         <NotificationDropDown
-          classes={classes}
           open={open}
           setOpen={setOpen}
           anchorRef={anchorRef}
