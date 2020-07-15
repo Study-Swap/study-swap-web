@@ -1,5 +1,6 @@
 import firebase from "../../constants/Firebase";
 
+import { notificationTypes } from "../../constants/notificationTypes";
 import { collections } from "../../constants/FirebaseStrings";
 import { notificationModel } from "../../constants/Models";
 
