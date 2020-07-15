@@ -16,19 +16,20 @@ const commentsDB = firebase.firestore().collection(collections.comments);
 function getComments(postId: string): Promise<commentModel[] | void> {
   return commentsDB
     .where("postId", "==", postId)
-    .orderBy("timestamp", "desc")
+    .orderBy("timestamp", "asc")
     .get()
     .then(
       (snapshot: any): Array<commentModel> => {
         const comments: Array<commentModel> = [];
         snapshot.forEach((comment: any): void => {
           const data = comment.data();
-          comments.push({
+          comments.unshift({
             id: comment.id,
             userId: data.userId,
             postId: data.postId,
             commenterName: data.commenterName,
             commentText: data.commentText,
+            timestamp: data.timestamp.toDate().toDateString(),
           });
         });
         return comments;

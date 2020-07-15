@@ -13,7 +13,7 @@ const notificationsDB = firebase
 @type     GET -> Notifications
 @desc     get all notifications for a certain userId
 */
-function getNotifications(userId: string): Promise<notificationModel[] | void> {
+function getNotifications(userId: string): Promise<any> {
   return notificationsDB
     .where("userId", "==", userId)
     .orderBy("timestamp", "asc")
@@ -30,14 +30,15 @@ function getNotifications(userId: string): Promise<notificationModel[] | void> {
             notificationText: data.notificationText,
             id: notification.id,
             read: data.read,
-            kind: data.type, // will be a little different once db is populated
+            kind: data.kind, // will be a little different once db is populated
+            timestamp: data.timestamp.toDate().toDateString(),
           });
         });
         return notifications;
       }
     )
-    .catch((err: any): void => {
-      console.error(err); // will be changed to redirect to error screen
+    .catch((error) => {
+      return Promise.reject(error.message);
     });
 }
 

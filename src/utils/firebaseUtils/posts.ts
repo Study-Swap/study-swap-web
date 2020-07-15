@@ -31,6 +31,7 @@ function getPosts(classId: string): Promise<postModel[] | void> {
             postClassName: data.postClassName,
             id: post.id,
             edited: false,
+            timestamp: data.timestamp.toDate().toDateString(),
           });
         });
         return posts;
@@ -63,6 +64,7 @@ function getUserPosts(userId: string): Promise<postModel[] | void> {
             postClassName: data.postClassName,
             id: post.id,
             edited: false,
+            timestamp: data.timestamp.toDate().toDateString(),
           });
         });
         return posts;

@@ -8,6 +8,7 @@ import Popover from "@material-ui/core/Popover";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 import { notificationTypes } from "../constants/notificationTypes";
+import { readNotification } from "../utils/firebaseUtils";
 
 const formatString = (text: string, maxSize: number): string => {
   return text.length > maxSize ? text.slice(0, maxSize) + "..." : text;
@@ -62,6 +63,7 @@ interface TrendingProps {
   notificationText: string;
   timestamp: string;
   read: boolean;
+  id: string;
 }
 
 const TrendingPostNotification = ({
@@ -69,6 +71,7 @@ const TrendingPostNotification = ({
   notificationText,
   timestamp,
   read,
+  id,
 }: TrendingProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -137,6 +140,7 @@ const TrendingPostNotification = ({
                     onClick={() => {
                       setNotifRead(true);
                       setAnchorEl(null);
+                      readNotification(id);
                     }}
                   >
                     Mark as Read
@@ -173,6 +177,7 @@ interface LikeCommentProps {
   notificationText: string;
   timestamp: string;
   read: boolean;
+  id: string;
 }
 
 const LikeCommentNotification = ({
@@ -180,6 +185,7 @@ const LikeCommentNotification = ({
   notificationText,
   timestamp,
   read,
+  id,
 }: LikeCommentProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -249,6 +255,7 @@ const LikeCommentNotification = ({
                     onClick={() => {
                       setNotifRead(true);
                       setAnchorEl(null);
+                      readNotification(id);
                     }}
                   >
                     Mark as Read
@@ -285,6 +292,7 @@ interface NewChatProps {
   chatText: string;
   timestamp: string;
   read: boolean;
+  id: string;
 }
 
 const NewChatNotification = ({
@@ -292,6 +300,7 @@ const NewChatNotification = ({
   chatText,
   timestamp,
   read,
+  id,
 }: NewChatProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -362,6 +371,7 @@ const NewChatNotification = ({
                     onClick={() => {
                       setNotifRead(true);
                       setAnchorEl(null);
+                      readNotification(id);
                     }}
                   >
                     Mark as Read
@@ -412,6 +422,7 @@ interface AdminAccessProps {
   classname: string;
   timestamp: string;
   read: boolean;
+  id: string;
 }
 
 const AdminAccessNotification = ({
@@ -419,6 +430,7 @@ const AdminAccessNotification = ({
   classname,
   timestamp,
   read,
+  id,
 }: AdminAccessProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -478,6 +490,7 @@ const AdminAccessNotification = ({
                   onClick={() => {
                     setNotifRead(true);
                     setAnchorEl(null);
+                    readNotification(id);
                   }}
                 >
                   Mark as Read
@@ -524,7 +537,7 @@ export default function NotificationItem({
   type,
   item,
 }: NotificationItemProps) {
-  const { senderName, notificationText, timestamp, read } = item;
+  const { senderName, notificationText, timestamp, read, id } = item;
   switch (type) {
     case notificationTypes.TRENDING_POST:
       return (
@@ -533,6 +546,7 @@ export default function NotificationItem({
           notificationText={notificationText}
           timestamp={timestamp}
           read={read}
+          id={id}
         />
       );
     case notificationTypes.LIKE_COMMENT:
@@ -542,6 +556,7 @@ export default function NotificationItem({
           notificationText={notificationText}
           timestamp={timestamp}
           read={read}
+          id={id}
         />
       );
     case notificationTypes.NEW_CHAT:
@@ -551,6 +566,7 @@ export default function NotificationItem({
           chatText={notificationText}
           timestamp={timestamp}
           read={read}
+          id={id}
         />
       );
     case notificationTypes.ADMIN_ACCESS:
@@ -560,6 +576,7 @@ export default function NotificationItem({
           classname={notificationText}
           timestamp={timestamp}
           read={read}
+          id={id}
         />
       );
     default:
