@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Comment(props: commentModel) {
   const classes = useStyles();
-  const theme = useTheme();
+  //const theme = useTheme();
 
   return (
     <Card className={classes.root}>

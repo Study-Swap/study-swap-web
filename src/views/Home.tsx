@@ -32,7 +32,6 @@ export default function Home() {
 
   return (
     <Container component="main" maxWidth="md">
-      <div>Home!</div>
       <Grid
         container
         direction="column"

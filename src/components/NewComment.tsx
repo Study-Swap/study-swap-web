@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme) => ({
   input: {
     //marginLeft: theme.spacing(2),
     flex: 1,
+    overflow: "auto",
     fontSize: 14,
+    width: "100%",
   },
   iconButton: {
     padding: 10,
@@ -42,7 +44,7 @@ export default function NewComment(props: any) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <Grid container>
+        <Grid container spacing={0}>
           <Grid item xs={2}>
             <Avatar
               className={classes.media}
@@ -51,15 +53,18 @@ export default function NewComment(props: any) {
             />
           </Grid>
 
-          <Grid item xs={9}>
+          <Grid item xs={8}>
             <InputBase
               className={classes.input}
               placeholder="Type a Comment..."
               inputProps={{ "aria-label": "post to feed" }}
+              multiline={true}
+              rowsMax={7}
               value={props.value}
               onChange={props.onChange}
             />
-
+          </Grid>
+          <Grid item xs={2}>
             <IconButton
               type="submit"
               className={classes.iconButton}
