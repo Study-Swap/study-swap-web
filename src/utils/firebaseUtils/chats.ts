@@ -61,10 +61,10 @@ function getChats(userId: string): Promise<chatsModel[] | void> {
           const data = chat.data();
           chats.push({
             id: chat.id,
-            members: data.members,
-            messages: data.messages,
-            memberNames: data.memberNames,
             chatName: data.chatName,
+            members: data.members,
+            memberNames: data.memberNames,
+            messages: data.messages,
           });
         });
         return chats;

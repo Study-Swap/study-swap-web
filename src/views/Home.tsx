@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Post from "../components/Post";
+import NewPost from "../components/NewPost";
 import Comment from "../components/Comment";
 import NewComment from "../components/NewComment";
 import FeedItem from "../components/FeedItem";
@@ -40,6 +41,9 @@ export default function Home() {
         spacing={6}
         className={classes.root}
       >
+        <Grid item>
+          <NewPost />
+        </Grid>
         {postState.map((thisPost, index) => (
           <FeedItem
             postUserName={thisPost.postUserName}
