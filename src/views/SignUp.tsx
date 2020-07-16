@@ -21,12 +21,9 @@ import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 
 import { addUser, checkDuplicateEmail } from "../utils/firebaseUtils";
 import { emailValid } from "../utils/emailValidUtils";
-import { classesOffered } from "../constants/classesOffered";
 
 export default function SignUp() {
   const classes = useStyles();
@@ -37,23 +34,11 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [enrolledClasses, setEnrolledClasses] = useState<string[]>([]);
 
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
 
   const emailValidation = () => {
     setEmailError(!emailValid(email));
@@ -93,10 +78,6 @@ export default function SignUp() {
     } else {
       setPasswordError(false);
     }
-  };
-
-  const handleClasses = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setEnrolledClasses(event.target.value as string[]);
   };
 
   return (
@@ -241,30 +222,6 @@ export default function SignUp() {
                 {passwordError ? "Passwords do not match" : ""}
               </FormHelperText>
             </FormControl>
-            <FormControl
-              fullWidth
-              variant="outlined"
-              className={classes.margin}
-            >
-              <InputLabel id="select-mutiple-classes">
-                Select Classes *
-              </InputLabel>
-              <Select
-                labelId="select-mutiple-classes-label"
-                id="select-mutiple-classes-id"
-                multiple
-                value={enrolledClasses}
-                onChange={handleClasses}
-                input={<OutlinedInput labelWidth={120} />}
-                MenuProps={MenuProps}
-              >
-                {classesOffered.map((class_) => (
-                  <MenuItem key={class_.value} value={class_.value}>
-                    {class_.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
             <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -282,8 +239,7 @@ export default function SignUp() {
                 firstName.length > 0 &&
                 lastName.length > 0 &&
                 !emailError &&
-                !passwordError &&
-                enrolledClasses.length > 0
+                !passwordError
               )
             }
             onClick={async (): Promise<any> => {
@@ -293,8 +249,9 @@ export default function SignUp() {
                   firstName,
                   lastName,
                   email,
-                  classes: enrolledClasses,
+                  classes: [],
                   chats: [],
+                  signedUp: true,
                 })
                   .then(() => {
                     setShowSuccess(true);

@@ -4,7 +4,10 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { chatsModel, messageModel } from "../../constants/Models";
 
-const db = firebase.firestore();
+// Makes code cleaner
+const messagesDB = firebase.firestore().collection(collections.messages);
+const chatsDB = firebase.firestore().collection(collections.chats);
+const usersDB = firebase.firestore().collection(collections.users);
 
 /*
   @type     GET -> Messages
@@ -12,8 +15,7 @@ const db = firebase.firestore();
 */
 function watchMessages(chatId: string, setMessages: Function): any {
   //TODO Fix any return....
-  return db
-    .collection(collections.messages)
+  return messagesDB
     .where("chatId", "==", chatId)
     .orderBy("timestamp", "desc")
     .onSnapshot((querySnapshot: any): void => {
@@ -38,7 +40,7 @@ function watchMessages(chatId: string, setMessages: Function): any {
   @desc     add new message
 */
 function addMessages(message: messageModel): void {
-  db.collection(collections.messages).add({
+  messagesDB.add({
     timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
     ...message,
   });
@@ -49,8 +51,7 @@ function addMessages(message: messageModel): void {
   @desc     get user chats
 */
 function getChats(userId: string): Promise<chatsModel[] | void> {
-  return db
-    .collection(collections.chats)
+  return chatsDB
     .where("members", "array-contains", userId)
     .get()
     .then(
@@ -64,6 +65,8 @@ function getChats(userId: string): Promise<chatsModel[] | void> {
             members: data.members,
             memberNames: data.memberNames,
             messages: data.messages,
+            memberNames: data.memberNames,
+            chatName: data.chatName,
           });
         });
         return chats;
@@ -81,14 +84,14 @@ function getChats(userId: string): Promise<chatsModel[] | void> {
 function addChats(userId: string, recepientId: string): any {
   //TODO Fix any return....
   // Make new chat
-  db.collection(collections.chats)
+  chatsDB
     .add({
       members: [userId, recepientId],
       messages: [],
     })
     .then((chat: any): void => {
       // Then add chat to users chat list
-      db.collection(collections.users)
+      usersDB
         .doc(userId)
         .update({
           chats: firebaseApp.firestore.FieldValue.arrayUnion(chat.id),
@@ -96,7 +99,7 @@ function addChats(userId: string, recepientId: string): any {
         .catch((err: any): void => {
           console.error(err); // will be changed to redirect to error screen
         });
-      db.collection(collections.users)
+      usersDB
         .doc(recepientId)
         .update({
           chats: firebaseApp.firestore.FieldValue.arrayUnion(chat.id),
@@ -116,7 +119,7 @@ function addChats(userId: string, recepientId: string): any {
 */
 function addMember(memberId: string, chatId: string): any {
   //TODO Fix any return....
-  const ref = db.collection(collections.chats).doc(chatId);
+  const ref = chatsDB.doc(chatId);
   // Add memberId to member array
   ref
     .update({
@@ -129,7 +132,7 @@ function addMember(memberId: string, chatId: string): any {
   ref
     .get()
     .then((chat: any): void => {
-      db.collection(collections.users)
+      usersDB
         .doc(memberId)
         .update({ chats: firebaseApp.firestore.FieldValue.arrayUnion(chat.id) })
         .catch((err: any): void => {
@@ -147,7 +150,7 @@ function addMember(memberId: string, chatId: string): any {
 */
 function leaveChat(memberId: string, chatId: string): any {
   //TODO Fix any return....
-  const ref = db.collection(collections.chats).doc(chatId);
+  const ref = chatsDB.doc(chatId);
   // Delete memberId from member array
   ref
     .update({
@@ -160,7 +163,7 @@ function leaveChat(memberId: string, chatId: string): any {
   ref
     .get()
     .then((chat: any): void => {
-      db.collection(collections.users)
+      usersDB
         .doc(memberId)
         .update({
           chats: firebaseApp.firestore.FieldValue.arrayRemove(chat.id),

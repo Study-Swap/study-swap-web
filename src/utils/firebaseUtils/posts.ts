@@ -4,15 +4,17 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { postModel } from "../../constants/Models";
 
-const db = firebase.firestore();
+// Makes code cleaner
+const postsDB = firebase.firestore().collection(collections.posts);
+const usersDB = firebase.firestore().collection(collections.users);
+const commentsDB = firebase.firestore().collection(collections.comments);
 
 /*
 @type     GET -> Posts
 @desc     get all posts in a certain class
 */
 function getPosts(classId: string): Promise<postModel[] | void> {
-  return db
-    .collection(collections.posts)
+  return postsDB
     .where("classId", "==", classId)
     .orderBy("timestamp", "asc")
     .get()
@@ -29,6 +31,7 @@ function getPosts(classId: string): Promise<postModel[] | void> {
             postClassName: data.postClassName,
             id: post.id,
             edited: false,
+            timestamp: data.timestamp.toDate().toDateString(),
           });
         });
         return posts;
@@ -44,8 +47,7 @@ function getPosts(classId: string): Promise<postModel[] | void> {
   @desc     get all posts made by a certain user
 */
 function getUserPosts(userId: string): Promise<postModel[] | void> {
-  return db
-    .collection(collections.posts)
+  return postsDB
     .where("userId", "==", userId)
     .orderBy("timestamp", "asc")
     .get()
@@ -62,6 +64,7 @@ function getUserPosts(userId: string): Promise<postModel[] | void> {
             postClassName: data.postClassName,
             id: post.id,
             edited: false,
+            timestamp: data.timestamp.toDate().toDateString(),
           });
         });
         return posts;
@@ -78,8 +81,7 @@ function getUserPosts(userId: string): Promise<postModel[] | void> {
 */
 function getFeed(userId: string): Promise<any> {
   // TODO Later: Fix 'any' in return...
-  return db
-    .collection(collections.users)
+  return usersDB
     .doc(userId)
     .get()
     .then(
@@ -106,7 +108,7 @@ function getFeed(userId: string): Promise<any> {
   @desc     add a new post into a class
 */
 function addPost(userId: string, classId: string, post: postModel): void {
-  db.collection(collections.posts)
+  postsDB
     .add({
       timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
       ...post,
@@ -121,17 +123,17 @@ function addPost(userId: string, classId: string, post: postModel): void {
   @desc     remove an old post from a class
 */
 function removePost(postId: string): void {
-  db.collection(collections.posts)
+  postsDB
     .doc(postId)
     .delete()
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
     });
-  db.collection(collections.comments)
+  commentsDB
     .where("postId", "==", postId)
     .get()
     .then((res: any): void => {
-      let batch = db.batch();
+      let batch = firebase.firestore().batch();
       res.forEach((doc: any): void => {
         batch.delete(doc.ref);
       });
@@ -149,7 +151,7 @@ function removePost(postId: string): void {
   @desc     edit a post with newText
 */
 function editPost(postId: string, newText: string): void {
-  db.collection(collections.posts)
+  postsDB
     .doc(postId)
     .update({ postText: newText })
     .catch((err: any): void => {
