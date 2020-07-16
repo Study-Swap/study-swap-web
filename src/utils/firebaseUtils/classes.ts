@@ -6,12 +6,13 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { classModel } from "../../constants/Models";
 
-const db = firebase.firestore();
+// Makes code cleaner
+const usersDB = firebase.firestore().collection(collections.users);
+const classesDB = firebase.firestore().collection(collections.classes);
 
 // Function used to get the list of classes user is enrolled in
 function getClassList(userId: string): Promise<string[] | void> {
-  return db
-    .collection(collections.users)
+  return usersDB
     .doc(userId)
     .get()
     .then(
@@ -32,8 +33,7 @@ async function getClasses(classes: Array<string>): Promise<any> {
   // TODO Later: Fix 'any' in return...
   return Promise.all(
     classes.map((id: string): any => {
-      return db
-        .collection(collections.classes)
+      return classesDB
         .doc(id)
         .get()
         .then(
@@ -59,7 +59,7 @@ async function getClasses(classes: Array<string>): Promise<any> {
 */
 function addClasses(userId: string, newClasses: Array<string>): void {
   // newClasses are not in current classes - managed with FE
-  const ref = db.collection(collections.users).doc(userId);
+  const ref = usersDB.doc(userId);
   newClasses.forEach((class_: string): void => {
     ref
       .update({
@@ -77,7 +77,7 @@ function addClasses(userId: string, newClasses: Array<string>): void {
 */
 function removeClasses(userId: string, oldClasses: Array<string>): void {
   // oldClasses are in current classes manage with FE
-  const ref = db.collection(collections.users).doc(userId);
+  const ref = usersDB.doc(userId);
   oldClasses.forEach((class_: string): void => {
     ref
       .update({
@@ -95,11 +95,9 @@ function removeClasses(userId: string, oldClasses: Array<string>): void {
   @access   Only should be accessable by admins
 */
 function createClass(newClass: classModel): void {
-  db.collection(collections.classes)
-    .add(newClass)
-    .catch((err: any): void => {
-      console.error(err); // will be changed to redirect to error screen
-    });
+  classesDB.add(newClass).catch((err: any): void => {
+    console.error(err); // will be changed to redirect to error screen
+  });
 }
 
 export { getClassList, getClasses, addClasses, removeClasses, createClass };

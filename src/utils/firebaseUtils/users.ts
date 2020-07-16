@@ -6,7 +6,7 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { userModel } from "../../constants/Models";
 
-const db = firebase.firestore();
+const userDB = firebase.firestore().collection(collections.users);
 
 var actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
@@ -46,21 +46,53 @@ async function addUser(
       if (user) {
         // actionCodeSettings make the email link redirect to login
         user.sendEmailVerification(actionCodeSettings);
-        return db
-          .collection(collections.users)
-          .doc(user.uid)
-          .set({
-            firstName,
-            lastName,
-            //grade,
-            email,
-            //bio,
-            classes,
-            chats,
-          })
-          .then(() => {
-            // To make sure they validate email
-            firebaseApp.auth().signOut();
+        userDB
+          .doc(email)
+          .get()
+          .then((doc) => {
+            // Code got super messy, will fix later
+            if (doc.exists) {
+              // If there is a doc that exists before hand take the enrolled classes
+              let classes_ = [];
+              const data = doc.data();
+              if (data) {
+                classes_ = data.classes;
+              }
+              return userDB
+                .doc(user.uid)
+                .set({
+                  firstName,
+                  lastName,
+                  //grade,
+                  email,
+                  //bio,
+                  classes_,
+                  chats,
+                  signedUp: true,
+                })
+                .then(() => {
+                  // To make sure they validate email
+                  firebaseApp.auth().signOut();
+                  userDB.doc(email).delete(); // delete temp account
+                });
+            } else {
+              return userDB
+                .doc(user.uid)
+                .set({
+                  firstName,
+                  lastName,
+                  //grade,
+                  email,
+                  //bio,
+                  classes,
+                  chats,
+                  signedUp: true,
+                })
+                .then(() => {
+                  // To make sure they validate email
+                  firebaseApp.auth().signOut();
+                });
+            }
           });
       } else {
         throw Error;
@@ -74,8 +106,7 @@ async function addUser(
 }
 
 function getUser(userId: string): Promise<userModel> {
-  return db
-    .collection(collections.users)
+  return userDB
     .doc(userId)
     .get()
     .then(
@@ -100,8 +131,7 @@ async function loginUser(email: string, password: string): Promise<any> {
               (): Promise<userModel> => {
                 const user = firebaseApp.auth().currentUser;
                 if (user?.emailVerified) {
-                  return db
-                    .collection(collections.users)
+                  return userDB
                     .doc(user.uid)
                     .get()
                     .then(
@@ -142,6 +172,26 @@ function logoutUser(setUser: Function): Promise<string> {
     });
 }
 
+function addUsersByEmail(classId: string, emailList: Array<string>): any {
+  emailList.forEach((email: string) => {
+    userDB
+      .where("email", "==", email)
+      .get()
+      .then((res) => {
+        if (res.empty) {
+          // If empty make a blank user
+          userDB
+            .doc(email)
+            .set({ email: email, classes: [classId], signedUp: false });
+        } else {
+          userDB.doc(res.docs[0].id).update({
+            classes: firebaseApp.firestore.FieldValue.arrayUnion(classId),
+          });
+        }
+      });
+  });
+}
+
 export {
   addUser,
   loginUser,
@@ -149,4 +199,5 @@ export {
   checkDuplicateEmail,
   sendPasswordResetEmail,
   logoutUser,
+  addUsersByEmail,
 };

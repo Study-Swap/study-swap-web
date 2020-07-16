@@ -1,27 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 
-const nullNotifList = ["Notification 1", "Notification 2", "Notification 3"];
+import NotificationItem from "./NotificationItems";
+import { notificationModel } from "../constants/Models";
+import { getNotifications } from "../utils/firebaseUtils";
 
-interface AppToolbarProps {
-  classes: any;
+interface NotificationDropDownProps {
   open: boolean;
   setOpen: Function;
   anchorRef: any;
 }
 
 const NotificationDropDown = ({
-  classes,
   open,
   setOpen,
   anchorRef,
-}: AppToolbarProps) => {
+}: NotificationDropDownProps) => {
+  const classes = useStyles();
+  const [notificationData, setNotificationData] = useState<notificationModel[]>(
+    []
+  );
+
+  useEffect(() => {
+    getNotifications("12") // userId is hardcoded for now
+      .then((res) => {
+        setNotificationData(res);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   const handleClose = (event: React.MouseEvent<EventTarget>) => {
+    console.log("clicked away");
     if (
       anchorRef.current &&
       anchorRef.current.contains(event.target as HTMLElement)
@@ -41,33 +55,67 @@ const NotificationDropDown = ({
         transition
         disablePortal
       >
-        {({ TransitionProps, placement }) => (
+        {({ TransitionProps }) => (
           <Grow
             {...TransitionProps}
             style={{
-              transformOrigin:
-                placement === "bottom" ? "center top" : "center bottom",
+              transformOrigin: "center top",
             }}
           >
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
+            <ClickAwayListener onClickAway={handleClose}>
+              <Paper className={classes.paper}>
                 <>
-                  <div className={classes.header}>Notifications</div>
-                  <MenuList autoFocusItem={open} id="menu-list-grow">
-                    {nullNotifList.map((nullNotif) => {
-                      return (
-                        <MenuItem onClick={handleClose}>{nullNotif}</MenuItem>
-                      );
-                    })}
-                  </MenuList>
+                  <Typography variant="h5" className={classes.header}>
+                    Notifications
+                  </Typography>
+                  {notificationData.map((nullNotif) => {
+                    const {
+                      id,
+                      userId,
+                      senderId,
+                      senderName,
+                      notificationText,
+                      timestamp,
+                      read,
+                      kind,
+                    } = nullNotif;
+                    return (
+                      <NotificationItem
+                        key={id}
+                        type={kind}
+                        item={{
+                          senderName,
+                          notificationText,
+                          timestamp,
+                          read,
+                          id,
+                        }}
+                      />
+                    );
+                  })}
                 </>
-              </ClickAwayListener>
-            </Paper>
+              </Paper>
+            </ClickAwayListener>
           </Grow>
         )}
       </Popper>
     </div>
   );
 };
+
+const useStyles = makeStyles((theme) => ({
+  header: {
+    padding: theme.spacing(1, 3),
+    borderBottom: "solid",
+    borderBottomColor: theme.palette.primary.main,
+    borderBottomWidth: 0.5,
+  },
+  paper: {
+    flex: 1,
+    width: 400, // need to change this based on screen width
+    height: 680, // need to change this based on screen width
+    overflow: "auto",
+  },
+}));
 
 export default NotificationDropDown;

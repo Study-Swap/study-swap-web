@@ -108,11 +108,4 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "left",
     textTransform: "none",
   },
-  header: {
-    padding: theme.spacing(1, 5),
-    fontSize: 20,
-    borderBottom: "solid",
-    borderBottomColor: theme.palette.primary.main,
-    borderBottomWidth: 0.5,
-  },
 }));

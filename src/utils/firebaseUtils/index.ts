@@ -41,6 +41,7 @@ import {
   checkDuplicateEmail,
   sendPasswordResetEmail,
   logoutUser,
+  addUsersByEmail,
 } from "./users";
 
 /********** EXPORT **********/
@@ -74,4 +75,5 @@ export {
   checkDuplicateEmail,
   sendPasswordResetEmail,
   logoutUser,
+  addUsersByEmail,
 };
