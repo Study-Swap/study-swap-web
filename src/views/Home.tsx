@@ -11,6 +11,7 @@ import NewComment from "../components/NewComment";
 import FeedItem from "../components/FeedItem";
 import { postModel, commentModel } from "../constants/Models";
 import { postData, commentData } from "../DummyData/home";
+import { getPosts } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -31,6 +32,14 @@ export default function Home() {
   const classes = useStyles();
   const [postState, setPostState] = useState(postData);
 
+  useEffect(() => {
+    getPosts("1") // userId is hardcoded for now
+      .then((res) => {
+        setPostState(res);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <Container component="main" maxWidth="md">
       <Grid
@@ -44,8 +53,9 @@ export default function Home() {
         <Grid item>
           <NewPost />
         </Grid>
-        {postState.map((thisPost, index) => (
+        {postState.map((thisPost) => (
           <FeedItem
+            key={thisPost.id}
             postUserName={thisPost.postUserName}
             postClassName={thisPost.postClassName}
             postText={thisPost.postText}
