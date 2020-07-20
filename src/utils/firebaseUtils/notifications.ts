@@ -1,4 +1,7 @@
 import firebase from "../../constants/Firebase";
+var functions = firebase.functions();
+// Base function, will be wrapped below
+var sendNotification = firebase.functions().httpsCallable("sendNotification");
 
 import { notificationTypes } from "../../constants/notificationTypes";
 import { collections } from "../../constants/FirebaseStrings";
@@ -55,4 +58,66 @@ function readNotification(notificationId: string): void {
     });
 }
 
-export { getNotifications, readNotification };
+interface notificationDataType {
+  userId: string;
+  senderName: string;
+  notificationText: string;
+}
+
+// Different types asre verbose, but make it easier to know what you are sending and when
+function sendTrending(notificationData: notificationDataType) {
+  const { userId, senderName, notificationText } = notificationData;
+  sendNotification({
+    userId,
+    senderName,
+    notificationText,
+    kind: notificationTypes.TRENDING_POST,
+  }).then(() => {
+    console.log("notification sent");
+  });
+}
+
+function sendLikeComment(notificationData: notificationDataType) {
+  const { userId, senderName, notificationText } = notificationData;
+  sendNotification({
+    userId,
+    senderName,
+    notificationText,
+    kind: notificationTypes.LIKE_COMMENT,
+  }).then(() => {
+    console.log("notification sent");
+  });
+}
+
+function sendNewChat(notificationData: notificationDataType) {
+  const { userId, senderName, notificationText } = notificationData;
+  sendNotification({
+    userId,
+    senderName,
+    notificationText,
+    kind: notificationTypes.NEW_CHAT,
+  }).then(() => {
+    console.log("notification sent");
+  });
+}
+
+function sendAdminAccess(notificationData: notificationDataType) {
+  const { userId, senderName, notificationText } = notificationData;
+  sendNotification({
+    userId,
+    senderName,
+    notificationText,
+    kind: notificationTypes.ADMIN_ACCESS,
+  }).then(() => {
+    console.log("notification sent");
+  });
+}
+
+export {
+  getNotifications,
+  readNotification,
+  sendTrending,
+  sendLikeComment,
+  sendNewChat,
+  sendAdminAccess,
+};

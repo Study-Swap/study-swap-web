@@ -23,7 +23,14 @@ import {
   editComment,
 } from "./comments";
 
-import { getNotifications, readNotification } from "./notifications";
+import {
+  getNotifications,
+  readNotification,
+  sendTrending,
+  sendLikeComment,
+  sendNewChat,
+  sendAdminAccess,
+} from "./notifications";
 
 import {
   watchMessages,
@@ -76,4 +83,8 @@ export {
   sendPasswordResetEmail,
   logoutUser,
   addUsersByEmail,
+  sendTrending,
+  sendLikeComment,
+  sendNewChat,
+  sendAdminAccess,
 };
