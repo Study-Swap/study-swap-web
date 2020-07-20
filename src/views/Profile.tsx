@@ -3,8 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import EditProfile from "../components/EditProfile";
-import ViewProfile from "../components/ViewProfile";
+import EditProfile from "../components/EditProfile2";
+import ViewProfile from "../components/ViewProfile2";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { userModel } from "../constants/Models";
@@ -48,24 +48,33 @@ export default function Profile() {
   const [myUser, setMyUser] = useState<userModel>(dummyUser);
   const [editing, setEditing] = useState(false);
 
+  function handleSave(user: userModel) {
+    return function () {
+      setMyUser(user);
+      setEditing(!editing);
+    };
+  }
+
   return (
     <Container component="main" maxWidth="md">
-      <ViewProfile
-        firstName={myUser.firstName}
-        lastName={myUser.lastName}
-        grade={myUser.grade}
-        bio={myUser.bio}
-        editingClick={() => setEditing(!editing)}
-      />
-
-      <EditProfile
-        firstName={myUser.firstName}
-        lastName={myUser.lastName}
-        grade={myUser.grade}
-        bio={myUser.bio}
-        handleCancel={() => setEditing(!editing)}
-        handleSave={(user: userModel) => setMyUser(user)}
-      />
+      {!editing ? (
+        <ViewProfile
+          firstName={myUser.firstName}
+          lastName={myUser.lastName}
+          grade={myUser.grade}
+          bio={myUser.bio}
+          editingClick={() => setEditing(!editing)}
+        />
+      ) : (
+        <EditProfile
+          firstName={myUser.firstName}
+          lastName={myUser.lastName}
+          grade={myUser.grade}
+          bio={myUser.bio}
+          handleCancel={() => setEditing(!editing)}
+          handleSave={handleSave}
+        />
+      )}
 
       <Button
         variant="contained"

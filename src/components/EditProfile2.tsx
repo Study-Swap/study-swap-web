@@ -134,9 +134,10 @@ export default function EditProfile({
                   id: "12",
                   firstName: firstInput,
                   lastName: lastInput,
+                  email: "cmodi@umich.edu",
+                  grade: gradeInput,
                   bio: bioInput,
                   classes: ["EECS 281", "EECS 376"],
-                  grade: gradeInput,
                   chats: ["Chat stuff"],
                   signedUp: true,
                 })}
