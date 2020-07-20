@@ -3,8 +3,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import editItem from "../components/editProfile";
-import viewProfile from "../components/viewProfile";
+import EditProfile from "../components/EditProfile";
+import ViewProfile from "../components/ViewProfile";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { userModel } from "../constants/Models";
@@ -50,7 +50,7 @@ export default function Profile() {
 
   return (
     <Container component="main" maxWidth="md">
-      <viewProfile
+      <ViewProfile
         firstName={myUser.firstName}
         lastName={myUser.lastName}
         grade={myUser.grade}
@@ -58,14 +58,14 @@ export default function Profile() {
         editingClick={() => setEditing(!editing)}
       />
 
-      <editProfile>
-        firstName = {myUser.firstName}
-        lastName = {myUser.lastName}
-        grade = {myUser.grade}
-        bio = {myUser.bio}
-        handleCancel = {() => setEditing(!editing)}
-        handleSave = {(user: userModel) => setMyUser(user)}
-      </editProfile>
+      <EditProfile
+        firstName={myUser.firstName}
+        lastName={myUser.lastName}
+        grade={myUser.grade}
+        bio={myUser.bio}
+        handleCancel={() => setEditing(!editing)}
+        handleSave={(user: userModel) => setMyUser(user)}
+      />
 
       <Button
         variant="contained"

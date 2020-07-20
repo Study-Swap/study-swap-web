@@ -53,15 +53,22 @@ const useStyles = makeStyles({
   },
 });
 
-export default function editProfile(props: any) {
+export default function EditProfile({
+  bio,
+  firstName,
+  lastName,
+  grade,
+  handleCancel,
+  handleSave,
+}: any) {
   // eslint-disable-next-line
 
   const classes = useStyles();
 
-  const [bioInput, setBioInput] = useState(props.bio);
-  const [firstInput, setFirstInput] = useState(props.firstName);
-  const [lastInput, setLastInput] = useState(props.lastName);
-  const [gradeInput, setGradeInput] = useState(props.grade);
+  const [bioInput, setBioInput] = useState(bio);
+  const [firstInput, setFirstInput] = useState(firstName);
+  const [lastInput, setLastInput] = useState(lastName);
+  const [gradeInput, setGradeInput] = useState(grade);
 
   return (
     <Container component="main" maxWidth="md">
@@ -114,7 +121,7 @@ export default function editProfile(props: any) {
               <IconButton
                 type="submit"
                 aria-label="edit"
-                onClick={props.handleCancel}
+                onClick={handleCancel}
               >
                 <CancelIcon />
               </IconButton>
@@ -123,7 +130,7 @@ export default function editProfile(props: any) {
               <IconButton
                 type="submit"
                 aria-label="edit"
-                onClick={props.handleSave({
+                onClick={handleSave({
                   id: "12",
                   firstName: firstInput,
                   lastName: lastInput,

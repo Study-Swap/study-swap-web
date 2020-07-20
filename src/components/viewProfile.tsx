@@ -47,7 +47,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default function viewProfile(props: any) {
+export default function ViewProfile({
+  firstName,
+  lastName,
+  grade,
+  bio,
+  editingClick,
+}: any) {
   const classes = useStyles();
 
   return (
@@ -65,26 +71,22 @@ export default function viewProfile(props: any) {
           <Grid item xs={5}>
             <div>
               <Typography className={classes.title} gutterBottom>
-                {props.firstName} {props.lastName}
+                {firstName} {lastName}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
-                {props.grade}
+                {grade}
               </Typography>
             </div>
           </Grid>
           <Grid item>
-            <IconButton
-              type="submit"
-              aria-label="edit"
-              onClick={props.editingClick}
-            >
+            <IconButton type="submit" aria-label="edit" onClick={editingClick}>
               <EditIcon />
             </IconButton>
           </Grid>
         </Grid>
         <br></br>
         <Typography variant="body2" component="p">
-          {props.bio}
+          {bio}
         </Typography>
       </CardContent>
     </Card>
