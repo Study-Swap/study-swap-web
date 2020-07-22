@@ -17,7 +17,6 @@ import MessageBox from "../components/MessageBox";
 
 import { chatsModel } from "../constants/Models";
 import { dummyChatsData } from "../DummyData/chats";
-c;
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
