@@ -1,16 +1,12 @@
+import React, { useState } from "react";
 // eslint-disable-next-line
-import React, { useEffect, useContext, useState } from "react";
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-import Post from "../components/Post";
 import NewPost from "../components/NewPost";
-import Comment from "../components/Comment";
-import NewComment from "../components/NewComment";
 import FeedItem from "../components/FeedItem";
-import { postModel, commentModel } from "../constants/Models";
-import { postData, commentData } from "../DummyData/home";
+import { postData } from "../DummyData/home";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -26,9 +22,8 @@ const useStyles = makeStyles({
 });
 
 export default function Home() {
-  // eslint-disable-next-line
-
   const classes = useStyles();
+  // eslint-disable-next-line
   const [postState, setPostState] = useState(postData);
 
   return (

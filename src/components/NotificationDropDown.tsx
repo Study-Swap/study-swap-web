@@ -71,7 +71,9 @@ const NotificationDropDown = ({
                   {notificationData.map((nullNotif) => {
                     const {
                       id,
+                      // eslint-disable-next-line
                       userId,
+                      // eslint-disable-next-line
                       senderId,
                       senderName,
                       notificationText,

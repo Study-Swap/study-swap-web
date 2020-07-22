@@ -27,6 +27,8 @@ git checkout -b "issue_number-short-description"
 
 # Before adding files
 yarn start # to make sure everything compiles
+yarn lint # to see if there are any warnings
+yarn style # to check and fix style errors
 
 # Add files
 git add .

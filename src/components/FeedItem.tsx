@@ -1,14 +1,13 @@
 // eslint-disable-next-line
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../constants/UserContext";
-import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Post from "../components/Post";
 import Comment from "../components/Comment";
 import NewComment from "../components/NewComment";
-import { postModel, commentModel } from "../constants/Models";
-import { postData, commentData } from "../DummyData/home";
+import { postModel } from "../constants/Models";
+import { commentData } from "../DummyData/home";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -27,8 +26,6 @@ const useStyles = makeStyles({
 });
 
 export default function FeedItem(props: postModel) {
-  // eslint-disable-next-line
-
   const [commentState, setCommentState] = useState(commentData);
   //stores comment dummydata, replace with backend function
 
@@ -46,6 +43,7 @@ export default function FeedItem(props: postModel) {
     setCommentsShown(!commentsShown);
   } //toggles between shown and not shown
 
+  // eslint-disable-next-line
   const { user } = useContext(UserContext);
   const classes = useStyles();
 
