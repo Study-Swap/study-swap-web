@@ -49,7 +49,7 @@ After that, create the PR and update the project board
 
 ### To reformat files:
 
-`yarn pretty-quick`
+`yarn style`
 
 ## Code + Style reference:
 
