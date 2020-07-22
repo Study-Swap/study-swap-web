@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -11,13 +10,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-
-import ChatSelect from "../components/ChatSelector";
-import MessageBox from "../components/MessageBox";
-
-import { chatsModel } from "../constants/Models";
-import { dummyChatsData } from "../DummyData/chats";
-c;
+import Grid from "@material-ui/core/Grid";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -46,36 +39,21 @@ const useStyles = makeStyles((theme) => ({
   },
   list: {
     maxHeight: 600,
+    maxWidth: 300,
     overflow: "auto",
   },
 }));
 
-export default function Chats() {
-  //get the ChatSelect working with the .map() function.
+export default function ChatSelect({ messagesArray }: any) {
+  //should take in an array of messages as its prop
+  //check the styling for the root class, i'm not sure if its right
 
-  const [myChats, setMyChats] = useState(dummyChatsData);
   const classes = useStyles();
 
-  //const onClick = (value: string) => {
-  //  setOtherScreen(value);
-  //};
-
   return (
-    <Container component="main" maxWidth="md">
-      <Grid container>
-        <Grid item>
-          <ChatSelect
-            chatName={myChats[0].chatName}
-            memberNames={myChats[0].memberNames}
-            messages={myChats[0].messages}
-            onClick={() => console.log("You clocked a chat")}
-          />
-        </Grid>
-        <Grid item>
-          //put you code for rendering the messageModel aggregator component
-          here
-        </Grid>
-      </Grid>
-    </Container>
+    <Grid container className={classes.root}>
+      Add your map function here
+      <Grid item>Add you code to render a single message here</Grid>
+    </Grid>
   );
 }
