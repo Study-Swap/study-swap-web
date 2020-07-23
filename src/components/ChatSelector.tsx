@@ -61,14 +61,14 @@ export default function ChatSelect({
       <ListItem
         alignItems="flex-start"
         className={classes.hover}
-        //onClick={() => onClick("Brunch this weekend?")}
+        onClick={() => onClick(chatName)}
       >
         <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         </ListItemAvatar>
 
         <ListItemText
-          primary="Brunch this weekend?"
+          primary={chatName}
           secondary={
             <React.Fragment>
               <Typography
