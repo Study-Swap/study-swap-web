@@ -1,7 +1,7 @@
 import firebase from "../../constants/Firebase";
-var functions = firebase.functions();
+//var functions = firebase.functions();
 // Base function, will be wrapped below
-var sendNotification = firebase.functions().httpsCallable("sendNotification");
+//var sendNotification = firebase.functions().httpsCallable("sendNotification");
 
 import { notificationTypes } from "../../constants/notificationTypes";
 import { collections } from "../../constants/FirebaseStrings";
@@ -63,7 +63,7 @@ interface notificationDataType {
   senderName: string;
   notificationText: string;
 }
-
+/* 
 // Different types asre verbose, but make it easier to know what you are sending and when
 function sendTrending(notificationData: notificationDataType) {
   const { userId, senderName, notificationText } = notificationData;
@@ -112,12 +112,15 @@ function sendAdminAccess(notificationData: notificationDataType) {
     console.log("notification sent");
   });
 }
+*/
 
 export {
   getNotifications,
   readNotification,
+  /* 
   sendTrending,
   sendLikeComment,
   sendNewChat,
   sendAdminAccess,
+  */
 };
