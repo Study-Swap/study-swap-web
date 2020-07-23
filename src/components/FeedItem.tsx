@@ -15,7 +15,7 @@ import history from "../utils/historyUtils";
 
 const useStyles = makeStyles({
   root: {
-    flexGrow: 1,
+    flexGrow: 2,
   },
   postAndComments: {
     maxWidth: 500,
@@ -95,7 +95,7 @@ export default function FeedItem(props: postModel) {
               postId={thisComment.postId}
               commenterName={thisComment.commenterName}
               timestamp={thisComment.timestamp}
-              commentText={thisComment.commentText}
+              yarn
             />
           </Grid>
         ))
