@@ -15,7 +15,7 @@ import history from "../utils/historyUtils";
 
 const useStyles = makeStyles({
   root: {
-    flexGrow: 2,
+    flexGrow: 1,
   },
   postAndComments: {
     maxWidth: 500,
