@@ -3,6 +3,7 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    flexDirection: "row",
+    flexDirection: "column",
     display: "flex",
     maxHeight: 600,
   },
@@ -50,28 +51,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Chats() {
   //get the ChatSelect working with the .map() function.
-
   const [myChats, setMyChats] = useState(dummyChatsData);
   const classes = useStyles();
-
-  //const onClick = (value: string) => {
-  //  setOtherScreen(value);
-  //};
+  const [currentChat, setCurrentChat] = useState("");
+  const onClick = (value: string) => {
+    setCurrentChat(value);
+  };
 
   return (
     <Container component="main" maxWidth="md">
-      <Grid container>
+      <Grid container className={classes.root}>
+        {dummyChatsData.map((thisChatSelector, index) => (
+          <Grid item key={index}>
+            <ChatSelect
+              chatName={thisChatSelector.chatName}
+              memberNames={thisChatSelector.memberNames}
+              messages={thisChatSelector.messages}
+              onClick={onClick}
+            />
+          </Grid>
+        ))}
         <Grid item>
-          <ChatSelect
-            chatName={myChats[0].chatName}
-            memberNames={myChats[0].memberNames}
-            messages={myChats[0].messages}
-            onClick={() => console.log("You clocked a chat")}
-          />
-        </Grid>
-        <Grid item>
-          //put you code for rendering the messageModel aggregator component
-          here
+          <div>
+            <MessageBox />
+          </div>
         </Grid>
       </Grid>
     </Container>
