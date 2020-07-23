@@ -1,5 +1,6 @@
 import { chatsModel } from "../constants/Models";
-const dummyChatsData: Array<chatsModel> = [
+import { messageModel } from "../constants/Models";
+export const dummyChatsData: Array<chatsModel> = [
   {
     id: "1",
     chatName: "Chat 1",
@@ -30,4 +31,31 @@ const dummyChatsData: Array<chatsModel> = [
   },
 ];
 
-export { dummyChatsData };
+export const dummyMessagesData: Array<messageModel> = [
+  {
+    id: "1",
+    chatId: "4",
+    messageText: "This is a test message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 12 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "6",
+    messageText: "This is another message",
+    senderId: "12",
+    senderName: "Akul",
+    timestamp: "June 12 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "4",
+    messageText: "This is a final message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 12 2019",
+  },
+];

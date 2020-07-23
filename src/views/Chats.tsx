@@ -23,10 +23,9 @@ import history from "../utils/historyUtils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    flexGrow: 1,
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    flexDirection: "column",
-    display: "flex",
     maxHeight: 600,
   },
   chatSide: {
@@ -61,20 +60,22 @@ export default function Chats() {
   return (
     <Container component="main" maxWidth="md">
       <Grid container className={classes.root}>
-        {dummyChatsData.map((thisChatSelector, index) => (
-          <Grid item key={index}>
-            <ChatSelect
-              chatName={thisChatSelector.chatName}
-              memberNames={thisChatSelector.memberNames}
-              messages={thisChatSelector.messages}
-              onClick={onClick}
-            />
-          </Grid>
-        ))}
-        <Grid item>
-          <div>
-            <MessageBox />
-          </div>
+        <Grid container item direction="column" md={4}>
+          {dummyChatsData.map((thisChatSelector, index) => (
+            <Grid item key={index}>
+              <ChatSelect
+                //we are putting a ListItem in a grid item in a grid contianer instead of list. is this sus
+                chatName={thisChatSelector.chatName}
+                memberNames={thisChatSelector.memberNames}
+                messages={thisChatSelector.messages}
+                onClick={onClick}
+              />
+            </Grid>
+          ))}
+        </Grid>
+
+        <Grid item md={8}>
+          <MessageBox />
         </Grid>
       </Grid>
     </Container>
