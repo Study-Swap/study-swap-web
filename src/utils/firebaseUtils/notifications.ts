@@ -1,11 +1,10 @@
 import firebase from "../../constants/Firebase";
-var functions = firebase.functions();
-// Base function, will be wrapped below
-var sendNotification = firebase.functions().httpsCallable("sendNotification");
-
 import { notificationTypes } from "../../constants/notificationTypes";
 import { collections } from "../../constants/FirebaseStrings";
 import { notificationModel } from "../../constants/Models";
+var functions = firebase.functions();
+// Base function, will be wrapped below
+var sendNotification = functions.httpsCallable("sendNotification");
 
 // Makes code cleaner
 const notificationsDB = firebase
