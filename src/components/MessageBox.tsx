@@ -17,6 +17,7 @@ import history from "../utils/historyUtils";
 import { dummyMessagesData1, dummyMessagesData2 } from "../DummyData/chats";
 import { StringifyOptions } from "querystring";
 import { ExecOptionsWithStringEncoding } from "child_process";
+import { messageModel } from "../constants/Models";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,23 +46,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ChatSelect(chatId: any) {
-  //should take in an array of messages as its prop
-  //check the styling for the root class, i'm not sure if its right
+  useEffect(() => {
+    if (chatId.chatId == 1) {
+      //chatId is the passed state variable. Is an object (weird)
+      setMessageArray(dummyMessagesData1);
+    } else if (chatId.chatId == 2) {
+      setMessageArray(dummyMessagesData2);
+    }
+  }); //if you want to only run on first render, add [] as second arg
+  //https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once
 
   const classes = useStyles();
 
-  const [messageArray, setMessageArray] = useState(dummyMessagesData1);
+  const [messageArray, setMessageArray] = useState<messageModel[]>(
+    dummyMessagesData1
+  );
   const userID = "12";
-
-  function getMessageArray() {
-    if (chatId === "1") {
-      setMessageArray(dummyMessagesData1);
-      console.log("this is chat 1");
-    } else if (chatId === "2") {
-      setMessageArray(dummyMessagesData2);
-      console.log("this is chat 2");
-    }
-  }
 
   function isUser(senderID: string) {
     if (userID == senderID) return "flex-end";

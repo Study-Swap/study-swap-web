@@ -52,7 +52,7 @@ export default function Chats() {
   //get the ChatSelect working with the .map() function.
   const [myChats, setMyChats] = useState(dummyChatsData);
   const classes = useStyles();
-  const [currentChat, setCurrentChat] = useState("");
+  const [currentChat, setCurrentChat] = useState<string>("1");
   const onClick = (value: string) => {
     setCurrentChat(value);
   };
@@ -76,7 +76,7 @@ export default function Chats() {
         </Grid>
 
         <Grid item md={8}>
-          <MessageBox chatID={currentChat} />
+          <MessageBox chatId={currentChat} />
         </Grid>
       </Grid>
     </Container>
