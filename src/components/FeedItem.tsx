@@ -93,7 +93,7 @@ export default function FeedItem(props: postModel) {
               postId={thisComment.postId}
               commenterName={thisComment.commenterName}
               timestamp={thisComment.timestamp}
-              yarn
+              commentText={thisComment.commentText}
             />
           </Grid>
         ))
