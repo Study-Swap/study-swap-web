@@ -65,6 +65,7 @@ export default function Chats() {
             <Grid item key={index}>
               <ChatSelect
                 //we are putting a ListItem in a grid item in a grid contianer instead of list. is this sus
+                id={thisChatSelector.id}
                 chatName={thisChatSelector.chatName}
                 memberNames={thisChatSelector.memberNames}
                 messages={thisChatSelector.messages}
@@ -75,7 +76,7 @@ export default function Chats() {
         </Grid>
 
         <Grid item md={8}>
-          <MessageBox />
+          <MessageBox chatID={currentChat} />
         </Grid>
       </Grid>
     </Container>

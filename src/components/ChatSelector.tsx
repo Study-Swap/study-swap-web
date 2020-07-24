@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ChatSelect({
+  id,
   chatName,
   memberNames,
   messages,
@@ -61,7 +62,7 @@ export default function ChatSelect({
       <ListItem
         alignItems="flex-start"
         className={classes.hover}
-        onClick={() => onClick(chatName)}
+        onClick={() => onClick(id)}
       >
         <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
