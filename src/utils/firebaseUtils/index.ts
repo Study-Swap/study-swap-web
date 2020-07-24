@@ -26,12 +26,10 @@ import {
 import {
   getNotifications,
   readNotification,
-  /* 
   sendTrending,
   sendLikeComment,
   sendNewChat,
   sendAdminAccess,
-  */
 } from "./notifications";
 
 import {
@@ -85,10 +83,8 @@ export {
   sendPasswordResetEmail,
   logoutUser,
   addUsersByEmail,
-  /* 
   sendTrending,
   sendLikeComment,
   sendNewChat,
   sendAdminAccess,
-  */
 };
