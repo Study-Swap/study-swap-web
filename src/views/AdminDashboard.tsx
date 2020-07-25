@@ -13,6 +13,13 @@ import Paper from "@material-ui/core/Paper";
 import CSVImport from "../components/CSVImport";
 import DashboardItemTitle from "../components/DashboardItemTitle";
 import DashboardTitle from "../components/DashboardTitle";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import Divider from "@material-ui/core/Divider";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import Typography from "@material-ui/core/Typography";
 import {
   LineChart,
   Line,
@@ -67,7 +74,32 @@ export default function AdminDashboard() {
         </Grid>
         <Grid item xs sm={12} md={5}>
           <DashboardItemTitle>Unread Messages (12)</DashboardItemTitle>
-          <Paper className={clsx(classes.paper, classes.secondRow)}></Paper>
+          <Paper className={clsx(classes.paper, classes.secondRow)}>
+            <List className={classes.root}>
+              <ListItem alignItems="flex-start">
+                <ListItemAvatar>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+                </ListItemAvatar>
+                <ListItemText
+                  primary="Brunch this weekend?"
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        component="span"
+                        variant="body2"
+                        className={classes.inline}
+                        color="textPrimary"
+                      >
+                        Ali Connors
+                      </Typography>
+                      {" — I'll be in your neighborhood doing errands this…"}
+                    </React.Fragment>
+                  }
+                />
+              </ListItem>
+            </List>
+            <Divider variant="inset" component="li" />
+          </Paper>
         </Grid>
         <Grid item xs sm={12} md={7}>
           <DashboardItemTitle>Student Engagement</DashboardItemTitle>
@@ -139,5 +171,8 @@ const useStyles = makeStyles((theme) => ({
   },
   secondRow: {
     height: 300,
+  },
+  inline: {
+    display: "inline",
   },
 }));
