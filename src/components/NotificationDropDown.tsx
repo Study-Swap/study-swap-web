@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import NotificationItem from "./NotificationItems";
 import { notificationModel } from "../constants/Models";
 import { getNotifications } from "../utils/firebaseUtils";
+import useWindowDimensions from "../hooks/useWindowDimensions";
 
 interface NotificationDropDownProps {
   open: boolean;
@@ -27,6 +28,7 @@ const NotificationDropDown = ({
   const [notificationData, setNotificationData] = useState<notificationModel[]>(
     []
   );
+  const { innerWidth, innerHeight } = useWindowDimensions();
 
   useEffect(() => {
     getNotifications("12") // userId is hardcoded for now
@@ -67,7 +69,14 @@ const NotificationDropDown = ({
             }}
           >
             <ClickAwayListener onClickAway={handleClose}>
-              <Paper className={classes.paper}>
+              <Paper
+                className={classes.paper}
+                style={{
+                  width:
+                    innerWidth > 800 ? innerWidth * 0.35 : innerWidth * 0.95,
+                  height: innerHeight * 0.85,
+                }}
+              >
                 <>
                   <Typography variant="h5" className={classes.header}>
                     Notifications
@@ -118,8 +127,6 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     flex: 1,
-    width: 400, // need to change this based on screen width
-    height: 680, // need to change this based on screen width
     overflow: "auto",
   },
 }));
