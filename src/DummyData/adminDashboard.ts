@@ -1,3 +1,5 @@
+import { recentActivityTypes } from "../constants/recentActivityTypes";
+
 export const dummyClassList = [
   { name: "Chintan Modi", email: "cmodi@umich.edu" },
   { name: "Chintan Modi", email: "cmodi@umich.edu" },
@@ -50,5 +52,29 @@ export const dummyUnreadMessages = [
     senderName: "Ashish Mahulli",
     subject: "Hey",
     messageText: "Can I be on a team for the next project",
+  },
+];
+
+export const dummyRecentActivity = [
+  {
+    id: "1",
+    modelPointer: "N/A",
+    subject: "Trending Post from Ashish",
+    data: "This assingment is so cool!",
+    type: recentActivityTypes.TRENDING_POST,
+  },
+  {
+    id: "2",
+    modelPointer: "N/A",
+    subject: "Trending Comment from Akul",
+    data: "Stop bro its kinda wack",
+    type: recentActivityTypes.TRENDING_COMMENT,
+  },
+  {
+    id: "3",
+    modelPointer: "N/A",
+    subject: "Potential Honor Code Violation from Chintan",
+    data: "Lets cheat on it ;)",
+    type: recentActivityTypes.POTENTIAL_HONOR_CODE,
   },
 ];

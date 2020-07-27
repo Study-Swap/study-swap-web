@@ -34,7 +34,14 @@ import {
   dummyClassList,
   dummyChartData,
   dummyUnreadMessages,
+  dummyRecentActivity,
 } from "../DummyData/adminDashboard";
+import { recentActivityTypes } from "../constants/recentActivityTypes";
+import {
+  Warning as WarningIcon,
+  Comment as CommentIcon,
+  BubbleChart as PostIcon,
+} from "@material-ui/icons";
 
 export default function AdminDashboard() {
   // eslint-disable-next-line
@@ -48,7 +55,7 @@ export default function AdminDashboard() {
     <Container component="main" maxWidth="md">
       <DashboardTitle>Welcome Admin!</DashboardTitle>
       <Grid container spacing={3}>
-        <Grid item xs sm={12} md={7}>
+        <Grid item xs={12} sm={12} md={7}>
           <DashboardItemTitle>Class Roster</DashboardItemTitle>
           <Paper className={clsx(classes.paper, classes.topRow)}>
             {hasRoster ? (
@@ -73,20 +80,46 @@ export default function AdminDashboard() {
             )}
           </Paper>
         </Grid>
-        <Grid item xs sm={12} md={5}>
+        <Grid item xs={12} sm={12} md={5}>
           <DashboardItemTitle>Recent Activity</DashboardItemTitle>
           <Paper className={clsx(classes.paper, classes.topRow)}>
-            Trending Data...
+            <List disablePadding={true}>
+              {dummyRecentActivity.map((activity) => {
+                const { id, subject, data, type } = activity;
+                return (
+                  <React.Fragment key={id}>
+                    {" "}
+                    <ListItem
+                      alignItems="flex-start"
+                      className={classes.message}
+                    >
+                      <ListItemAvatar>
+                        {type === recentActivityTypes.TRENDING_POST ? (
+                          <PostIcon />
+                        ) : type === recentActivityTypes.TRENDING_COMMENT ? (
+                          <CommentIcon />
+                        ) : (
+                          <WarningIcon color="error" />
+                        )}
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={subject}
+                        secondary={<React.Fragment>{data}</React.Fragment>}
+                      />
+                    </ListItem>
+                    <Divider variant="fullWidth" component="li" />{" "}
+                  </React.Fragment>
+                );
+              })}
+            </List>
           </Paper>
         </Grid>
-        <Grid item xs sm={12} md={5}>
+        <Grid item xs={12} sm={12} md={5}>
           <DashboardItemTitle>
             Unread Messages ({dummyUnreadMessages.length})
           </DashboardItemTitle>
-          <Paper
-            className={clsx(classes.paper, classes.secondRow, classes.unread)}
-          >
-            <List className={classes.root}>
+          <Paper className={clsx(classes.paper, classes.secondRow)}>
+            <List disablePadding={true}>
               {dummyUnreadMessages.map((message, index) => {
                 const { senderName, subject, messageText } = message;
                 return (
@@ -119,9 +152,11 @@ export default function AdminDashboard() {
             </List>
           </Paper>
         </Grid>
-        <Grid item xs sm={12} md={7}>
+        <Grid item xs={12} sm={12} md={7}>
           <DashboardItemTitle>Student Engagement</DashboardItemTitle>
-          <Paper className={clsx(classes.paper, classes.secondRow)}>
+          <Paper
+            className={clsx(classes.paper, classes.secondRow, classes.paperPad)}
+          >
             <ResponsiveContainer>
               <LineChart
                 data={dummyChartData}
@@ -176,13 +211,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing(0, 2, 2, 2),
     textAlign: "center",
     color: theme.palette.text.secondary,
     overflow: "auto",
   },
-  unread: {
-    padding: theme.spacing(0, 0, 0, 0),
+  paperPad: {
+    padding: theme.spacing(0, 2, 2, 2),
   },
   control: {
     padding: 5,

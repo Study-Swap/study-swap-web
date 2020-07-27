@@ -1,4 +1,5 @@
 import { notificationTypes } from "./notificationTypes";
+import { recentActivityTypes } from "./recentActivityTypes";
 
 export interface userModel {
   id?: string;
@@ -83,4 +84,16 @@ export interface messageModel {
   senderId: string;
   senderName: string;
   timestamp?: string;
+}
+
+export interface recentActivityModel {
+  id?: string;
+
+  //foreign key relations
+  modelPointer: string; // ID that points to some other model depending on type
+
+  //activity specific
+  subject: string;
+  data: string;
+  type: recentActivityTypes;
 }
