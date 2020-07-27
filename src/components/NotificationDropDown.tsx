@@ -14,12 +14,14 @@ interface NotificationDropDownProps {
   open: boolean;
   setOpen: Function;
   anchorRef: any;
+  setNumNotifs: Function;
 }
 
 const NotificationDropDown = ({
   open,
   setOpen,
   anchorRef,
+  setNumNotifs,
 }: NotificationDropDownProps) => {
   const classes = useStyles();
   const [notificationData, setNotificationData] = useState<notificationModel[]>(
@@ -30,6 +32,8 @@ const NotificationDropDown = ({
     getNotifications("12") // userId is hardcoded for now
       .then((res) => {
         setNotificationData(res);
+        setNumNotifs(res.length);
+        console.log("notifications loaded");
       })
       .catch((err) => console.error(err));
   }, []);

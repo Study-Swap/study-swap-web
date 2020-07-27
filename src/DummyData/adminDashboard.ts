@@ -19,3 +19,36 @@ export const dummyChartData = [
   { date: "6/7/2020", usage: 200 },
   { date: "6/8/2020", usage: 180 },
 ];
+
+export const dummyUnreadMessages = [
+  {
+    senderName: "Chintan Modi",
+    subject: "Hello",
+    messageText: "I need help with this question",
+  },
+  {
+    senderName: "Akul Vijayvargiya",
+    subject: "Hi",
+    messageText: "When are office hours this week?",
+  },
+  {
+    senderName: "Ashish Mahulli",
+    subject: "Hey",
+    messageText: "Can I be on a team for the next project",
+  },
+  {
+    senderName: "Chintan Modi",
+    subject: "Hello",
+    messageText: "I need help with this question",
+  },
+  {
+    senderName: "Akul Vijayvargiya",
+    subject: "Hi",
+    messageText: "When are office hours this week?",
+  },
+  {
+    senderName: "Ashish Mahulli",
+    subject: "Hey",
+    messageText: "Can I be on a team for the next project",
+  },
+];

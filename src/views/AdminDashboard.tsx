@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import clsx from "clsx";
+import history from "../utils/historyUtils";
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -29,7 +30,11 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { dummyClassList, dummyChartData } from "../DummyData/adminDashboard";
+import {
+  dummyClassList,
+  dummyChartData,
+  dummyUnreadMessages,
+} from "../DummyData/adminDashboard";
 
 export default function AdminDashboard() {
   // eslint-disable-next-line
@@ -70,35 +75,48 @@ export default function AdminDashboard() {
         </Grid>
         <Grid item xs sm={12} md={5}>
           <DashboardItemTitle>Recent Activity</DashboardItemTitle>
-          <Paper className={clsx(classes.paper, classes.topRow)}></Paper>
+          <Paper className={clsx(classes.paper, classes.topRow)}>
+            Trending Data...
+          </Paper>
         </Grid>
         <Grid item xs sm={12} md={5}>
-          <DashboardItemTitle>Unread Messages (12)</DashboardItemTitle>
-          <Paper className={clsx(classes.paper, classes.secondRow)}>
+          <DashboardItemTitle>
+            Unread Messages ({dummyUnreadMessages.length})
+          </DashboardItemTitle>
+          <Paper
+            className={clsx(classes.paper, classes.secondRow, classes.unread)}
+          >
             <List className={classes.root}>
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                </ListItemAvatar>
-                <ListItemText
-                  primary="Brunch this weekend?"
-                  secondary={
-                    <React.Fragment>
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        className={classes.inline}
-                        color="textPrimary"
-                      >
-                        Ali Connors
-                      </Typography>
-                      {" — I'll be in your neighborhood doing errands this…"}
-                    </React.Fragment>
-                  }
-                />
-              </ListItem>
+              {dummyUnreadMessages.map((message, index) => {
+                const { senderName, subject, messageText } = message;
+                return (
+                  <React.Fragment key={index}>
+                    {" "}
+                    <ListItem
+                      alignItems="flex-start"
+                      className={classes.message}
+                      onClick={() => {
+                        history.push(`/chats/${index}`);
+                      }}
+                    >
+                      <ListItemAvatar>
+                        <Avatar
+                          alt={senderName}
+                          src="/static/images/avatar/1.jpg"
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={subject}
+                        secondary={
+                          <React.Fragment>{messageText}</React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <Divider variant="fullWidth" component="li" />{" "}
+                  </React.Fragment>
+                );
+              })}
             </List>
-            <Divider variant="inset" component="li" />
           </Paper>
         </Grid>
         <Grid item xs sm={12} md={7}>
@@ -163,6 +181,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     overflow: "auto",
   },
+  unread: {
+    padding: theme.spacing(0, 0, 0, 0),
+  },
   control: {
     padding: 5,
   },
@@ -172,7 +193,9 @@ const useStyles = makeStyles((theme) => ({
   secondRow: {
     height: 300,
   },
-  inline: {
-    display: "inline",
+  message: {
+    "&:hover": {
+      backgroundColor: "#D3D3D3 !important",
+    },
   },
 }));
