@@ -1,5 +1,5 @@
-import { notificationTypes } from "./notificationTypes";
-import { recentActivityTypes } from "./recentActivityTypes";
+import { notificationTypes } from "./types/notificationTypes";
+import { recentActivityTypes } from "./types/recentActivityTypes";
 
 export interface userModel {
   id?: string;

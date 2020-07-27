@@ -36,7 +36,7 @@ import {
   dummyUnreadMessages,
   dummyRecentActivity,
 } from "../DummyData/adminDashboard";
-import { recentActivityTypes } from "../constants/recentActivityTypes";
+import { recentActivityTypes } from "../constants/types/recentActivityTypes";
 import {
   Warning as WarningIcon,
   Comment as CommentIcon,

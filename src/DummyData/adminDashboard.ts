@@ -1,4 +1,4 @@
-import { recentActivityTypes } from "../constants/recentActivityTypes";
+import { recentActivityTypes } from "../constants/types/recentActivityTypes";
 
 export const dummyClassList = [
   { name: "Chintan Modi", email: "cmodi@umich.edu" },
