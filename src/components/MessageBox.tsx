@@ -5,12 +5,25 @@ import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import SearchIcon from "@material-ui/icons/Search";
+import ImageIcon from "@material-ui/icons/Image";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import SendIcon from "@material-ui/icons/Send";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -25,11 +38,19 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     maxHeight: 600,
   },
+  rootInput: {
+    border: "solid",
+    display: "flex",
+    alignItems: "center",
+    maxWidth: 700,
+  },
+  textMessage: {
+    width: "100%",
+  },
   chatSide: {
     maxWidth: "36ch",
     borderRight: "solid",
-    borderRightWidth: 1,
-    borderRightColor: "#D9D9D9",
+    borderRightWidth: 3,
   },
   inline: {
     display: "inline",
@@ -40,8 +61,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   media: {
-    height: "40px",
-    width: "40px",
+    height: "30px",
+    width: "30px",
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
   },
 }));
 
@@ -61,12 +89,27 @@ export default function ChatSelect(chatId: any) {
   const [messageArray, setMessageArray] = useState<messageModel[]>(
     dummyMessagesData1
   );
+  const [value, setValue] = React.useState("");
   const userID = "12";
 
   function isUser(senderID: string) {
     if (userID == senderID) return "flex-end";
     else return "flex-start";
   }
+
+  const handleChange = (event: any) => {
+    setValue(event.target.value);
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Grid container className={classes.root} direction="column" spacing={4}>
@@ -81,13 +124,53 @@ export default function ChatSelect(chatId: any) {
           </Grid>
 
           <Grid item>
-            <Typography gutterBottom>{thisMessage.messageText}</Typography>
+            <Card className={classes.textMessage} variant="outlined">
+              <Typography gutterBottom>{thisMessage.messageText}</Typography>
+            </Card>
             <Typography color="textSecondary">
               {thisMessage.timestamp}
             </Typography>
           </Grid>
         </Grid>
       ))}
+      <Grid item>
+        <Paper component="form" className={classes.rootInput}>
+          <IconButton
+            className={classes.iconButton}
+            aria-label="image-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            <ImageIcon />
+          </IconButton>
+          <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>Take a picture</MenuItem>
+            <MenuItem onClick={handleClose}>Choose from Camera Roll</MenuItem>
+          </Menu>
+          <InputBase
+            className={classes.input}
+            placeholder="Type a message..."
+            inputProps={{ "aria-label": "Type a message..." }}
+            multiline={true}
+            rowsMax={7}
+            value={value}
+            onChange={handleChange}
+          />
+          <IconButton
+            type="submit"
+            className={classes.iconButton}
+            aria-label="send"
+          >
+            <SendIcon />
+          </IconButton>
+        </Paper>
+      </Grid>
     </Grid>
   );
 }
