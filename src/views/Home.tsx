@@ -53,9 +53,9 @@ export default function Home() {
           />
         ))}
       </Grid>
-
+      <br></br>
       <NewChat />
-
+      <br></br>
       <EditChat chatName="My Group Name" />
     </Container>
   );

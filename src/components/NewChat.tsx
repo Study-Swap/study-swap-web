@@ -80,14 +80,14 @@ export default function NewChat(props: any) {
 
           <Divider />
 
-          <Grid container item spacing={1} direction="row">
-            <Grid item xs={7} className={classes.middleSection}>
+          <Grid container item spacing={2}>
+            <Grid item xs={8} className={classes.middleSection}>
               <SearchBox options={options} dropDownHeight="150px" />
             </Grid>
 
             <Divider orientation="vertical" flexItem />
 
-            <Grid item xs={4} className={classes.middleSection}>
+            <Grid item xs={3} className={classes.middleSection}>
               <MembersList currentMembers={currentMembers} />
             </Grid>
           </Grid>

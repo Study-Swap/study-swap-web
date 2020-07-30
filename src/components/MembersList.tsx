@@ -43,6 +43,7 @@ export default function MembersList(props: any) {
             ></Avatar>
           </ListItemAvatar>
           <ListItemText primary={memberName} />
+
           <ListItemSecondaryAction>
             <IconButton edge="end" aria-label="delete">
               <DeleteIcon />
