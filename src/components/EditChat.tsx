@@ -26,8 +26,8 @@ let currentMembers = ["Rahul Khatti", "John B", "Sarah Wilkins"];
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "400px",
-    width: "500px",
+    height: "500px",
+    width: "300px",
   },
   inputChatName: {
     flex: 1,
@@ -38,16 +38,12 @@ const useStyles = makeStyles((theme) => ({
     height: "50px",
     width: "50px",
   },
-
-  middleSection: {
-    height: "210px",
-  },
 }));
 
-export default function NewChat(props: any) {
+export default function EditChat(props: any) {
   const [newSelection, setSelection] = useState<string | null>("");
   const classes = useStyles();
-  const [chatName, setChatName] = React.useState("");
+  const [chatName, setChatName] = React.useState(props.chatName);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   return (
@@ -60,7 +56,7 @@ export default function NewChat(props: any) {
               variant="h6"
               style={{ fontWeight: "bold" }}
             >
-              Create Group
+              Edit Group
             </Typography>
           </Grid>
 
@@ -80,16 +76,14 @@ export default function NewChat(props: any) {
 
           <Divider />
 
-          <Grid container item spacing={1} direction="row">
-            <Grid item xs={7} className={classes.middleSection}>
-              <SearchBox options={options} dropDownHeight="150px" />
-            </Grid>
+          <Grid item xs={12} style={{ minHeight: "160px" }}>
+            <SearchBox options={options} dropDownHeight="90px" />
+          </Grid>
 
-            <Divider orientation="vertical" flexItem />
+          <Divider />
 
-            <Grid item xs={4} className={classes.middleSection}>
-              <MembersList currentMembers={currentMembers} />
-            </Grid>
+          <Grid item xs={12} style={{ minHeight: "160px" }}>
+            <MembersList currentMembers={currentMembers} />
           </Grid>
 
           <Divider />
@@ -103,7 +97,7 @@ export default function NewChat(props: any) {
 
             <Grid item>
               <Button size="small" variant="contained" color="secondary">
-                Create
+                Confirm
               </Button>
             </Grid>
           </Grid>

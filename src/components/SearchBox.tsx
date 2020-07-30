@@ -34,10 +34,10 @@ export default function SearchBox(props: any) {
       className={classes.root}
       options={props.options}
       getOptionLabel={(option: string) => option}
-      style={{ width: "100%" }}
+      fullWidth={true}
       ListboxProps={{
         style: {
-          maxHeight: "150px",
+          maxHeight: props.dropDownHeight,
           overflow: "true",
         },
       }}

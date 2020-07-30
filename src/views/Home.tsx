@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import NewPost from "../components/NewPost";
 import FeedItem from "../components/FeedItem";
 import NewChat from "../components/NewChat";
+import EditChat from "../components/EditChat";
 import { postData } from "../DummyData/home";
 
 // eslint-disable-next-line
@@ -54,6 +55,8 @@ export default function Home() {
       </Grid>
 
       <NewChat />
+
+      <EditChat chatName="My Group Name" />
     </Container>
   );
 }

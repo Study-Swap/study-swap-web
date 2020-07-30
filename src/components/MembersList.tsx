@@ -6,6 +6,13 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import ListItemText from "@material-ui/core/ListItemText";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
@@ -25,35 +32,24 @@ export default function MembersList(props: any) {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
+    <List dense={true} disablePadding={true}>
       {props.currentMembers.map((memberName: string, index: number) => (
-        <Grid
-          item
-          container
-          key={index}
-          spacing={1}
-          className={classes.currentMember}
-        >
-          <Grid item>
+        <ListItem>
+          <ListItemAvatar>
             <Avatar
               className={classes.media}
               alt="Prof Pic"
               src={require("./apoorv.png")}
-            />
-          </Grid>
-          <Grid item>
-            <Typography color="textPrimary" variant="subtitle2">
-              {memberName}
-            </Typography>
-          </Grid>
-
-          <Grid item>
-            <IconButton aria-label="delete">
+            ></Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={memberName} />
+          <ListItemSecondaryAction>
+            <IconButton edge="end" aria-label="delete">
               <DeleteIcon />
             </IconButton>
-          </Grid>
-        </Grid>
+          </ListItemSecondaryAction>
+        </ListItem>
       ))}
-    </React.Fragment>
+    </List>
   );
 }
