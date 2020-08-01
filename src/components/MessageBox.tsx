@@ -63,10 +63,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatSelect(chatId: any) {
   useEffect(() => {
-    if (chatId.chatId == 1) {
+    if (chatId.chatId === 1) {
       //chatId is the passed state variable. Is an object (weird)
       setMessageArray(dummyMessagesData1);
-    } else if (chatId.chatId == 2) {
+    } else if (chatId.chatId === 2) {
       setMessageArray(dummyMessagesData2);
     }
   }); //if you want to only run on first render, add [] as second arg
@@ -80,7 +80,7 @@ export default function ChatSelect(chatId: any) {
   const userID = "12";
 
   function isUser(senderID: string) {
-    if (userID == senderID) return "flex-end";
+    if (userID === senderID) return "flex-end";
     else return "flex-start";
   }
 
