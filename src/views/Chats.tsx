@@ -9,7 +9,6 @@ import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import EditChat from "../components/EditChat";
 import NewChat from "../components/NewChat";
@@ -70,9 +69,7 @@ export default function Chats() {
   const [currentChat, setCurrentChat] = useState<string>("1");
   const onClick = (value: string) => {
     setCurrentChat(value);
-   }
-  // eslint-disable-next-line
-  const classes = useStyles();
+  };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
