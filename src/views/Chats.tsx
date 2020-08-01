@@ -2,138 +2,106 @@
 import React, { useState, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
+import Container from "@material-ui/core/Container";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import EditChat from "../components/EditChat";
+import NewChat from "../components/NewChat";
+import Modal from "@material-ui/core/Modal";
+import IconButton from "@material-ui/core/Button";
+import CreateIcon from "@material-ui/icons/Create";
+import InfoIcon from "@material-ui/icons/Info";
+import Popper from "@material-ui/core/Popper";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  topbar: {
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
-    flexDirection: "row",
+    height: "60px",
+    backgroundColor: "blue", //change to theme
+  },
+
+  newChatModal: {
     display: "flex",
-    maxHeight: 600,
-  },
-  chatSide: {
-    maxWidth: "36ch",
-    borderRight: "solid",
-    borderRightWidth: 1,
-    borderRightColor: "#D9D9D9",
-  },
-  inline: {
-    display: "inline",
-  },
-  hover: {
-    "&:hover": {
-      backgroundColor: "#D3D3D3 !important",
-    },
-  },
-  list: {
-    maxHeight: 600,
-    overflow: "auto",
+    alignItems: "center",
+    justifyContent: "center",
+
+    //might switch to:
+    //position: fixed;
+    //top: 50%;
+    //left: 50%;
+    //transform: translate(-50%, -50%);
   },
 }));
 
 export default function Chats() {
   // eslint-disable-next-line
-  const { user } = useContext(UserContext);
   const classes = useStyles();
-  const [otherScreen, setOtherScreen] = useState<string>("Blank");
 
-  const onClick = (value: string) => {
-    setOtherScreen(value);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popper" : undefined;
+
+  const [modalOpen, setModalOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setModalOpen(false);
   };
 
   return (
-    <div className={classes.root}>
-      <div className={classes.chatSide}>
-        <List className={classes.list}>
-          <ListItem
-            alignItems="flex-start"
-            className={classes.hover}
-            onClick={() => onClick("Brunch this weekend?")}
+    <Container component="main" maxWidth="md">
+      <Grid container className={classes.topbar} spacing={3}>
+        <Grid item xs={2}></Grid>
+
+        <Grid item xs={1}>
+          <IconButton type="button" onClick={handleOpen}>
+            <CreateIcon />
+          </IconButton>
+          <Modal
+            className={classes.newChatModal}
+            open={modalOpen}
+            onClose={handleClose}
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
           >
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Brunch this weekend?"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    Ali Connors
-                  </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="fullWidth" component="li" />
-          <ListItem
-            alignItems="flex-start"
-            className={classes.hover}
-            onClick={() => onClick("Summer BBQ")}
+            <NewChat />
+          </Modal>
+        </Grid>
+
+        <Grid item xs={8}></Grid>
+
+        <Grid item xs={1}>
+          <IconButton aria-describedby={id} type="button" onClick={handleClick}>
+            <InfoIcon />
+          </IconButton>
+          <Popper
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            placement="bottom-end"
           >
-            <ListItemAvatar>
-              <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Summer BBQ"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    to Scott, Alex, Jennifer
-                  </Typography>
-                  {" — Wish I could come, but I'm out of town this…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <ListItem
-            alignItems="flex-start"
-            className={classes.hover}
-            onClick={() => onClick("Oui Oui")}
-          >
-            <ListItemAvatar>
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Oui Oui"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    Sandra Adams
-                  </Typography>
-                  {" — Do you have Paris recommendations? Have you ever…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        </List>
-      </div>
-      <div>{otherScreen}</div>
-    </div>
+            <div>
+              {" "}
+              <EditChat />
+            </div>
+          </Popper>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }

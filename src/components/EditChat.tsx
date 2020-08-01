@@ -9,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Popper from "@material-ui/core/Popper";
 
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
@@ -26,7 +27,8 @@ let currentMembers = ["Rahul Khatti", "John B", "Sarah Wilkins"];
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "500px",
+    overflow: "auto",
+    height: "400px",
     width: "300px",
   },
   inputChatName: {

@@ -15,6 +15,7 @@ import TextField from "@material-ui/core/TextField";
 import MembersList from "./MembersList";
 import SearchBox from "./SearchBox";
 import { CardContent } from "@material-ui/core";
+import Popper from "@material-ui/core/Popper";
 
 const options = [
   "Chintan Modi",
