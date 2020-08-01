@@ -31,18 +31,13 @@ import { dummyMessagesData1, dummyMessagesData2 } from "../DummyData/chats";
 import { StringifyOptions } from "querystring";
 import { ExecOptionsWithStringEncoding } from "child_process";
 import { messageModel } from "../constants/Models";
+import WriteMessage from "../components/WriteMessage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    maxHeight: 600,
-  },
-  rootInput: {
-    border: "solid",
-    display: "flex",
-    alignItems: "center",
-    maxWidth: 700,
+    maxHeight: 500,
   },
   textMessage: {
     width: "100%",
@@ -64,13 +59,6 @@ const useStyles = makeStyles((theme) => ({
     height: "30px",
     width: "30px",
   },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
 }));
 
 export default function ChatSelect(chatId: any) {
@@ -89,7 +77,6 @@ export default function ChatSelect(chatId: any) {
   const [messageArray, setMessageArray] = useState<messageModel[]>(
     dummyMessagesData1
   );
-  const [value, setValue] = React.useState("");
   const userID = "12";
 
   function isUser(senderID: string) {
@@ -97,22 +84,8 @@ export default function ChatSelect(chatId: any) {
     else return "flex-start";
   }
 
-  const handleChange = (event: any) => {
-    setValue(event.target.value);
-  };
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   return (
-    <Grid container className={classes.root} direction="column" spacing={4}>
+    <Grid>
       {messageArray.map((thisMessage, index) => (
         <Grid container item justify={isUser(thisMessage.senderId)}>
           <Grid item>
@@ -127,50 +100,10 @@ export default function ChatSelect(chatId: any) {
             <Card className={classes.textMessage} variant="outlined">
               <Typography gutterBottom>{thisMessage.messageText}</Typography>
             </Card>
-            <Typography color="textSecondary">
-              {thisMessage.timestamp}
-            </Typography>
+            <Typography variant="caption">{thisMessage.timestamp}</Typography>
           </Grid>
         </Grid>
       ))}
-      <Grid item>
-        <Paper component="form" className={classes.rootInput}>
-          <IconButton
-            className={classes.iconButton}
-            aria-label="image-menu"
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <ImageIcon />
-          </IconButton>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}>Take a picture</MenuItem>
-            <MenuItem onClick={handleClose}>Choose from Camera Roll</MenuItem>
-          </Menu>
-          <InputBase
-            className={classes.input}
-            placeholder="Type a message..."
-            inputProps={{ "aria-label": "Type a message..." }}
-            multiline={true}
-            rowsMax={7}
-            value={value}
-            onChange={handleChange}
-          />
-          <IconButton
-            type="submit"
-            className={classes.iconButton}
-            aria-label="send"
-          >
-            <SendIcon />
-          </IconButton>
-        </Paper>
-      </Grid>
     </Grid>
   );
 }

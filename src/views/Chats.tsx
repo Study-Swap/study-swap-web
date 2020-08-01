@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 
 import ChatSelect from "../components/ChatSelector";
 import MessageBox from "../components/MessageBox";
+import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel } from "../constants/Models";
 import { dummyChatsData } from "../DummyData/chats";
@@ -74,9 +75,23 @@ export default function Chats() {
             </Grid>
           ))}
         </Grid>
-
         <Grid item md={8}>
-          <MessageBox chatId={currentChat} />
+          <Grid
+            container
+            className={classes.root}
+            direction="column"
+            spacing={2}
+          >
+            <MessageBox chatId={currentChat} />
+          </Grid>
+          <Grid
+            container
+            className={classes.root}
+            direction="column-reverse"
+            justify="flex-start"
+          >
+            <WriteMessage />
+          </Grid>
         </Grid>
       </Grid>
     </Container>
