@@ -6,6 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import NewPost from "../components/NewPost";
 import FeedItem from "../components/FeedItem";
+import NewChat from "../components/NewChat";
+import EditChat from "../components/EditChat";
 import { postData } from "../DummyData/home";
 
 // eslint-disable-next-line

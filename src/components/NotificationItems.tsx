@@ -7,7 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
-import { notificationTypes } from "../constants/notificationTypes";
+import { notificationTypes } from "../constants/types/notificationTypes";
 import { readNotification } from "../utils/firebaseUtils";
 
 const formatString = (text: string, maxSize: number): string => {

@@ -25,6 +25,7 @@ interface AppToolbarProps {
 
 const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
   const [open, setOpen] = React.useState(false);
+  const [numNotifs, setNumNotifs] = React.useState<number>(0);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
 
   const handleToggle = () => {
@@ -79,6 +80,7 @@ const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
           open={open}
           setOpen={setOpen}
           anchorRef={anchorRef}
+          setNumNotifs={setNumNotifs}
         />
         <IconButton
           color="inherit"
@@ -87,7 +89,7 @@ const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          <Badge badgeContent={5} color="error">
+          <Badge badgeContent={numNotifs} color="error">
             <NotificationIcon />
           </Badge>
         </IconButton>
