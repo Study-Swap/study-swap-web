@@ -94,6 +94,41 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderName: "Ashish",
     timestamp: "June 14 2019",
   },
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is a test message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 12 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is another message",
+    senderId: "11",
+    senderName: "Akul",
+    timestamp: "June 13 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is a final message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 14 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is a final message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 14 2019",
+  },
 ];
 
 export const dummyMessagesData2: Array<messageModel> = [

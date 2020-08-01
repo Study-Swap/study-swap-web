@@ -27,6 +27,7 @@ import { dummyChatsData } from "../DummyData/chats";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
+import { Autorenew } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,6 +35,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: theme.palette.background.paper,
     maxHeight: 600,
+  },
+  rootChat: {
+    flexGrow: 1,
+    width: "100%",
+    backgroundColor: theme.palette.background.paper,
+    maxHeight: 500,
+    overflow: "auto",
   },
   chatSide: {
     maxWidth: "36ch",
@@ -110,7 +118,7 @@ export default function Chats() {
         <Grid item md={8}>
           <Grid
             container
-            className={classes.root}
+            className={classes.rootChat}
             direction="column"
             spacing={2}
           >
