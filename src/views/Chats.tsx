@@ -79,6 +79,27 @@ export default function Chats() {
     setCurrentChat(value);
   };
 
+  const myNums = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+  ];
+
   return (
     <Container component="main" maxWidth="md">
       <Grid container className={classes.root}>
@@ -107,15 +128,30 @@ export default function Chats() {
             container
             className={classes.rootChat}
             direction="row"
-            spacing={2}
+            spacing={0}
           >
-            <MessageBox chatName="Chat 1" />
+            <MessageBox />
           </Grid>
 
           <Grid item style={{ height: 40 }}>
             <WriteMessage />
           </Grid>
         </Grid>
+      </Grid>
+
+      <br></br>
+      <br></br>
+      <br></br>
+      <Grid
+        item
+        container
+        className={classes.rootChat}
+        direction="column"
+        spacing={0}
+      >
+        {myNums.map((thisNum, index) => (
+          <p>{thisNum}</p>
+        ))}
       </Grid>
     </Container>
   );
