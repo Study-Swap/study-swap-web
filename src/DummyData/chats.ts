@@ -1,5 +1,6 @@
 import { chatsModel } from "../constants/Models";
-const dummyChatsData: Array<chatsModel> = [
+import { messageModel } from "../constants/Models";
+export const dummyChatsData: Array<chatsModel> = [
   {
     id: "1",
     chatName: "Chat 1",
@@ -30,4 +31,96 @@ const dummyChatsData: Array<chatsModel> = [
   },
 ];
 
-export { dummyChatsData };
+export const dummyMessagesData1: Array<messageModel> = [
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is a test message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 12 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is another message",
+    senderId: "11",
+    senderName: "Akul",
+    timestamp: "June 13 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is a final message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 14 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is a final message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 14 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is a test message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 12 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is another message",
+    senderId: "11",
+    senderName: "Akul",
+    timestamp: "June 13 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "1",
+    messageText: "This is a final message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 14 2019",
+  },
+];
+
+export const dummyMessagesData2: Array<messageModel> = [
+  {
+    id: "1",
+    chatId: "2",
+    messageText: "This is an alternate message",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 12 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "2",
+    messageText: "This is more messages",
+    senderId: "11",
+    senderName: "Akul",
+    timestamp: "June 14 2019",
+  },
+
+  {
+    id: "1",
+    chatId: "2",
+    messageText: "This is click test",
+    senderId: "12",
+    senderName: "Ashish",
+    timestamp: "June 16 2019",
+  },
+];
