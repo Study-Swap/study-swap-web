@@ -34,19 +34,10 @@ import { messageModel } from "../constants/Models";
 import WriteMessage from "../components/WriteMessage";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-    maxHeight: 500,
-  },
   textMessage: {
     width: "100%",
   },
-  chatSide: {
-    maxWidth: "36ch",
-    borderRight: "solid",
-    borderRightWidth: 3,
-  },
+
   inline: {
     display: "inline",
   },
@@ -85,9 +76,9 @@ export default function ChatSelect(chatId: any) {
   }
 
   return (
-    <Grid>
+    <React.Fragment>
       {messageArray.map((thisMessage, index) => (
-        <Grid container item justify={isUser(thisMessage.senderId)}>
+        <Grid container item sm={12} justify={isUser(thisMessage.senderId)}>
           <Grid item>
             <Avatar
               alt="Remy Sharp"
@@ -104,6 +95,6 @@ export default function ChatSelect(chatId: any) {
           </Grid>
         </Grid>
       ))}
-    </Grid>
+    </React.Fragment>
   );
 }

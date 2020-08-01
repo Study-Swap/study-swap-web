@@ -18,9 +18,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   rootInput: {
-    border: "solid",
+    border: "outlined",
     display: "flex",
     alignItems: "center",
+    height: "100%",
     width: "100%",
   },
   input: {
@@ -51,43 +52,41 @@ export default function NewChat() {
   };
 
   return (
-    <Grid item>
-      <Paper component="form" className={classes.rootInput}>
-        <IconButton
-          className={classes.iconButton}
-          aria-label="image-menu"
-          aria-haspopup="true"
-          onClick={handleClick}
-        >
-          <ImageIcon />
-        </IconButton>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleClose}>Take a picture</MenuItem>
-          <MenuItem onClick={handleClose}>Choose from Camera Roll</MenuItem>
-        </Menu>
-        <InputBase
-          className={classes.input}
-          placeholder="Type a message..."
-          inputProps={{ "aria-label": "Type a message..." }}
-          multiline={true}
-          rowsMax={7}
-          value={value}
-          onChange={handleChange}
-        />
-        <IconButton
-          type="submit"
-          className={classes.iconButton}
-          aria-label="send"
-        >
-          <SendIcon />
-        </IconButton>
-      </Paper>
-    </Grid>
+    <Paper component="form" className={classes.rootInput}>
+      <IconButton
+        className={classes.iconButton}
+        aria-label="image-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
+        <ImageIcon />
+      </IconButton>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>Take a picture</MenuItem>
+        <MenuItem onClick={handleClose}>Choose from Camera Roll</MenuItem>
+      </Menu>
+      <InputBase
+        className={classes.input}
+        placeholder="Type a message..."
+        inputProps={{ "aria-label": "Type a message..." }}
+        multiline={true}
+        rowsMax={7}
+        value={value}
+        onChange={handleChange}
+      />
+      <IconButton
+        type="submit"
+        className={classes.iconButton}
+        aria-label="send"
+      >
+        <SendIcon />
+      </IconButton>
+    </Paper>
   );
 }

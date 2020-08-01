@@ -20,6 +20,7 @@ import Popper from "@material-ui/core/Popper";
 
 import ChatSelect from "../components/ChatSelector";
 import MessageBox from "../components/MessageBox";
+import ChatsToolbar from "../components/ChatsToolbar";
 import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel } from "../constants/Models";
@@ -31,31 +32,25 @@ import { Autorenew } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    maxHeight: 600,
+    height: 450,
   },
   rootChat: {
-    flexGrow: 1,
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    maxHeight: 500,
+    height: 360,
     overflow: "auto",
   },
-  chatSide: {
-    maxWidth: "36ch",
-    borderRight: "solid",
-    borderRightWidth: 1,
-    borderRightColor: "#D9D9D9",
-  },
+
   inline: {
     display: "inline",
   },
   topbar: {
     width: "100%",
-    height: "60px",
+    height: 50,
     backgroundColor: "blue", //change to theme
+    alignItems: "center",
   },
   newChatModal: {
     display: "flex",
@@ -68,6 +63,11 @@ const useStyles = makeStyles((theme) => ({
     //left: 50%;
     //transform: translate(-50%, -50%);
   },
+
+  list: {
+    height: "100%",
+    overflow: "auto",
+  },
 }));
 
 export default function Chats() {
@@ -79,57 +79,40 @@ export default function Chats() {
     setCurrentChat(value);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popper" : undefined;
-
-  const [modalOpen, setModalOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setModalOpen(true);
-  };
-
-  const handleClose = () => {
-    setModalOpen(false);
-  };
-
   return (
     <Container component="main" maxWidth="md">
       <Grid container className={classes.root}>
-        <Grid container item direction="column" md={4}>
-          {dummyChatsData.map((thisChatSelector, index) => (
-            <Grid item key={index}>
+        <Grid container item sm={12} className={classes.topbar}>
+          <ChatsToolbar />
+        </Grid>
+        <Grid container item direction="column" sm={4} style={{ height: 400 }}>
+          <List className={classes.list}>
+            {dummyChatsData.map((thisChatSelector, index) => (
               <ChatSelect
                 //we are putting a ListItem in a grid item in a grid contianer instead of list. is this sus
+                key={index}
                 id={thisChatSelector.id}
                 chatName={thisChatSelector.chatName}
                 memberNames={thisChatSelector.memberNames}
                 messages={thisChatSelector.messages}
                 onClick={onClick}
               />
-            </Grid>
-          ))}
+            ))}
+          </List>
         </Grid>
-        <Grid item md={8}>
+
+        <Grid item container sm={8} direction="column">
           <Grid
+            item
             container
             className={classes.rootChat}
-            direction="column"
+            direction="row"
             spacing={2}
           >
-            <MessageBox chatId={currentChat} />
+            <MessageBox chatName="Chat 1" />
           </Grid>
-          <Grid
-            container
-            className={classes.root}
-            direction="column-reverse"
-            justify="flex-start"
-          >
+
+          <Grid item style={{ height: 40 }}>
             <WriteMessage />
           </Grid>
         </Grid>
@@ -137,41 +120,3 @@ export default function Chats() {
     </Container>
   );
 }
-
-/* 
-<Grid container className={classes.topbar} spacing={3}>
-        <Grid item xs={2}></Grid>
-
-        <Grid item xs={1}>
-          <IconButton type="button" onClick={handleOpen}>
-            <CreateIcon />
-          </IconButton>
-          <Modal
-            className={classes.newChatModal}
-            open={modalOpen}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-            <NewChat />
-          </Modal>
-        </Grid>
-
-        <Grid item xs={8}></Grid>
-
-        <Grid item xs={1}>
-          <IconButton aria-describedby={id} type="button" onClick={handleClick}>
-            <InfoIcon />
-          </IconButton>
-          <Popper
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            placement="bottom-end"
-          >
-            <div>
-              {" "}
-              <EditChat />
-            </div>
-          </Popper>
-*/
