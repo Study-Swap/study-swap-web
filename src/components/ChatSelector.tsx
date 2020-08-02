@@ -74,9 +74,9 @@ export default function ChatSelect({
                 className={classes.inline}
                 color="textPrimary"
               >
-                Ali Connors
+                Most Recent Texter
               </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
+              {" — Most recent text cut off to something like 50 characters"}
             </React.Fragment>
           }
         />

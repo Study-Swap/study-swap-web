@@ -52,12 +52,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChatSelect(chatId: any) {
+export default function ChatSelect(props: any) {
   useEffect(() => {
-    if (chatId.chatId === 1) {
-      //chatId is the passed state variable. Is an object (weird)
+    if (props.chatId == "1") {
       setMessageArray(dummyMessagesData1);
-    } else if (chatId.chatId === 2) {
+    } else if (props.chatId == "2") {
       setMessageArray(dummyMessagesData2);
     }
   }); //if you want to only run on first render, add [] as second arg

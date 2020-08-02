@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../constants/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -25,6 +25,7 @@ import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel } from "../constants/Models";
 import { dummyChatsData } from "../DummyData/chats";
+import { getChats } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -70,14 +71,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const tempUserId = "7k1MF9w490XOeFH5ygGY";
+
 export default function Chats() {
   //get the ChatSelect working with the .map() function.
-  const [myChats, setMyChats] = useState(dummyChatsData);
+  const [myChats, setMyChats] = useState<chatsModel[]>(dummyChatsData);
   const classes = useStyles();
   const [currentChat, setCurrentChat] = useState<string>("1");
   const onClick = (value: string) => {
     setCurrentChat(value);
   };
+
+  useEffect(() => {
+    getChats(tempUserId) // userId is hardcoded for now
+      .then((res) => {
+        setMyChats(res);
+        console.log("chats loaded");
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   const myNums = [
     1,
@@ -108,7 +120,7 @@ export default function Chats() {
         </Grid>
         <Grid container item direction="column" sm={4} style={{ height: 400 }}>
           <List className={classes.list}>
-            {dummyChatsData.map((thisChatSelector, index) => (
+            {myChats.map((thisChatSelector, index) => (
               <ChatSelect
                 //we are putting a ListItem in a grid item in a grid contianer instead of list. is this sus
                 key={index}
@@ -130,7 +142,7 @@ export default function Chats() {
             direction="row"
             spacing={0}
           >
-            <MessageBox />
+            <MessageBox chatId={currentChat} />
           </Grid>
 
           <Grid item style={{ height: 40 }}>
