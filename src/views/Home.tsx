@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // eslint-disable-next-line
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
@@ -9,6 +9,7 @@ import FeedItem from "../components/FeedItem";
 import NewChat from "../components/NewChat";
 import EditChat from "../components/EditChat";
 import { postData } from "../DummyData/home";
+import { getPosts, getFeed } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -28,6 +29,14 @@ export default function Home() {
   // eslint-disable-next-line
   const [postState, setPostState] = useState(postData);
 
+  useEffect(() => {
+    getFeed("1") // classId is hardcoded for now
+      .then((res) => {
+        setPostState(res);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   return (
     <Container component="main" maxWidth="md">
       <Grid
@@ -43,6 +52,7 @@ export default function Home() {
         </Grid>
         {postState.map((thisPost, index) => (
           <FeedItem
+            id={thisPost.id}
             postUserName={thisPost.postUserName}
             postClassName={thisPost.postClassName}
             postText={thisPost.postText}

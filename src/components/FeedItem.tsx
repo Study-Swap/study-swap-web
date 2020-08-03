@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../constants/UserContext";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,6 +8,7 @@ import Comment from "../components/Comment";
 import NewComment from "../components/NewComment";
 import { postModel } from "../constants/Models";
 import { commentData } from "../DummyData/home";
+import { getComments } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -28,6 +29,15 @@ const useStyles = makeStyles({
 export default function FeedItem(props: postModel) {
   const [commentState, setCommentState] = useState(commentData);
   //stores comment dummydata, replace with backend function
+
+  useEffect(() => {
+    let postId = String(props.id);
+    getComments(postId) // classId is hardcoded for now
+      .then((res) => {
+        setCommentState(res);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   const [newCommentInput, setNewCommentInput] = React.useState("");
   //stores status of new comment input field
