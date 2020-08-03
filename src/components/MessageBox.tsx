@@ -24,6 +24,7 @@ import Button from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { watchMessages } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -53,26 +54,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ChatSelect(props: any) {
-  useEffect(() => {
-    if (props.chatId == "1") {
-      setMessageArray(dummyMessagesData1);
-    } else if (props.chatId == "2") {
-      setMessageArray(dummyMessagesData2);
-    }
-  }); //if you want to only run on first render, add [] as second arg
-  //https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once
-
   const classes = useStyles();
 
   const [messageArray, setMessageArray] = useState<messageModel[]>(
     dummyMessagesData1
   );
-  const userID = "12";
+  const tempUserId = "7k1MF9w490XOeFH5ygGY";
 
   function isUser(senderID: string) {
-    if (userID === senderID) return "flex-end";
+    if (tempUserId === senderID) return "flex-end";
     else return "flex-start";
   }
+
+  useEffect(() => {
+    console.log(props.chatId + "messages is loading");
+    //ask chintan how to get watchMessages working and async properly
+    //watchMessages("9yWHYYczrMViTQwfG3F7" , setMessageArray); // userId is hardcoded for now
+
+    //.catch((err) => console.error(err));
+  });
 
   return (
     <React.Fragment>

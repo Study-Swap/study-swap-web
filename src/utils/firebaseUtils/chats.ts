@@ -50,7 +50,7 @@ function addMessages(message: messageModel): void {
   @type     GET -> Chats
   @desc     get user chats
 */
-function getChats(userId: string): Promise<chatsModel[] | void> {
+function getChats(userId: string): Promise<any> {
   return chatsDB
     .where("members", "array-contains", userId)
     .get()

@@ -75,9 +75,9 @@ const tempUserId = "7k1MF9w490XOeFH5ygGY";
 
 export default function Chats() {
   //get the ChatSelect working with the .map() function.
-  const [myChats, setMyChats] = useState<chatsModel[]>(dummyChatsData);
+  const [myChats, setMyChats] = useState<chatsModel[]>([]);
   const classes = useStyles();
-  const [currentChat, setCurrentChat] = useState<string>("1");
+  const [currentChat, setCurrentChat] = useState<string>("");
   const onClick = (value: string) => {
     setCurrentChat(value);
   };

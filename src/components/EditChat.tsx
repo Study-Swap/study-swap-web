@@ -27,8 +27,7 @@ let currentMembers = ["Rahul Khatti", "John B", "Sarah Wilkins"];
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    overflow: "auto",
-    height: "400px",
+    height: "350px",
     width: "300px",
   },
   inputChatName: {
@@ -50,7 +49,7 @@ export default function EditChat(props: any) {
 
   return (
     <Card className={classes.root}>
-      <CardContent>
+      <CardContent style={{ overflow: "auto", maxHeight: "300px" }}>
         <Grid container direction="column" spacing={3}>
           <Grid item>
             <Typography
@@ -89,22 +88,31 @@ export default function EditChat(props: any) {
           </Grid>
 
           <Divider />
-
-          <Grid container item justify="flex-end" spacing={1}>
-            <Grid item>
-              <Button size="small" variant="contained">
-                Cancel
-              </Button>
-            </Grid>
-
-            <Grid item>
-              <Button size="small" variant="contained" color="secondary">
-                Confirm
-              </Button>
-            </Grid>
-          </Grid>
         </Grid>
       </CardContent>
+
+      <Divider />
+
+      <Grid
+        container
+        item
+        justify="flex-end"
+        alignItems="center"
+        spacing={1}
+        style={{ height: "50px" }}
+      >
+        <Grid item>
+          <Button size="small" variant="contained">
+            Cancel
+          </Button>
+        </Grid>
+
+        <Grid item>
+          <Button size="small" variant="contained" color="secondary">
+            Confirm
+          </Button>
+        </Grid>
+      </Grid>
     </Card>
   );
 }
