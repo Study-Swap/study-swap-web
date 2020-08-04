@@ -1,3 +1,6 @@
+//TODO: When you comment it should unhide comments, when you click enter
+//it should send comments
+
 // eslint-disable-next-line
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../constants/UserContext";
@@ -7,8 +10,9 @@ import Post from "../components/Post";
 import Comment from "../components/Comment";
 import NewComment from "../components/NewComment";
 import { postModel } from "../constants/Models";
+import { commentModel } from "../constants/Models";
 import { commentData } from "../DummyData/home";
-import { getComments } from "../utils/firebaseUtils";
+import { getComments, addComment } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -27,7 +31,7 @@ const useStyles = makeStyles({
 });
 
 export default function FeedItem(props: postModel) {
-  const [commentState, setCommentState] = useState(commentData);
+  const [commentState, setCommentState] = useState<commentModel[]>([]);
   //stores comment dummydata, replace with backend function
 
   useEffect(() => {
@@ -62,17 +66,28 @@ export default function FeedItem(props: postModel) {
     setCommentState([
       ...commentState,
       {
-        id: "104",
+        //id: "104",
         // foreign key relations
         userId: "amahuli",
-        postId: "Post1",
+        postId: String(props.id),
         // comment specific
         commenterName: "Chintan Modi",
-        timestamp: "tuesday..",
+        timestamp: "ADD FIREBASE TIMESTAMP HERE",
         commentText: newCommentInput,
       },
     ]);
     setNewCommentInput("");
+
+    addComment({
+      //id: "104",
+      // foreign key relations
+      userId: "amahuli",
+      postId: String(props.id),
+      // comment specific
+      commenterName: "Chintan Modi",
+      //timestamp: "tuesday..",
+      commentText: newCommentInput,
+    });
   }
 
   return (
@@ -93,31 +108,32 @@ export default function FeedItem(props: postModel) {
         classId={props.classId}
         onClick={toggleCommentClick}
       />
-
-      {commentsShown ? (
-        commentState.map((thisComment, index) => (
-          <Grid item key={index} xs={12}>
+      {commentState.length > 0 ? (
+        commentsShown ? (
+          commentState.map((thisComment, index) => (
+            <Grid item key={index} xs={12}>
+              <Comment
+                id={thisComment.id}
+                userId={thisComment.userId}
+                postId={thisComment.postId}
+                commenterName={thisComment.commenterName}
+                timestamp={thisComment.timestamp}
+                commentText={thisComment.commentText}
+              />
+            </Grid>
+          ))
+        ) : (
+          <Grid item xs={12}>
             <Comment
-              id={thisComment.id}
-              userId={thisComment.userId}
-              postId={thisComment.postId}
-              commenterName={thisComment.commenterName}
-              timestamp={thisComment.timestamp}
-              commentText={thisComment.commentText}
+              id={commentState[0].id}
+              userId={commentState[0].userId}
+              postId={commentState[0].postId}
+              commenterName={commentState[0].commenterName}
+              timestamp={commentState[0].timestamp}
+              commentText={commentState[0].commentText}
             />
           </Grid>
-        ))
-      ) : commentState.length > 0 ? (
-        <Grid item xs={12}>
-          <Comment
-            id={commentState[0].id}
-            userId={commentState[0].userId}
-            postId={commentState[0].postId}
-            commenterName={commentState[0].commenterName}
-            timestamp={commentState[0].timestamp}
-            commentText={commentState[0].commentText}
-          />
-        </Grid>
+        )
       ) : (
         <div> </div>
       )}

@@ -51,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     height: "30px",
     width: "30px",
   },
+  temp: {
+    marginVertical: "4px",
+  },
 }));
 
 export default function ChatSelect(props: any) {
@@ -69,10 +72,10 @@ export default function ChatSelect(props: any) {
   useEffect(() => {
     console.log(props.chatId + "messages is loading");
     //ask chintan how to get watchMessages working and async properly
-    //watchMessages("9yWHYYczrMViTQwfG3F7" , setMessageArray); // userId is hardcoded for now
+    watchMessages("9yWHYYczrMViTQwfG3F7", setMessageArray); // userId is hardcoded for now
 
     //.catch((err) => console.error(err));
-  });
+  }, []);
 
   return (
     <React.Fragment>

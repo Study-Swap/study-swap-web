@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const options = ["Choose class", "EECS 183", "BIO 172", "ENGR 100"];
 
-export default function CustomizedInputBase() {
+export default function CustomizedInputBase(props: any) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -89,9 +89,24 @@ export default function CustomizedInputBase() {
         onChange={handleChange}
       />
       <IconButton
-        type="submit"
+        //type="submit"
         className={classes.iconButton}
         aria-label="Send"
+        onClick={() => {
+          props.onClick({
+            //id?: string;
+            // foreign key relations
+            userId: "temp",
+            classId: "1",
+            // post specific
+            postText: value,
+            postUserName: "Ashish Mahuli",
+            postClassName: options[selectedIndex],
+            //timestamp?: any;
+            edited: false,
+          });
+          setValue("");
+        }}
       >
         <SendIcon />
       </IconButton>
