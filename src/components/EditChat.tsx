@@ -90,7 +90,7 @@ export default function EditChat(props: any) {
 
           <Divider />
 
-          <Grid container item justify="flex-end" spacing={1}>
+          <Grid container item justifyContent="flex-end" spacing={1}>
             <Grid item>
               <Button size="small" variant="contained">
                 Cancel

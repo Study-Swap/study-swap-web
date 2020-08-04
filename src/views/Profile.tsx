@@ -9,6 +9,7 @@ import ViewProfile from "../components/ViewProfile2";
 import { makeStyles } from "@material-ui/core/styles";
 import { userModel } from "../constants/Models";
 import { dummyUser } from "../DummyData/profile";
+import Scheduler from "../components/Scheduler";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -58,13 +59,16 @@ export default function Profile() {
   return (
     <Container component="main" maxWidth="md">
       {!editing ? (
-        <ViewProfile
-          firstName={myUser.firstName}
-          lastName={myUser.lastName}
-          grade={myUser.grade}
-          bio={myUser.bio}
-          editingClick={() => setEditing(!editing)}
-        />
+        <>
+          <ViewProfile
+            firstName={myUser.firstName}
+            lastName={myUser.lastName}
+            grade={myUser.grade}
+            bio={myUser.bio}
+            editingClick={() => setEditing(!editing)}
+          />
+          <Scheduler />
+        </>
       ) : (
         <EditProfile
           firstName={myUser.firstName}

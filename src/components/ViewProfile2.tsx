@@ -23,7 +23,7 @@ import { logoutUser } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles({
   root: {
-    width: "80%",
+    width: "100%",
   },
 
   title: {

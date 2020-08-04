@@ -87,7 +87,7 @@ export default function ChatSelect(chatId: any) {
   return (
     <Grid>
       {messageArray.map((thisMessage, index) => (
-        <Grid container item justify={isUser(thisMessage.senderId)}>
+        <Grid container item justifyContent={isUser(thisMessage.senderId)}>
           <Grid item>
             <Avatar
               alt="Remy Sharp"
