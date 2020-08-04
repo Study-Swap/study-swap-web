@@ -23,7 +23,7 @@ function getPosts(classId: string): Promise<any> {
         const posts: Array<postModel> = [];
         snapShot.forEach((post: any): void => {
           const data = post.data();
-          posts.push({
+          posts.unshift({
             userId: data.userId,
             classId: data.classId,
             postText: data.postText,

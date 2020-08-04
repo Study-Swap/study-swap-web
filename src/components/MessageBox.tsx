@@ -77,7 +77,12 @@ export default function ChatSelect(props: any) {
   return (
     <React.Fragment>
       {messageArray.map((thisMessage, index) => (
-        <Grid container item sm={12} justify={isUser(thisMessage.senderId)}>
+        <Grid
+          container
+          item
+          sm={12}
+          justifyContent={isUser(thisMessage.senderId)}
+        >
           <Grid item>
             <Avatar
               alt="Remy Sharp"

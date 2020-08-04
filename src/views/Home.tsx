@@ -27,28 +27,30 @@ const useStyles = makeStyles({
 export default function Home() {
   const classes = useStyles();
   // eslint-disable-next-line
-  const [postState, setPostState] = useState(postData);
+  const [postState, setPostState] = useState<any[]>([]);
+  const [refresh, setRefresh] = useState<boolean>(true);
 
   useEffect(() => {
-    getFeed("1") // classId is hardcoded for now
+    console.log(postState);
+    getPosts("1") // classId is hardcoded for now
       .then((res) => {
         setPostState(res);
       })
       .catch((err) => console.error(err));
-  }, []);
+  }, []); // TODO: Add loading indicator and put "refresh" into empty array
 
   return (
     <Container component="main" maxWidth="md">
       <Grid
         container
         direction="column"
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         spacing={6}
         className={classes.root}
       >
         <Grid item>
-          <NewPost />
+          <NewPost refresh={refresh} setRefresh={setRefresh} />
         </Grid>
         {postState.map((thisPost, index) => (
           <FeedItem

@@ -110,12 +110,12 @@ export default function FeedItem(props: postModel) {
       ) : commentState.length > 0 ? (
         <Grid item xs={12}>
           <Comment
-            id={commentState[0].id}
-            userId={commentState[0].userId}
-            postId={commentState[0].postId}
-            commenterName={commentState[0].commenterName}
-            timestamp={commentState[0].timestamp}
-            commentText={commentState[0].commentText}
+            id={commentState[commentState.length - 1].id}
+            userId={commentState[commentState.length - 1].userId}
+            postId={commentState[commentState.length - 1].postId}
+            commenterName={commentState[commentState.length - 1].commenterName}
+            timestamp={commentState[commentState.length - 1].timestamp}
+            commentText={commentState[commentState.length - 1].commentText}
           />
         </Grid>
       ) : (
