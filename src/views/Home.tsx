@@ -9,7 +9,8 @@ import FeedItem from "../components/FeedItem";
 import NewChat from "../components/NewChat";
 import EditChat from "../components/EditChat";
 import { postData } from "../DummyData/home";
-import { getPosts, getFeed } from "../utils/firebaseUtils";
+import { getPosts, getFeed, addPost } from "../utils/firebaseUtils";
+import { postModel } from "../constants/Models";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -28,7 +29,6 @@ export default function Home() {
   const classes = useStyles();
   // eslint-disable-next-line
   const [postState, setPostState] = useState<any[]>([]);
-  const [refresh, setRefresh] = useState<boolean>(true);
 
   useEffect(() => {
     console.log(postState);
@@ -50,7 +50,12 @@ export default function Home() {
         className={classes.root}
       >
         <Grid item>
-          <NewPost refresh={refresh} setRefresh={setRefresh} />
+          <NewPost
+            onClick={(post: postModel) => {
+              setPostState([post, ...postState]);
+              addPost(post.userId, post.classId, post);
+            }}
+          />
         </Grid>
         {postState.map((thisPost, index) => (
           <FeedItem

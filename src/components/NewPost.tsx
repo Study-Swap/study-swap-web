@@ -31,11 +31,10 @@ const useStyles = makeStyles((theme) => ({
 const options = ["Choose class", "EECS 183", "BIO 172", "ENGR 100"];
 
 interface newPostProps {
-  refresh: boolean;
-  setRefresh: Function;
+  onClick: Function;
 }
 
-export default function NewPost({ refresh, setRefresh }: newPostProps) {
+export default function NewPost({ onClick }: newPostProps) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -96,18 +95,23 @@ export default function NewPost({ refresh, setRefresh }: newPostProps) {
         onChange={handleChange}
       />
       <IconButton
+        //type="submit"
         className={classes.iconButton}
         aria-label="Send"
         onClick={() => {
-          addPost("temp", "1", {
+          onClick({
+            //id?: string;
+            // foreign key relations
             userId: "temp",
             classId: "1",
+            // post specific
             postText: value,
-            postUserName: "Ashish",
-            postClassName: "BIO",
+            postUserName: "Ashish Mahuli",
+            postClassName: options[selectedIndex],
+            //timestamp?: any;
             edited: false,
           });
-          setRefresh(!refresh);
+          setValue("");
         }}
       >
         <SendIcon />

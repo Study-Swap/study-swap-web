@@ -28,7 +28,7 @@ function watchMessages(chatId: string, setMessages: Function): any {
           messageText: data.messageText,
           senderId: data.senderId,
           senderName: data.senderName,
-          timestamp: data.timestamp,
+          timestamp: data.timestamp.toDate().toDateString(),
         });
       });
       setMessages(messages);
