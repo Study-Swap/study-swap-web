@@ -92,6 +92,7 @@ export default function CustomizedInputBase() {
         type="submit"
         className={classes.iconButton}
         aria-label="Send"
+        disabled={selectedIndex === 0}
       >
         <SendIcon />
       </IconButton>

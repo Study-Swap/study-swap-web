@@ -128,7 +128,7 @@ export default function Chats() {
             container
             className={classes.root}
             direction="column-reverse"
-            justify="flex-start"
+            justifyContent="flex-start"
           >
             <WriteMessage />
           </Grid>
