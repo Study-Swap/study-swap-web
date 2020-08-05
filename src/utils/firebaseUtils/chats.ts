@@ -13,7 +13,7 @@ const usersDB = firebase.firestore().collection(collections.users);
   @type     GET -> Messages
   @desc     watch all messages that belong to a chat -> return on change
 */
-function watchMessages(chatId: string, setMessages: Function): any {
+function watchMessages(chatId: string, setMessageArray: Function): any {
   //TODO Fix any return....
   return messagesDB
     .where("chatId", "==", chatId)
@@ -22,8 +22,7 @@ function watchMessages(chatId: string, setMessages: Function): any {
       const messages: Array<messageModel> = [];
       querySnapshot.forEach(
         async (message: any): Promise<void> => {
-          const data = await message.data();
-          console.log(data);
+          const data = await message.data({ serverTimestamps: "estimate" });
           messages.unshift({
             id: message.id,
             chatId: data.chatId,
@@ -36,7 +35,9 @@ function watchMessages(chatId: string, setMessages: Function): any {
           });
         }
       );
-      setMessages(messages);
+      setTimeout(() => {
+        setMessageArray(messages);
+      }, 0);
     });
 }
 

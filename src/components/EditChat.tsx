@@ -96,7 +96,7 @@ export default function EditChat(props: any) {
       <Grid
         container
         item
-        justify="flex-end"
+        justifyContent="flex-end"
         alignItems="center"
         spacing={1}
         style={{ height: "50px" }}

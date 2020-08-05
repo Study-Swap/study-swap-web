@@ -44,7 +44,7 @@ export default function Home() {
       <Grid
         container
         direction="column"
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         spacing={6}
         className={classes.root}
