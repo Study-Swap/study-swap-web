@@ -8,6 +8,8 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import SendIcon from "@material-ui/icons/Send";
 
+import { addPost } from "../utils/firebaseUtils";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: "2px 4px",
@@ -28,7 +30,11 @@ const useStyles = makeStyles((theme) => ({
 
 const options = ["Choose class", "EECS 183", "BIO 172", "ENGR 100"];
 
-export default function CustomizedInputBase() {
+interface newPostProps {
+  onClick: Function;
+}
+
+export default function NewPost({ onClick }: newPostProps) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -89,9 +95,24 @@ export default function CustomizedInputBase() {
         onChange={handleChange}
       />
       <IconButton
-        type="submit"
+        //type="submit"
         className={classes.iconButton}
         aria-label="Send"
+        onClick={() => {
+          onClick({
+            //id?: string;
+            // foreign key relations
+            userId: "temp",
+            classId: "1",
+            // post specific
+            postText: value,
+            postUserName: "Ashish Mahuli",
+            postClassName: options[selectedIndex],
+            //timestamp?: any;
+            edited: false,
+          });
+          setValue("");
+        }}
       >
         <SendIcon />
       </IconButton>

@@ -36,14 +36,10 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "#D3D3D3 !important",
     },
   },
-  list: {
-    maxHeight: 600,
-    maxWidth: 300,
-    overflow: "auto",
-  },
 }));
 
 export default function ChatSelect({
+  key,
   id,
   chatName,
   memberNames,
@@ -58,7 +54,7 @@ export default function ChatSelect({
   const classes = useStyles();
 
   return (
-    <List className={classes.list}>
+    <React.Fragment>
       <ListItem
         alignItems="flex-start"
         className={classes.hover}
@@ -78,14 +74,14 @@ export default function ChatSelect({
                 className={classes.inline}
                 color="textPrimary"
               >
-                Ali Connors
+                Most Recent Texter
               </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
+              {" — Most recent text cut off to something like 50 characters"}
             </React.Fragment>
           }
         />
       </ListItem>
       <Divider variant="fullWidth" component="li" />
-    </List>
+    </React.Fragment>
   );
 }

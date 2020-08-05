@@ -13,7 +13,7 @@ const commentsDB = firebase.firestore().collection(collections.comments);
 @type     GET -> Posts
 @desc     get all posts in a certain class
 */
-function getPosts(classId: string): Promise<postModel[] | void> {
+function getPosts(classId: string): Promise<any> {
   return postsDB
     .where("classId", "==", classId)
     .orderBy("timestamp", "asc")
@@ -23,7 +23,7 @@ function getPosts(classId: string): Promise<postModel[] | void> {
         const posts: Array<postModel> = [];
         snapShot.forEach((post: any): void => {
           const data = post.data();
-          posts.push({
+          posts.unshift({
             userId: data.userId,
             classId: data.classId,
             postText: data.postText,

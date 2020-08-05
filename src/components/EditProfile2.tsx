@@ -130,17 +130,19 @@ export default function EditProfile({
               <IconButton
                 type="submit"
                 aria-label="edit"
-                onClick={handleSave({
-                  id: "12",
-                  firstName: firstInput,
-                  lastName: lastInput,
-                  email: "cmodi@umich.edu",
-                  grade: gradeInput,
-                  bio: bioInput,
-                  classes: ["EECS 281", "EECS 376"],
-                  chats: ["Chat stuff"],
-                  signedUp: true,
-                })}
+                onClick={() =>
+                  handleSave({
+                    id: "12",
+                    firstName: firstInput,
+                    lastName: lastInput,
+                    email: "cmodi@umich.edu",
+                    grade: gradeInput,
+                    bio: bioInput,
+                    classes: ["EECS 281", "EECS 376"],
+                    chats: ["Chat stuff"],
+                    signedUp: true,
+                  })
+                }
               >
                 <SaveIcon />
               </IconButton>

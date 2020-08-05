@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // eslint-disable-next-line
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
@@ -9,6 +9,8 @@ import FeedItem from "../components/FeedItem";
 import NewChat from "../components/NewChat";
 import EditChat from "../components/EditChat";
 import { postData } from "../DummyData/home";
+import { getPosts, getFeed, addPost } from "../utils/firebaseUtils";
+import { postModel } from "../constants/Models";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -26,23 +28,38 @@ const useStyles = makeStyles({
 export default function Home() {
   const classes = useStyles();
   // eslint-disable-next-line
-  const [postState, setPostState] = useState(postData);
+  const [postState, setPostState] = useState<any[]>([]);
+
+  useEffect(() => {
+    console.log(postState);
+    getPosts("1") // classId is hardcoded for now
+      .then((res) => {
+        setPostState(res);
+      })
+      .catch((err) => console.error(err));
+  }, []); // TODO: Add loading indicator and put "refresh" into empty array
 
   return (
     <Container component="main" maxWidth="md">
       <Grid
         container
         direction="column"
-        justify="center"
+        justifyContent="center"
         alignItems="center"
         spacing={6}
         className={classes.root}
       >
         <Grid item>
-          <NewPost />
+          <NewPost
+            onClick={(post: postModel) => {
+              setPostState([post, ...postState]);
+              addPost(post.userId, post.classId, post);
+            }}
+          />
         </Grid>
         {postState.map((thisPost, index) => (
           <FeedItem
+            id={thisPost.id}
             postUserName={thisPost.postUserName}
             postClassName={thisPost.postClassName}
             postText={thisPost.postText}

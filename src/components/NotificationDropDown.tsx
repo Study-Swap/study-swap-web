@@ -61,58 +61,54 @@ const NotificationDropDown = ({
         transition
         disablePortal
       >
-        {({ TransitionProps }) => (
-          <Grow
-            {...TransitionProps}
-            style={{
-              transformOrigin: "center top",
-            }}
-          >
-            <ClickAwayListener onClickAway={handleClose}>
-              <Paper
-                className={classes.paper}
-                style={{
-                  width:
-                    innerWidth > 800 ? innerWidth * 0.35 : innerWidth * 0.95,
-                  height: innerHeight * 0.85,
-                }}
-              >
-                <>
-                  <Typography variant="h5" className={classes.header}>
-                    Notifications
-                  </Typography>
-                  {notificationData.map((nullNotif) => {
-                    const {
-                      id,
-                      // eslint-disable-next-line
-                      userId,
-                      // eslint-disable-next-line
-                      senderId,
-                      senderName,
-                      notificationText,
-                      timestamp,
-                      read,
-                      kind,
-                    } = nullNotif;
-                    return (
-                      <NotificationItem
-                        key={id}
-                        type={kind}
-                        item={{
-                          senderName,
-                          notificationText,
-                          timestamp,
-                          read,
-                          id,
-                        }}
-                      />
-                    );
-                  })}
-                </>
-              </Paper>
-            </ClickAwayListener>
-          </Grow>
-        )}
+        <Grow
+          style={{
+            transformOrigin: "center top",
+          }}
+        >
+          <ClickAwayListener onClickAway={handleClose}>
+            <Paper
+              className={classes.paper}
+              style={{
+                width: innerWidth > 800 ? innerWidth * 0.35 : innerWidth * 0.95,
+                height: innerHeight * 0.85,
+              }}
+            >
+              <>
+                <Typography variant="h5" className={classes.header}>
+                  Notifications
+                </Typography>
+                {notificationData.map((nullNotif) => {
+                  const {
+                    id,
+                    // eslint-disable-next-line
+                    userId,
+                    // eslint-disable-next-line
+                    senderId,
+                    senderName,
+                    notificationText,
+                    timestamp,
+                    read,
+                    kind,
+                  } = nullNotif;
+                  return (
+                    <NotificationItem
+                      key={id}
+                      type={kind}
+                      item={{
+                        senderName,
+                        notificationText,
+                        timestamp,
+                        read,
+                        id,
+                      }}
+                    />
+                  );
+                })}
+              </>
+            </Paper>
+          </ClickAwayListener>
+        </Grow>
       </Popper>
     </div>
   );

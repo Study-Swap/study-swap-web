@@ -48,11 +48,9 @@ export default function Profile() {
   const [myUser, setMyUser] = useState<userModel>(dummyUser);
   const [editing, setEditing] = useState(false);
 
-  function handleSave(user: userModel) {
-    return function () {
-      setMyUser(user);
-      setEditing(!editing);
-    };
+  function handleSave(updatedUser: userModel) {
+    setMyUser(updatedUser);
+    setEditing(!editing);
   }
 
   return (

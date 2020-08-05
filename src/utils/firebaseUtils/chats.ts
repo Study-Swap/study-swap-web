@@ -13,25 +13,31 @@ const usersDB = firebase.firestore().collection(collections.users);
   @type     GET -> Messages
   @desc     watch all messages that belong to a chat -> return on change
 */
-function watchMessages(chatId: string, setMessages: Function): any {
+function watchMessages(chatId: string, setMessageArray: Function): any {
   //TODO Fix any return....
   return messagesDB
     .where("chatId", "==", chatId)
     .orderBy("timestamp", "desc")
     .onSnapshot((querySnapshot: any): void => {
       const messages: Array<messageModel> = [];
-      querySnapshot.forEach((message: any): void => {
-        const data = message.data();
-        messages.push({
-          id: message.id,
-          chatId: data.chatId,
-          messageText: data.messageText,
-          senderId: data.senderId,
-          senderName: data.senderName,
-          timestamp: data.timestamp,
-        });
-      });
-      setMessages(messages);
+      querySnapshot.forEach(
+        async (message: any): Promise<void> => {
+          const data = await message.data({ serverTimestamps: "estimate" });
+          messages.unshift({
+            id: message.id,
+            chatId: data.chatId,
+            messageText: data.messageText,
+            senderId: data.senderId,
+            senderName: data.senderName,
+            timestamp: data.timestamp
+              ? data.timestamp.toDate().toDateString()
+              : new Date().toDateString(),
+          });
+        }
+      );
+      setTimeout(() => {
+        setMessageArray(messages);
+      }, 0);
     });
 }
 
@@ -50,7 +56,7 @@ function addMessages(message: messageModel): void {
   @type     GET -> Chats
   @desc     get user chats
 */
-function getChats(userId: string): Promise<chatsModel[] | void> {
+function getChats(userId: string): Promise<any> {
   return chatsDB
     .where("members", "array-contains", userId)
     .get()
