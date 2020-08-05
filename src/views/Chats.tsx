@@ -23,9 +23,9 @@ import MessageBox from "../components/MessageBox";
 import ChatsToolbar from "../components/ChatsToolbar";
 import WriteMessage from "../components/WriteMessage";
 
-import { chatsModel } from "../constants/Models";
+import { chatsModel, messageModel } from "../constants/Models";
 import { dummyChatsData } from "../DummyData/chats";
-import { getChats } from "../utils/firebaseUtils";
+import { getChats, addMessages } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -76,6 +76,7 @@ const tempUserId = "7k1MF9w490XOeFH5ygGY";
 export default function Chats() {
   //get the ChatSelect working with the .map() function.
   const [myChats, setMyChats] = useState<chatsModel[]>([]);
+  const [myMessage, setMyMessage] = useState<messageModel[]>([]);
   const classes = useStyles();
   const [currentChat, setCurrentChat] = useState<string>("");
   const onClick = (value: string) => {
@@ -146,7 +147,12 @@ export default function Chats() {
           </Grid>
 
           <Grid item style={{ height: 40 }}>
-            <WriteMessage />
+            <WriteMessage
+              submitMessage={(message: messageModel) => {
+                setMyMessage([message, ...myMessage]);
+                addMessages(message);
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>

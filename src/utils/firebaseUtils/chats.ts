@@ -20,17 +20,22 @@ function watchMessages(chatId: string, setMessages: Function): any {
     .orderBy("timestamp", "desc")
     .onSnapshot((querySnapshot: any): void => {
       const messages: Array<messageModel> = [];
-      querySnapshot.forEach((message: any): void => {
-        const data = message.data();
-        messages.push({
-          id: message.id,
-          chatId: data.chatId,
-          messageText: data.messageText,
-          senderId: data.senderId,
-          senderName: data.senderName,
-          timestamp: data.timestamp.toDate().toDateString(),
-        });
-      });
+      querySnapshot.forEach(
+        async (message: any): Promise<void> => {
+          const data = await message.data();
+          console.log(data);
+          messages.unshift({
+            id: message.id,
+            chatId: data.chatId,
+            messageText: data.messageText,
+            senderId: data.senderId,
+            senderName: data.senderName,
+            timestamp: data.timestamp
+              ? data.timestamp.toDate().toDateString()
+              : new Date().toDateString(),
+          });
+        }
+      );
       setMessages(messages);
     });
 }

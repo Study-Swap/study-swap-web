@@ -33,7 +33,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewChat() {
+interface writeMessageProps {
+  submitMessage: Function;
+}
+
+export default function NewChat({ submitMessage }: writeMessageProps) {
   const classes = useStyles();
 
   const [value, setValue] = React.useState("");
@@ -81,9 +85,19 @@ export default function NewChat() {
         onChange={handleChange}
       />
       <IconButton
-        type="submit"
+        //type="submit"
         className={classes.iconButton}
         aria-label="send"
+        onClick={() => {
+          submitMessage({
+            //hard coded to test if new message sent
+            chatId: "9yWHYYczrMViTQwfG3F7",
+            messageText: value,
+            senderId: "12",
+            senderName: "Akul",
+          });
+          setValue("");
+        }}
       >
         <SendIcon />
       </IconButton>
