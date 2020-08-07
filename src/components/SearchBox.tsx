@@ -7,13 +7,10 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import classes from "*.module.css";
 
-const options = [
-  "Chintan Modi",
-  "Ashish Mahuli",
-  "Akul Vijayvargiya",
-  "Varun Madan",
-];
-let currentMembers = ["Rahul Khatti", "John B", "Sarah Wilkins"];
+interface nameAndId {
+  memberName: string;
+  memberId: string;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,11 +26,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchBox(props: any) {
   const classes = useStyles();
+  const [value, setValue] = React.useState<nameAndId | null>(null);
+
   return (
     <Autocomplete
+      value={value}
+      onChange={(event: any, newValue: nameAndId | null) => {
+        if (newValue != null) {
+          console.log(newValue);
+          props.onChange(newValue);
+          setValue(null);
+        }
+      }}
       className={classes.root}
       options={props.options}
-      getOptionLabel={(option: string) => option}
+      getOptionLabel={(option: nameAndId) => option.memberName}
       fullWidth={true}
       ListboxProps={{
         style: {
@@ -64,7 +71,7 @@ export default function SearchBox(props: any) {
               variant="subtitle2"
               style={{ fontWeight: "bold" }}
             >
-              {option}
+              {option.memberName}
             </Typography>
           </Grid>
         </Grid>

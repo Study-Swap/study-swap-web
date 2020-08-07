@@ -16,14 +16,17 @@ import MembersList from "./MembersList";
 import SearchBox from "./SearchBox";
 import { CardContent } from "@material-ui/core";
 import Popper from "@material-ui/core/Popper";
+import { addChats } from "../utils/firebaseUtils";
 
-const options = [
-  "Chintan Modi",
-  "Ashish Mahuli",
-  "Akul Vijayvargiya",
-  "Varun Madan",
+interface nameAndId {
+  memberName: string;
+  memberId: string;
+}
+
+const options: nameAndId[] = [
+  { memberName: "Ashish Mahuli", memberId: "7k1MF9w490XOeFH5ygGY" },
+  { memberName: "Chintan Modi", memberId: "6loalAzoo6UpCo00zFucLfexm8t1" },
 ];
-let currentMembers = ["Rahul Khatti", "John B", "Sarah Wilkins"];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,10 +49,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NewChat(props: any) {
-  const [newSelection, setSelection] = useState<string | null>("");
+  //const [newSelection, setSelection] = useState<string | null>("");
   const classes = useStyles();
   const [chatName, setChatName] = React.useState("");
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
+  //const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   return (
     <Card className={classes.root}>
@@ -83,7 +87,13 @@ export default function NewChat(props: any) {
 
           <Grid container item spacing={2}>
             <Grid item xs={8} className={classes.middleSection}>
-              <SearchBox options={options} dropDownHeight="150px" />
+              <SearchBox
+                options={options}
+                dropDownHeight="150px"
+                onChange={(user: nameAndId) =>
+                  setCurrentMembers([...currentMembers, user])
+                }
+              />
             </Grid>
 
             <Divider orientation="vertical" flexItem />
@@ -103,7 +113,25 @@ export default function NewChat(props: any) {
             </Grid>
 
             <Grid item>
-              <Button size="small" variant="contained" color="secondary">
+              <Button
+                size="small"
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  let memberNames: string[] = [];
+                  let memberIds: string[] = [];
+                  currentMembers.forEach((member, index) => {
+                    memberIds[index] = member.memberId;
+                    memberNames[index] = member.memberName;
+                  });
+                  addChats({
+                    chatName: chatName,
+                    members: memberIds,
+                    memberNames: memberNames,
+                    messages: [],
+                  });
+                }}
+              >
                 Create
               </Button>
             </Grid>

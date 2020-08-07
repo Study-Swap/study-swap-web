@@ -85,33 +85,32 @@ function getChats(userId: string): Promise<any> {
   @type     POST -> Chats
   @desc     add new chat
 */
-function addChats(userId: string, recepientId: string): any {
+function addChats(newChat: chatsModel): any {
   //TODO Fix any return....
   // Make new chat
   chatsDB
     .add({
-      members: [userId, recepientId],
+      chatName: newChat.chatName,
+      members: newChat.members,
+      memberNames: newChat.memberNames,
       messages: [],
     })
     .then((chat: any): void => {
+      //console.log(chat.id);
+
       // Then add chat to users chat list
-      usersDB
-        .doc(userId)
-        .update({
-          chats: firebaseApp.firestore.FieldValue.arrayUnion(chat.id),
-        })
-        .catch((err: any): void => {
-          console.error(err); // will be changed to redirect to error screen
-        });
-      usersDB
-        .doc(recepientId)
-        .update({
-          chats: firebaseApp.firestore.FieldValue.arrayUnion(chat.id),
-        })
-        .catch((err: any): void => {
-          console.error(err); // will be changed to redirect to error screen
-        });
+      newChat.members.forEach((memberId) => {
+        usersDB
+          .doc(memberId)
+          .update({
+            chats: firebaseApp.firestore.FieldValue.arrayUnion(chat.id),
+          })
+          .catch((err: any): void => {
+            console.error(err); // will be changed to redirect to error screen
+          });
+      });
     })
+
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
     });
