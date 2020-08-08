@@ -1,20 +1,22 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import Card from "@material-ui/core/Card";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import SendIcon from "@material-ui/icons/Send";
+import Avatar from "@material-ui/core/Avatar";
+import CardContent from "@material-ui/core/CardContent";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: "2px 4px",
     display: "flex",
     alignItems: "center",
-    height: 200,
-    maxWidth: 500,
+    width: 550,
   },
   input: {
     marginLeft: theme.spacing(2),
@@ -23,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
   },
   iconButton: {
     padding: 10,
+  },
+  media: {
+    height: 50,
+    width: 50,
   },
 }));
 
@@ -53,7 +59,26 @@ export default function CustomizedInputBase() {
   };
 
   return (
-    <Paper component="form" className={classes.root}>
+    <Card className={classes.root}>
+      <CardContent>
+        <Grid container>
+          <Grid item xs={2}>
+            <Avatar
+              className={classes.media}
+              alt="Prof Pic"
+              src={require("./apoorv.png")}
+            />
+          </Grid>
+        </Grid>
+      </CardContent>
+      <InputBase
+        className={classes.input}
+        placeholder="Type a post..."
+        inputProps={{ "aria-label": "post to feed" }}
+        multiline={true}
+        value={value}
+        onChange={handleChange}
+      />
       <Button
         aria-controls="simple-menu"
         aria-haspopup="true"
@@ -79,15 +104,6 @@ export default function CustomizedInputBase() {
           </MenuItem>
         ))}
       </Menu>
-      <InputBase
-        className={classes.input}
-        placeholder="Type a post..."
-        inputProps={{ "aria-label": "post to feed" }}
-        multiline={true}
-        rowsMax={7}
-        value={value}
-        onChange={handleChange}
-      />
       <IconButton
         type="submit"
         className={classes.iconButton}
@@ -96,6 +112,6 @@ export default function CustomizedInputBase() {
       >
         <SendIcon />
       </IconButton>
-    </Paper>
+    </Card>
   );
 }
