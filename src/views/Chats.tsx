@@ -138,6 +138,7 @@ export default function Chats() {
 
           <Grid item style={{ height: 40 }}>
             <WriteMessage
+              chatId={currentChat}
               submitMessage={(message: messageModel) => {
                 //setMyMessage([message, ...myMessage]);
                 addMessages(message);

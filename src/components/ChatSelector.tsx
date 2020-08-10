@@ -10,6 +10,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
+import { getMessage } from "../utils/firebaseUtils/chats";
+import { messageModel } from "../constants/Models";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -28,13 +30,15 @@ const useStyles = makeStyles((theme) => ({
     borderRightWidth: 1,
     borderRightColor: "#D9D9D9",
   },
-  inline: {
-    display: "inline",
-  },
+
   hover: {
     "&:hover": {
       backgroundColor: "#D3D3D3 !important",
     },
+  },
+
+  inline: {
+    display: "inline",
   },
 }));
 
@@ -52,6 +56,24 @@ export default function ChatSelect({
   //some state, and then called from here by uncommenting out.
 
   const classes = useStyles();
+
+  const [firstMessage, setFirstMessage] = useState<messageModel>({
+    chatId: "",
+    messageText:
+      "This is me testing a longer message for rendering in cutting off the message",
+    senderId: "",
+    senderName: "Chintan Modi",
+  });
+
+  useEffect(() => {
+    if (messages !== undefined && messages.size > 0) {
+      getMessage(messages[0]) // classId is hardcoded for now
+        .then((res) => {
+          setFirstMessage(res);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, []);
 
   return (
     <React.Fragment>
@@ -73,10 +95,10 @@ export default function ChatSelect({
                 variant="body2"
                 className={classes.inline}
                 color="textPrimary"
+                //noWrap = {true}
               >
-                Most Recent Texter
+                {firstMessage.messageText}
               </Typography>
-              {" — Most recent text cut off to something like 50 characters"}
             </React.Fragment>
           }
         />

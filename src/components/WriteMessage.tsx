@@ -28,9 +28,13 @@ const useStyles = makeStyles((theme) => ({
 
 interface writeMessageProps {
   submitMessage: Function;
+  chatId: string;
 }
 
-export default function NewChat({ submitMessage }: writeMessageProps) {
+export default function WriteMessage({
+  submitMessage,
+  chatId,
+}: writeMessageProps) {
   const classes = useStyles();
 
   const [value, setValue] = React.useState("");
@@ -84,7 +88,7 @@ export default function NewChat({ submitMessage }: writeMessageProps) {
         onClick={() => {
           submitMessage({
             //hard coded to test if new message sent
-            chatId: "9yWHYYczrMViTQwfG3F7",
+            chatId: chatId,
             messageText: value,
             senderId: "12",
             senderName: "Akul",
