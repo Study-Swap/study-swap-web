@@ -22,8 +22,8 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   media: {
-    height: 50,
-    width: 50,
+    height: 45,
+    width: 45,
   },
 });
 
@@ -31,7 +31,9 @@ export default function Post(props: any) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
+    //<Card className={classes.root}>
+
+    <React.Fragment>
       <CardContent>
         <Grid container>
           <Grid item xs={2}>
@@ -58,6 +60,7 @@ export default function Post(props: any) {
           {props.postText}
         </Typography>
       </CardContent>
+
       <CardActions>
         <Button size="small">React</Button>
         <Button size="small">Comment</Button>
@@ -65,6 +68,7 @@ export default function Post(props: any) {
           Toggle Comments{" "}
         </Button>
       </CardActions>
-    </Card>
+    </React.Fragment>
+    // </Card>
   );
 }

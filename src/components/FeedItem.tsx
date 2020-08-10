@@ -5,9 +5,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../constants/UserContext";
 import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
 import Post from "../components/Post";
 import Comment from "../components/Comment";
+import CardContent from "@material-ui/core/CardContent";
 import NewComment from "../components/NewComment";
 import { postModel } from "../constants/Models";
 import { commentModel } from "../constants/Models";
@@ -91,13 +93,7 @@ export default function FeedItem(props: postModel) {
   }
 
   return (
-    <Grid
-      item
-      container
-      spacing={0}
-      xs={12}
-      className={classes.postAndComments}
-    >
+    <Card className={classes.postAndComments}>
       <Post
         postUserName={props.postUserName}
         postClassName={props.postClassName}
@@ -108,52 +104,56 @@ export default function FeedItem(props: postModel) {
         classId={props.classId}
         onClick={toggleCommentClick}
       />
-      {commentState.length > 0 ? (
-        commentsShown ? (
-          commentState.map((thisComment, index) => (
-            <Grid item key={index} xs={12}>
+      <CardContent>
+        {commentState.length > 0 ? (
+          commentsShown ? (
+            commentState.map((thisComment, index) => (
+              <Grid item key={index} xs={12}>
+                <Comment
+                  id={thisComment.id}
+                  userId={thisComment.userId}
+                  postId={thisComment.postId}
+                  commenterName={thisComment.commenterName}
+                  timestamp={thisComment.timestamp}
+                  commentText={thisComment.commentText}
+                />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12}>
               <Comment
-                id={thisComment.id}
-                userId={thisComment.userId}
-                postId={thisComment.postId}
-                commenterName={thisComment.commenterName}
-                timestamp={thisComment.timestamp}
-                commentText={thisComment.commentText}
+                id={commentState[0].id}
+                userId={commentState[0].userId}
+                postId={commentState[0].postId}
+                commenterName={commentState[0].commenterName}
+                timestamp={commentState[0].timestamp}
+                commentText={commentState[0].commentText}
               />
             </Grid>
-          ))
-        ) : (
+          )
+        ) : commentState.length > 0 ? (
           <Grid item xs={12}>
             <Comment
-              id={commentState[0].id}
-              userId={commentState[0].userId}
-              postId={commentState[0].postId}
-              commenterName={commentState[0].commenterName}
-              timestamp={commentState[0].timestamp}
-              commentText={commentState[0].commentText}
+              id={commentState[commentState.length - 1].id}
+              userId={commentState[commentState.length - 1].userId}
+              postId={commentState[commentState.length - 1].postId}
+              commenterName={
+                commentState[commentState.length - 1].commenterName
+              }
+              timestamp={commentState[commentState.length - 1].timestamp}
+              commentText={commentState[commentState.length - 1].commentText}
             />
           </Grid>
-        )
-      ) : commentState.length > 0 ? (
-        <Grid item xs={12}>
-          <Comment
-            id={commentState[commentState.length - 1].id}
-            userId={commentState[commentState.length - 1].userId}
-            postId={commentState[commentState.length - 1].postId}
-            commenterName={commentState[commentState.length - 1].commenterName}
-            timestamp={commentState[commentState.length - 1].timestamp}
-            commentText={commentState[commentState.length - 1].commentText}
-          />
-        </Grid>
-      ) : (
-        <div> </div>
-      )}
+        ) : (
+          <div> </div>
+        )}
+      </CardContent>
 
       <NewComment
         value={newCommentInput}
         onChange={handleCommentChange}
         onClick={newCommentClick}
       />
-    </Grid>
+    </Card>
   );
 }

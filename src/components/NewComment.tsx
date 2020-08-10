@@ -14,16 +14,19 @@ const useStyles = makeStyles((theme) => ({
   },
 
   media: {
-    height: 50,
-    width: 50,
+    height: 30,
+    width: 30,
   },
 
   input: {
     //marginLeft: theme.spacing(2),
+    backgroundColor: "#d1d1d1",
     flex: 1,
     overflow: "auto",
     fontSize: 14,
     width: "100%",
+    borderRadius: "10px",
+    padding: "10px",
   },
   iconButton: {
     padding: 10,
@@ -34,40 +37,36 @@ export default function NewComment(props: any) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
-      <CardContent>
-        <Grid container spacing={0}>
-          <Grid item xs={2}>
-            <Avatar
-              className={classes.media}
-              alt="Prof Pic"
-              src={require("./apoorv.png")}
-            />
-          </Grid>
+    <Grid container spacing={0} className={classes.root}>
+      <Grid item xs={1}>
+        <Avatar
+          className={classes.media}
+          alt="Prof Pic"
+          src={require("./apoorv.png")}
+        />
+      </Grid>
 
-          <Grid item xs={8}>
-            <InputBase
-              className={classes.input}
-              placeholder="Type a Comment..."
-              inputProps={{ "aria-label": "post to feed" }}
-              multiline={true}
-              rowsMax={7}
-              value={props.value}
-              onChange={props.onChange}
-            />
-          </Grid>
-          <Grid item xs={2}>
-            <IconButton
-              type="submit"
-              className={classes.iconButton}
-              aria-label="Comment"
-              onClick={props.onClick}
-            >
-              <SendIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+      <Grid item xs={9}>
+        <InputBase
+          className={classes.input}
+          placeholder="Type a Comment..."
+          inputProps={{ "aria-label": "post to feed" }}
+          multiline={true}
+          rowsMax={7}
+          value={props.value}
+          onChange={props.onChange}
+        />
+      </Grid>
+      <Grid item xs={2}>
+        <IconButton
+          type="submit"
+          className={classes.iconButton}
+          aria-label="Comment"
+          onClick={props.onClick}
+        >
+          <SendIcon />
+        </IconButton>
+      </Grid>
+    </Grid>
   );
 }

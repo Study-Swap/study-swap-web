@@ -48,6 +48,7 @@ export default function Home() {
         alignItems="center"
         spacing={6}
         className={classes.root}
+        style={{ width: "500px" }}
       >
         <Grid item>
           <NewPost
@@ -58,16 +59,18 @@ export default function Home() {
           />
         </Grid>
         {postState.map((thisPost, index) => (
-          <FeedItem
-            id={thisPost.id}
-            postUserName={thisPost.postUserName}
-            postClassName={thisPost.postClassName}
-            postText={thisPost.postText}
-            timestamp={thisPost.timestamp}
-            edited={thisPost.edited}
-            userId={thisPost.userId}
-            classId={thisPost.classId}
-          />
+          <Grid item key={index} style={{ width: "100%" }}>
+            <FeedItem
+              id={thisPost.id}
+              postUserName={thisPost.postUserName}
+              postClassName={thisPost.postClassName}
+              postText={thisPost.postText}
+              timestamp={thisPost.timestamp}
+              edited={thisPost.edited}
+              userId={thisPost.userId}
+              classId={thisPost.classId}
+            />
+          </Grid>
         ))}
       </Grid>
     </Container>
