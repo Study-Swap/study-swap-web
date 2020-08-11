@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "4px",
     paddingLeft: "10px",
     paddingRight: "10px",
+    display: "inline-block",
   },
 }));
 

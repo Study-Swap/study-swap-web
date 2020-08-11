@@ -48,7 +48,7 @@ export default function Home() {
         alignItems="center"
         spacing={6}
         className={classes.root}
-        style={{ width: "500px" }}
+        //style={{ width: "500px" }}
       >
         <Grid item>
           <NewPost
@@ -59,7 +59,7 @@ export default function Home() {
           />
         </Grid>
         {postState.map((thisPost, index) => (
-          <Grid item key={index} style={{ width: "100%" }}>
+          <Grid item key={index} style={{ width: "500px" }}>
             <FeedItem
               id={thisPost.id}
               postUserName={thisPost.postUserName}

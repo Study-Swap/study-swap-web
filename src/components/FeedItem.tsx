@@ -22,13 +22,15 @@ import history from "../utils/historyUtils";
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-  },
-  postAndComments: {
-    maxWidth: 500,
+    width: "100%",
   },
 
   control: {
     padding: 2,
+  },
+
+  commentContainer: {
+    paddingBottom: "5px",
   },
 });
 
@@ -93,7 +95,7 @@ export default function FeedItem(props: postModel) {
   }
 
   return (
-    <Card className={classes.postAndComments}>
+    <Card className={classes.root}>
       <Post
         postUserName={props.postUserName}
         postClassName={props.postClassName}
@@ -104,10 +106,11 @@ export default function FeedItem(props: postModel) {
         classId={props.classId}
         onClick={toggleCommentClick}
       />
-      <CardContent>
-        {commentState.length > 0 ? (
-          commentsShown ? (
-            commentState.map((thisComment, index) => (
+
+      {commentState.length > 0 ? (
+        commentsShown ? (
+          <CardContent className={classes.commentContainer}>
+            {commentState.map((thisComment, index) => (
               <Grid item key={index} xs={12}>
                 <Comment
                   id={thisComment.id}
@@ -118,8 +121,10 @@ export default function FeedItem(props: postModel) {
                   commentText={thisComment.commentText}
                 />
               </Grid>
-            ))
-          ) : (
+            ))}
+          </CardContent>
+        ) : (
+          <CardContent className={classes.commentContainer}>
             <Grid item xs={12}>
               <Comment
                 id={commentState[0].id}
@@ -130,30 +135,39 @@ export default function FeedItem(props: postModel) {
                 commentText={commentState[0].commentText}
               />
             </Grid>
-          )
-        ) : commentState.length > 0 ? (
-          <Grid item xs={12}>
-            <Comment
-              id={commentState[commentState.length - 1].id}
-              userId={commentState[commentState.length - 1].userId}
-              postId={commentState[commentState.length - 1].postId}
-              commenterName={
-                commentState[commentState.length - 1].commenterName
-              }
-              timestamp={commentState[commentState.length - 1].timestamp}
-              commentText={commentState[commentState.length - 1].commentText}
-            />
-          </Grid>
-        ) : (
-          <div> </div>
-        )}
-      </CardContent>
+          </CardContent>
+        )
+      ) : commentState.length > 0 ? (
+        <CardContent
+          className={classes.commentContainer}
+          style={{ backgroundColor: "yellow" }}
+        >
+          {
+            <Grid item xs={12}>
+              <Comment
+                id={commentState[commentState.length - 1].id}
+                userId={commentState[commentState.length - 1].userId}
+                postId={commentState[commentState.length - 1].postId}
+                commenterName={
+                  commentState[commentState.length - 1].commenterName
+                }
+                timestamp={commentState[commentState.length - 1].timestamp}
+                commentText={commentState[commentState.length - 1].commentText}
+              />
+            </Grid>
+          }
+        </CardContent>
+      ) : (
+        <div> </div>
+      )}
 
-      <NewComment
-        value={newCommentInput}
-        onChange={handleCommentChange}
-        onClick={newCommentClick}
-      />
+      <CardContent style={{ paddingTop: "4px", paddingBottom: "4px" }}>
+        <NewComment
+          value={newCommentInput}
+          onChange={handleCommentChange}
+          onClick={newCommentClick}
+        />
+      </CardContent>
     </Card>
   );
 }

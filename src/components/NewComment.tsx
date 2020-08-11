@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
   },
   iconButton: {
-    padding: 10,
+    //padding: 10,
   },
 }));
 
@@ -37,7 +37,7 @@ export default function NewComment(props: any) {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={0} className={classes.root}>
+    <Grid container spacing={1} className={classes.root} alignItems="center">
       <Grid item xs={1}>
         <Avatar
           className={classes.media}
@@ -46,7 +46,7 @@ export default function NewComment(props: any) {
         />
       </Grid>
 
-      <Grid item xs={9}>
+      <Grid item xs={10}>
         <InputBase
           className={classes.input}
           placeholder="Type a Comment..."
@@ -57,7 +57,7 @@ export default function NewComment(props: any) {
           onChange={props.onChange}
         />
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={1}>
         <IconButton
           type="submit"
           className={classes.iconButton}
