@@ -30,7 +30,7 @@ const useStyles = makeStyles({
   },
 
   commentContainer: {
-    paddingBottom: "5px",
+    paddingBottom: "2px",
   },
 });
 
@@ -137,26 +137,6 @@ export default function FeedItem(props: postModel) {
             </Grid>
           </CardContent>
         )
-      ) : commentState.length > 0 ? (
-        <CardContent
-          className={classes.commentContainer}
-          style={{ backgroundColor: "yellow" }}
-        >
-          {
-            <Grid item xs={12}>
-              <Comment
-                id={commentState[commentState.length - 1].id}
-                userId={commentState[commentState.length - 1].userId}
-                postId={commentState[commentState.length - 1].postId}
-                commenterName={
-                  commentState[commentState.length - 1].commenterName
-                }
-                timestamp={commentState[commentState.length - 1].timestamp}
-                commentText={commentState[commentState.length - 1].commentText}
-              />
-            </Grid>
-          }
-        </CardContent>
       ) : (
         <div> </div>
       )}

@@ -16,8 +16,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
     //fontWeight: "regular"
   },
-  pos: {
+  timestamp: {
     fontSize: 12,
+    paddingLeft: "10px",
   },
   media: {
     height: 30,
@@ -40,7 +41,7 @@ export default function Comment(props: commentModel) {
   //const theme = useTheme();
 
   return (
-    <Grid container>
+    <Grid container item>
       <Grid item xs={1}>
         <Avatar
           className={classes.media}
@@ -58,7 +59,7 @@ export default function Comment(props: commentModel) {
             {props.commentText}
           </Typography>
         </div>
-        <Typography className={classes.pos} color="textSecondary">
+        <Typography className={classes.timestamp} color="textSecondary">
           {props.timestamp}
         </Typography>
       </Grid>
