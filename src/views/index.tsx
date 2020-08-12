@@ -28,11 +28,11 @@ interface RouteType {
 }
 export const routes: Array<RouteType> = [
   { path: "/login", component: Login },
-  { path: "/home", component: Home },
   { path: "/chats", component: Chats },
   { path: "/profile", component: Profile },
   { path: "/signup", component: SignUp },
   { path: "/dashboard", component: AdminDashboard },
   { path: "/not-logged-in", component: NotLoggedIn },
   { path: "/reset-password", component: PasswordReset },
+  { path: "/home", component: Home },
 ];

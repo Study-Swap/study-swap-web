@@ -12,7 +12,14 @@ import Typography from "@material-ui/core/Typography";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import IconButton from "@material-ui/core/IconButton";
 import CancelIcon from "@material-ui/icons/Cancel";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ComputerIcon from "@material-ui/icons/Computer";
 import SaveIcon from "@material-ui/icons/Save";
+import Link from "@material-ui/core/Link";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { userModel } from "../constants/Models";
 import { dummyUser } from "../DummyData/profile";
@@ -23,33 +30,36 @@ import { logoutUser } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles({
   root: {
-    width: "80%",
-  },
-
-  media: {
-    height: "100%",
     width: "100%",
+    height: 200,
   },
-  inputBio: {
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+  pos: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  media: {
+    height: 150,
+    width: 150,
+  },
+  input: {
     //marginLeft: theme.spacing(2),
     flex: 1,
     overflow: "auto",
     fontSize: 14,
     width: "100%",
   },
-  inputName: {
-    //marginLeft: theme.spacing(2),
-    flex: 1,
-    overflow: "auto",
-    fontSize: 30,
-    fontWeight: "bold",
+  userInfo: {
+    marginLeft: 20,
+    dislpay: "flex",
+    flexDirection: "column",
   },
-  inputGrade: {
-    //marginLeft: theme.spacing(2),
-    flex: 1,
-    overflow: "auto",
-    fontSize: 20,
-    fontWeight: "bold",
+  button: {
+    height: 40,
+    marginRight: 3,
   },
 });
 
@@ -58,110 +68,107 @@ export default function EditProfile({
   firstName,
   lastName,
   grade,
-  handleCancel,
-  handleSave,
+  setEditing,
+  setUser,
+  classIds,
+  classNames,
 }: any) {
   // eslint-disable-next-line
-
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const [bioInput, setBioInput] = useState(bio);
-  const [firstInput, setFirstInput] = useState(firstName);
-  const [lastInput, setLastInput] = useState(lastName);
-  const [gradeInput, setGradeInput] = useState(grade);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <Container component="main" maxWidth="md">
-      <Card className={classes.root}>
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={2}>
-              <Avatar
-                className={classes.media}
-                alt="Prof Pic"
-                src={require("../components/apoorv.png")}
-              />
-            </Grid>
-
-            <Grid item xs={5}>
-              <div>
-                <OutlinedInput
-                  margin="dense"
-                  className={classes.inputName}
-                  placeholder="First Name"
-                  inputProps={{ "aria-label": "post to feed" }}
-                  value={firstInput}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setFirstInput(event.target.value);
-                  }}
+    <Card className={classes.root}>
+      <CardContent>
+        <Grid container spacing={2}>
+          <Grid container item xs={9}>
+            <Grid container item direction="row" alignItems="flex-start">
+              <Grid item xs={3}>
+                <Avatar
+                  className={classes.media}
+                  alt="Prof Pic"
+                  src={require("../components/apoorv.png")}
                 />
-                <OutlinedInput
-                  margin="dense"
-                  className={classes.inputName}
-                  placeholder="First Name"
-                  inputProps={{ "aria-label": "post to feed" }}
-                  value={lastInput}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setLastInput(event.target.value);
-                  }}
-                />
-                <OutlinedInput
-                  margin="dense"
-                  className={classes.inputName}
-                  placeholder="First Name"
-                  inputProps={{ "aria-label": "post to feed" }}
-                  value={gradeInput}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    setGradeInput(event.target.value);
-                  }}
-                />
-              </div>
-            </Grid>
-            <Grid item>
-              <IconButton
-                type="submit"
-                aria-label="edit"
-                onClick={handleCancel}
-              >
-                <CancelIcon />
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <IconButton
-                type="submit"
-                aria-label="edit"
-                onClick={handleSave({
-                  id: "12",
-                  firstName: firstInput,
-                  lastName: lastInput,
-                  email: "cmodi@umich.edu",
-                  grade: gradeInput,
-                  bio: bioInput,
-                  classes: ["EECS 281", "EECS 376"],
-                  chats: ["Chat stuff"],
-                  signedUp: true,
-                })}
-              >
-                <SaveIcon />
-              </IconButton>
+              </Grid>
+              <Grid item xs={9}>
+                <div className={classes.userInfo}>
+                  <div>
+                    <TextField id="name" label="Outlined" variant="outlined" />
+                  </div>
+                  <div>
+                    <TextField id="grade" label="Outlined" variant="outlined" />
+                  </div>
+                  <div>
+                    <TextField id="bio" label="Outlined" variant="outlined" />
+                  </div>
+                </div>
+              </Grid>
             </Grid>
           </Grid>
-          <br></br>
-
-          <OutlinedInput
-            margin="dense"
-            className={classes.inputBio}
-            placeholder="Type a Comment..."
-            inputProps={{ "aria-label": "post to feed" }}
-            multiline={true}
-            rowsMax={7}
-            value={bioInput}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              setBioInput(event.target.value);
-            }}
-          />
-        </CardContent>
-      </Card>
-    </Container>
+          <Grid container item xs={3} direction="column" alignItems="flex-end">
+            <Grid item>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "flex-end",
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={() => {
+                    setUser({});
+                  }}
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={() => {
+                    setEditing(false);
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </Grid>
+            <br />
+            {classNames.map((name: string, index: number) => {
+              return (
+                <Grid item>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "flex-end",
+                    }}
+                  >
+                    <ComputerIcon />
+                    <Link
+                      href={`/class/${classIds[index]}`}
+                      style={{ fontSize: 15, marginRight: 30, marginLeft: 5 }}
+                    >
+                      {name}
+                    </Link>
+                  </div>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
   );
 }

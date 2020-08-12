@@ -36,6 +36,7 @@ function App() {
       if (authUser) {
         getUser(authUser.uid).then((res: any) => {
           setUser(res);
+          console.log(res);
         });
       }
     });

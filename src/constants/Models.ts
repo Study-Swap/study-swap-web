@@ -9,6 +9,7 @@ export interface userModel {
   grade?: string;
   bio?: string;
   classes: Array<string>;
+  classNames: Array<string>;
   chats: Array<string>;
   signedUp: boolean;
 }
