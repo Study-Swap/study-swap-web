@@ -16,10 +16,13 @@ import SaveIcon from "@material-ui/icons/Save";
 import { makeStyles } from "@material-ui/core/styles";
 import { userModel } from "../constants/Models";
 import { dummyUser } from "../DummyData/profile";
+import firebase from "firebase";
+import FileUploader from "react-firebase-file-uploader";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 import { logoutUser } from "../utils/firebaseUtils";
+import { NONAME } from "dns";
 
 const useStyles = makeStyles({
   root: {
@@ -27,8 +30,11 @@ const useStyles = makeStyles({
   },
 
   media: {
-    height: "100%",
+    height: "70%",
     width: "100%",
+  },
+  picInput: {
+    display: "none",
   },
   inputBio: {
     //marginLeft: theme.spacing(2),
@@ -76,11 +82,20 @@ export default function EditProfile({
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={2}>
-              <Avatar
-                className={classes.media}
-                alt="Prof Pic"
-                src={require("../components/apoorv.png")}
+              <input
+                accept="image/*"
+                className={classes.picInput}
+                id="change-image"
+                multiple
+                type="file"
               />
+              <label htmlFor="change-image">
+                <Avatar
+                  className={classes.media}
+                  alt="Prof Pic"
+                  src={require("../components/apoorv.png")}
+                />
+              </label>
             </Grid>
 
             <Grid item xs={5}>

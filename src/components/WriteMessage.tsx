@@ -30,12 +30,16 @@ const useStyles = makeStyles((theme) => ({
   iconButton: {
     padding: 10,
   },
+  picInput: {
+    display: "none",
+  },
 }));
 
 export default function NewChat() {
   const classes = useStyles();
 
   const [value, setValue] = React.useState("");
+
   const handleChange = (event: any) => {
     setValue(event.target.value);
   };
@@ -69,7 +73,16 @@ export default function NewChat() {
           onClose={handleClose}
         >
           <MenuItem onClick={handleClose}>Take a picture</MenuItem>
-          <MenuItem onClick={handleClose}>Choose from Camera Roll</MenuItem>
+          <input
+            accept="image/*"
+            className={classes.picInput}
+            id="contained-button-file"
+            multiple
+            type="file"
+          />
+          <label htmlFor="contained-button-file">
+            <MenuItem onClick={handleClose}>Choose from Camera Roll</MenuItem>
+          </label>
         </Menu>
         <InputBase
           className={classes.input}
