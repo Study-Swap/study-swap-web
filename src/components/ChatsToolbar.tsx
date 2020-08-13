@@ -31,9 +31,9 @@ import { Autorenew } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   newChatModal: {
-    position: "absolute",
-    left: "50%",
-    top: " 50%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
 
     //might switch to:
     //position: fixed;

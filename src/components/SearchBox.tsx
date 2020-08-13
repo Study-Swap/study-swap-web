@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
     width: "100%",
+    fontSize: 14,
   },
 
   media: {
@@ -44,12 +45,14 @@ export default function SearchBox(props: any) {
       fullWidth={true}
       ListboxProps={{
         style: {
+          fontSize: 14,
           maxHeight: props.dropDownHeight,
           overflow: "true",
         },
       }}
       renderInput={(params) => (
         <TextField
+          style={{ fontSize: 14 }}
           {...params}
           label="Search for people to add"
           margin="dense"

@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
   inputChatName: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
   },
 
   media: {
@@ -63,7 +63,7 @@ export default function NewChat(props: any) {
             <Typography
               color="textPrimary"
               variant="h6"
-              style={{ fontWeight: "bold" }}
+              style={{ fontWeight: "bold", fontSize: 14 }}
             >
               Create Group
             </Typography>
