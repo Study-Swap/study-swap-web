@@ -250,6 +250,7 @@ export default function SignUp() {
                   lastName,
                   email,
                   classes: [],
+                  classNames: [],
                   chats: [],
                   signedUp: true,
                 })
