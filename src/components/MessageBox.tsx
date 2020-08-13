@@ -15,17 +15,24 @@ import { messageModel } from "../constants/Models";
 import CardContent from "@material-ui/core/CardContent";
 
 const useStyles = makeStyles((theme) => ({
-  textMessage: {
+  textMessageLeft: {
     borderRadius: "10px",
     minwidth: "10px",
-    maxWidth: "200px",
+    maxWidth: "300px",
+    marginLeft: "5px",
+  },
+  textMessageRight: {
+    borderRadius: "10px",
+    minwidth: "10px",
+    maxWidth: "300px",
   },
 
   textOnly: {
-    paddingTop: "6px",
-    paddingBottom: "6px",
+    paddingTop: "3px",
+    paddingBottom: "3px",
     paddingLeft: "6px",
     paddingRight: "6px",
+    fontSize: 14,
   },
 
   inline: {
@@ -94,8 +101,8 @@ export default function MessageBox(props: any) {
 
                 <Grid item>
                   <div
-                    className={classes.textMessage}
-                    style={{ backgroundColor: "#d1d1d1" }}
+                    className={classes.textMessageLeft}
+                    style={{ backgroundColor: "#e5e5ea" }}
                   >
                     <Typography className={classes.textOnly}>
                       {messageText}
@@ -113,8 +120,8 @@ export default function MessageBox(props: any) {
               >
                 <Grid item>
                   <div
-                    className={classes.textMessage}
-                    style={{ backgroundColor: "blue" }}
+                    className={classes.textMessageRight}
+                    style={{ backgroundColor: "#4bbbfa" }}
                   >
                     <Typography
                       className={classes.textOnly}

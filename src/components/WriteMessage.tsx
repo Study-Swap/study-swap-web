@@ -11,15 +11,19 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   rootInput: {
-    border: "outlined",
     display: "flex",
     alignItems: "center",
     height: "100%",
     width: "100%",
   },
   input: {
-    marginLeft: theme.spacing(1),
+    //marginLeft: theme.spacing(1),
+    paddingLeft: "10px",
     flex: 1,
+    backgroundColor: "white",
+    borderRadius: "15px",
+    height: "70%",
+    fontSize: 14,
   },
   iconButton: {
     padding: 10,
@@ -53,7 +57,7 @@ export default function WriteMessage({
   };
 
   return (
-    <Paper component="form" className={classes.rootInput}>
+    <div className={classes.rootInput}>
       <IconButton
         className={classes.iconButton}
         aria-label="image-menu"
@@ -99,6 +103,6 @@ export default function WriteMessage({
       >
         <SendIcon />
       </IconButton>
-    </Paper>
+    </div>
   );
 }

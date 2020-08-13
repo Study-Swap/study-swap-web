@@ -10,17 +10,17 @@ import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Card from "@material-ui/core/Card";
-import EditChat from "../components/EditChat";
-import NewChat from "../components/NewChat";
+import EditChat from "./EditChat";
+import NewChat from "./NewChat";
 import Modal from "@material-ui/core/Modal";
 import IconButton from "@material-ui/core/Button";
 import CreateIcon from "@material-ui/icons/Create";
 import InfoIcon from "@material-ui/icons/Info";
 import Popper from "@material-ui/core/Popper";
 
-import ChatSelect from "../components/ChatSelector";
-import MessageBox from "../components/MessageBox";
-import WriteMessage from "../components/WriteMessage";
+import ChatSelect from "./ChatSelector";
+import MessageBox from "./MessageBox";
+import WriteMessage from "./WriteMessage";
 
 import { chatsModel } from "../constants/Models";
 import { dummyChatsData } from "../DummyData/chats";
@@ -43,38 +43,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ChatToolbar() {
+export default function ChatsToolbar2() {
   //get the ChatSelect working with the .map() function.
   const classes = useStyles();
 
-  const [modalOpen, setModalOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const handleOpen = () => {
-    setModalOpen(true);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
-  const handleClose = () => {
-    setModalOpen(false);
-  };
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popper" : undefined;
 
   return (
     <React.Fragment>
-      <IconButton type="button" onClick={handleOpen}>
-        <CreateIcon />
-      </IconButton>
-      <Modal
-        className={classes.newChatModal}
-        open={modalOpen}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        <NewChat />
-      </Modal>
+      <Grid item xs={1}>
+        <IconButton aria-describedby={id} type="button" onClick={handleClick}>
+          <InfoIcon />
+        </IconButton>
+        <Popper id={id} open={open} anchorEl={anchorEl} placement="bottom-end">
+          <div>
+            {" "}
+            <EditChat />
+          </div>
+        </Popper>
+      </Grid>
     </React.Fragment>
   );
 }
-
-/* 
-
-*/

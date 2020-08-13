@@ -9,6 +9,7 @@ import List from "@material-ui/core/List";
 import ChatSelect from "../components/ChatSelector";
 import MessageBox from "../components/MessageBox";
 import ChatsToolbar from "../components/ChatsToolbar";
+import ChatsToolbar2 from "../components/ChatsToolbar2";
 import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel, messageModel } from "../constants/Models";
@@ -18,10 +19,11 @@ import { getChats, addMessages } from "../utils/firebaseUtils";
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 import { Autorenew } from "@material-ui/icons";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: "90%",
     backgroundColor: theme.palette.background.paper,
     height: 450,
   },
@@ -35,12 +37,20 @@ const useStyles = makeStyles((theme) => ({
   inline: {
     display: "inline",
   },
-  topbar: {
-    width: "100%",
+  topbarLeft: {
     height: 50,
-    backgroundColor: "blue", //change to theme
+    //backgroundColor: "red", //change to theme
     alignItems: "center",
+    justifyContent: "flex-end",
   },
+
+  topbarRight: {
+    height: 50,
+    backgroundColor: "#f0f0f0", //change to theme
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+
   newChatModal: {
     display: "flex",
     alignItems: "center",
@@ -51,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
     //top: 50%;
     //left: 50%;
     //transform: translate(-50%, -50%);
+  },
+  leftSide: {
+    backgroundColor: "#dedcdf",
   },
 
   list: {
@@ -81,52 +94,54 @@ export default function Chats() {
       .catch((err) => console.error(err));
   }, []);
 
-  const myNums = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-  ];
-
   return (
     <Container component="main" maxWidth="md">
       <Grid container className={classes.root}>
-        <Grid container item sm={12} className={classes.topbar}>
-          <ChatsToolbar />
+        {" "}
+        {/*top level horizontal grid*/}
+        <Grid
+          container
+          sm={4}
+          item
+          direction="column"
+          className={classes.leftSide}
+        >
+          {" "}
+          {/*left side of view*/}
+          <Grid item container className={classes.topbarLeft}>
+            <Grid item>
+              <ChatsToolbar />
+            </Grid>
+          </Grid>
+          <Divider />
+          <Grid item style={{ height: 400 }}>
+            {" "}
+            {/*Grid item to hold <List> of <chatSelect> listItems*/}
+            <List className={classes.list}>
+              {myChats.map((thisChatSelector, index) => (
+                <React.Fragment key={index}>
+                  <ChatSelect
+                    id={thisChatSelector.id}
+                    chatName={thisChatSelector.chatName}
+                    memberNames={thisChatSelector.memberNames}
+                    messages={thisChatSelector.messages}
+                    onClick={onClick}
+                  />
+                </React.Fragment>
+              ))}
+            </List>
+          </Grid>
         </Grid>
-        <Grid container item direction="column" sm={4} style={{ height: 400 }}>
-          <List className={classes.list}>
-            {myChats.map((thisChatSelector, index) => (
-              <React.Fragment key={index}>
-                <ChatSelect
-                  //we are putting a ListItem in a grid item in a grid contianer instead of list. is this sus
-                  id={thisChatSelector.id}
-                  chatName={thisChatSelector.chatName}
-                  memberNames={thisChatSelector.memberNames}
-                  messages={thisChatSelector.messages}
-                  onClick={onClick}
-                />
-              </React.Fragment>
-            ))}
-          </List>
-        </Grid>
-
-        <Grid item container sm={8} direction="column">
-          <Grid
+        <Grid container sm={8} item direction="column">
+          {" "}
+          {/*right side of view*/}
+          <Grid item container className={classes.topbarRight}>
+            <Grid item>
+              <ChatsToolbar2 />
+            </Grid>
+          </Grid>
+          <Divider />
+          <Grid // all the messages rendered in this at Grid items in MessageBox
             item
             container
             className={classes.rootChat}
@@ -135,8 +150,8 @@ export default function Chats() {
           >
             <MessageBox chatId={currentChat} />
           </Grid>
-
-          <Grid item style={{ height: 40 }}>
+          <Divider />
+          <Grid item style={{ height: 40, backgroundColor: "#f0f0f0" }}>
             <WriteMessage
               chatId={currentChat}
               submitMessage={(message: messageModel) => {
@@ -146,21 +161,6 @@ export default function Chats() {
             />
           </Grid>
         </Grid>
-      </Grid>
-
-      <br></br>
-      <br></br>
-      <br></br>
-      <Grid
-        item
-        container
-        className={classes.rootChat}
-        direction="column"
-        spacing={0}
-      >
-        {myNums.map((thisNum, index) => (
-          <p key={index}>{thisNum}</p>
-        ))}
       </Grid>
     </Container>
   );

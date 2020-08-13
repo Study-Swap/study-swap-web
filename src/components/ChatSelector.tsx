@@ -37,8 +37,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  inline: {
+  chatTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+
+  message: {
     display: "inline",
+    fontSize: 14,
   },
 }));
 
@@ -87,14 +93,26 @@ export default function ChatSelect({
         </ListItemAvatar>
 
         <ListItemText
-          primary={chatName}
+          primary={
+            <React.Fragment>
+              <Typography
+                component="span"
+                variant="body2"
+                className={classes.chatTitle}
+                color="textPrimary"
+                noWrap={true}
+              >
+                {chatName}
+              </Typography>
+            </React.Fragment>
+          }
           secondary={
             <React.Fragment>
               <Typography
                 component="span"
                 variant="body2"
-                className={classes.inline}
-                color="textPrimary"
+                className={classes.message}
+                color="textSecondary"
                 //noWrap = {true}
               >
                 {firstMessage.messageText}
