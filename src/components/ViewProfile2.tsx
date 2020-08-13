@@ -162,7 +162,7 @@ export default function ViewProfile({
                   >
                     <ComputerIcon />
                     <Link
-                      href={`/class/${classIds[index]}`}
+                      href={`/classes/${classIds[index]}`}
                       style={{ fontSize: 15, marginRight: 30, marginLeft: 5 }}
                     >
                       {name}

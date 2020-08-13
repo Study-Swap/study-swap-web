@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    userSelect: "none",
   },
   timeColumn: {
     marginRight: 3,
@@ -72,6 +73,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-end",
+    userSelect: "none",
   },
 }));
 

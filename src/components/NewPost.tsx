@@ -12,9 +12,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: "2px 4px",
     display: "flex",
-    alignItems: "center",
-    height: 200,
-    maxWidth: 500,
+    flexDirection: "column",
+    maxHeight: 200,
+    width: 450,
   },
   input: {
     marginLeft: theme.spacing(2),
@@ -31,10 +31,14 @@ const options = ["Choose class", "EECS 183", "BIO 172", "ENGR 100"];
 export default function CustomizedInputBase() {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
+  const [len, setLen] = React.useState(0);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleChange = (event: any) => {
-    setValue(event.target.value);
+    if (event.target.value.length <= 300) {
+      setValue(event.target.value);
+      setLen(event.target.value.length);
+    }
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -54,47 +58,64 @@ export default function CustomizedInputBase() {
 
   return (
     <Paper component="form" className={classes.root}>
-      <Button
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-        onClick={handleClick}
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          {options.map((option, index) => (
+            <MenuItem
+              key={option}
+              disabled={index === 0}
+              selected={index === selectedIndex}
+              onClick={(event) => handleMenuItemClick(event, index)}
+            >
+              {option}
+            </MenuItem>
+          ))}
+        </Menu>
+        <InputBase
+          className={classes.input}
+          placeholder="Type a post..."
+          inputProps={{ "aria-label": "post to feed" }}
+          multiline={true}
+          rowsMax={7}
+          value={value}
+          fullWidth
+          onChange={handleChange}
+        />
+        <IconButton
+          type="submit"
+          className={classes.iconButton}
+          aria-label="Send"
+          disabled={selectedIndex === 0}
+        >
+          <SendIcon />
+        </IconButton>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+        }}
       >
-        {options[selectedIndex]}
-      </Button>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        {options.map((option, index) => (
-          <MenuItem
-            key={option}
-            disabled={index === 0}
-            selected={index === selectedIndex}
-            onClick={(event) => handleMenuItemClick(event, index)}
-          >
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
-      <InputBase
-        className={classes.input}
-        placeholder="Type a post..."
-        inputProps={{ "aria-label": "post to feed" }}
-        multiline={true}
-        rowsMax={7}
-        value={value}
-        onChange={handleChange}
-      />
-      <IconButton
-        type="submit"
-        className={classes.iconButton}
-        aria-label="Send"
-      >
-        <SendIcon />
-      </IconButton>
+        <Button
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+          onClick={handleClick}
+          style={{ marginLeft: 5 }}
+        >
+          {options[selectedIndex]}
+        </Button>
+        <div style={{ marginBottom: 8, fontSize: 15, marginRight: 5 }}>
+          {len}/300
+        </div>
+      </div>
     </Paper>
   );
 }
