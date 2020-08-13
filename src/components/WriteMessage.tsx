@@ -11,15 +11,19 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   rootInput: {
-    border: "outlined",
     display: "flex",
     alignItems: "center",
     height: "100%",
     width: "100%",
   },
   input: {
-    marginLeft: theme.spacing(1),
+    //marginLeft: theme.spacing(1),
+    paddingLeft: "10px",
     flex: 1,
+    backgroundColor: "white",
+    borderRadius: "15px",
+    height: "70%",
+    fontSize: 14,
   },
   iconButton: {
     padding: 10,
@@ -28,9 +32,13 @@ const useStyles = makeStyles((theme) => ({
 
 interface writeMessageProps {
   submitMessage: Function;
+  chatId: string;
 }
 
-export default function NewChat({ submitMessage }: writeMessageProps) {
+export default function WriteMessage({
+  submitMessage,
+  chatId,
+}: writeMessageProps) {
   const classes = useStyles();
 
   const [value, setValue] = React.useState("");
@@ -49,7 +57,7 @@ export default function NewChat({ submitMessage }: writeMessageProps) {
   };
 
   return (
-    <Paper component="form" className={classes.rootInput}>
+    <div className={classes.rootInput}>
       <IconButton
         className={classes.iconButton}
         aria-label="image-menu"
@@ -84,7 +92,7 @@ export default function NewChat({ submitMessage }: writeMessageProps) {
         onClick={() => {
           submitMessage({
             //hard coded to test if new message sent
-            chatId: "9yWHYYczrMViTQwfG3F7",
+            chatId: chatId,
             messageText: value,
             senderId: "12",
             senderName: "Akul",
@@ -95,6 +103,6 @@ export default function NewChat({ submitMessage }: writeMessageProps) {
       >
         <SendIcon />
       </IconButton>
-    </Paper>
+    </div>
   );
 }

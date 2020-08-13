@@ -12,10 +12,27 @@ import { watchMessages } from "../utils/firebaseUtils";
 import history from "../utils/historyUtils";
 import { dummyMessagesData1, dummyMessagesData2 } from "../DummyData/chats";
 import { messageModel } from "../constants/Models";
+import CardContent from "@material-ui/core/CardContent";
 
 const useStyles = makeStyles((theme) => ({
-  textMessage: {
-    width: "100%",
+  textMessageLeft: {
+    borderRadius: "10px",
+    minwidth: "10px",
+    maxWidth: "300px",
+    marginLeft: "5px",
+  },
+  textMessageRight: {
+    borderRadius: "10px",
+    minwidth: "10px",
+    maxWidth: "300px",
+  },
+
+  textOnly: {
+    paddingTop: "3px",
+    paddingBottom: "3px",
+    paddingLeft: "6px",
+    paddingRight: "6px",
+    fontSize: 14,
   },
 
   inline: {
@@ -27,33 +44,38 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   media: {
-    height: "30px",
-    width: "30px",
+    height: "25px",
+    width: "25px",
   },
-  temp: {
-    marginVertical: "4px",
+  messageContainer: {
+    //marginVertical: "4px",
+    paddingTop: "6px",
+    paddingLeft: "6px",
+    paddingRight: "6px",
+    paddingBottom: "6px",
   },
 }));
 
-export default function ChatSelect(props: any) {
+export default function MessageBox(props: any) {
   const classes = useStyles();
 
   const [messageArray, setMessageArray] = useState<messageModel[]>([]);
   const tempUserId = "7k1MF9w490XOeFH5ygGY";
 
   function isUser(senderID: string) {
-    if (tempUserId === senderID) return "flex-end";
-    else return "flex-start";
+    if (tempUserId === senderID) {
+      return true;
+    } else return false;
   }
 
   useEffect(() => {
     console.log(props.chatId + "messages is loading");
     //ask chintan how to get watchMessages working and async properly
-    const unsubscribe = watchMessages("9yWHYYczrMViTQwfG3F7", setMessageArray); // userId is hardcoded for now
+    const unsubscribe = watchMessages(props.chatId, setMessageArray); // userId is hardcoded for now
 
     return () => unsubscribe();
     //.catch((err) => console.error(err));
-  }, []);
+  }, [props.chatId]);
 
   return (
     <React.Fragment>
@@ -61,22 +83,56 @@ export default function ChatSelect(props: any) {
         const { id, senderId, messageText, timestamp } = thisMessage;
         return (
           <React.Fragment key={id}>
-            <Grid container item sm={12} justifyContent={isUser(senderId)}>
-              <Grid item>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="/static/images/avatar/1.jpg"
-                  className={classes.media}
-                />
-              </Grid>
+            {!isUser(senderId) ? (
+              <Grid
+                container
+                item
+                sm={12}
+                justifyContent="flex-start"
+                className={classes.messageContainer}
+              >
+                <Grid item>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="/static/images/avatar/1.jpg"
+                    className={classes.media}
+                  />
+                </Grid>
 
-              <Grid item>
-                <Card className={classes.textMessage} variant="outlined">
-                  <Typography gutterBottom>{messageText}</Typography>
-                </Card>
-                <Typography variant="caption">{timestamp}</Typography>
+                <Grid item>
+                  <div
+                    className={classes.textMessageLeft}
+                    style={{ backgroundColor: "#e5e5ea" }}
+                  >
+                    <Typography className={classes.textOnly}>
+                      {messageText}
+                    </Typography>
+                  </div>
+                </Grid>
               </Grid>
-            </Grid>
+            ) : (
+              <Grid
+                container
+                item
+                sm={12}
+                justifyContent="flex-end"
+                className={classes.messageContainer}
+              >
+                <Grid item>
+                  <div
+                    className={classes.textMessageRight}
+                    style={{ backgroundColor: "#4bbbfa" }}
+                  >
+                    <Typography
+                      className={classes.textOnly}
+                      style={{ color: "#F8F8F8" }}
+                    >
+                      {messageText}
+                    </Typography>
+                  </div>
+                </Grid>
+              </Grid>
+            )}
           </React.Fragment>
         );
       })}
