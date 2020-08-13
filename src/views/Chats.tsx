@@ -1,62 +1,56 @@
 // eslint-disable-next-line
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { UserContext } from "../constants/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Card from "@material-ui/core/Card";
-import EditChat from "../components/EditChat";
-import NewChat from "../components/NewChat";
-import Modal from "@material-ui/core/Modal";
-import IconButton from "@material-ui/core/Button";
-import CreateIcon from "@material-ui/icons/Create";
-import InfoIcon from "@material-ui/icons/Info";
-import Popper from "@material-ui/core/Popper";
 
 import ChatSelect from "../components/ChatSelector";
 import MessageBox from "../components/MessageBox";
+import ChatsToolbar from "../components/ChatsToolbar";
+import ChatsToolbar2 from "../components/ChatsToolbar2";
 import WriteMessage from "../components/WriteMessage";
 
-import { chatsModel } from "../constants/Models";
+import { chatsModel, messageModel } from "../constants/Models";
 import { dummyChatsData } from "../DummyData/chats";
+import { getChats, addMessages } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 import { Autorenew } from "@material-ui/icons";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    width: "100%",
+    width: "90%",
     backgroundColor: theme.palette.background.paper,
-    maxHeight: 600,
+    height: 450,
   },
   rootChat: {
-    flexGrow: 1,
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    maxHeight: 500,
+    height: 360,
     overflow: "auto",
   },
-  chatSide: {
-    maxWidth: "36ch",
-    borderRight: "solid",
-    borderRightWidth: 1,
-    borderRightColor: "#D9D9D9",
-  },
+
   inline: {
     display: "inline",
   },
-  topbar: {
-    width: "100%",
-    height: "60px",
-    backgroundColor: "blue", //change to theme
+  topbarLeft: {
+    height: 50,
+    //backgroundColor: "red", //change to theme
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
+
+  topbarRight: {
+    height: 50,
+    backgroundColor: "#f0f0f0", //change to theme
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+
   newChatModal: {
     display: "flex",
     alignItems: "center",
@@ -68,110 +62,106 @@ const useStyles = makeStyles((theme) => ({
     //left: 50%;
     //transform: translate(-50%, -50%);
   },
+  leftSide: {
+    backgroundColor: "#dedcdf",
+  },
+
+  list: {
+    height: "100%",
+    overflow: "auto",
+  },
 }));
+
+const tempUserId = "7k1MF9w490XOeFH5ygGY";
 
 export default function Chats() {
   //get the ChatSelect working with the .map() function.
-  const [myChats, setMyChats] = useState(dummyChatsData);
+  const [myChats, setMyChats] = useState<chatsModel[]>([]);
+  const [myMessage, setMyMessage] = useState<messageModel[]>([]);
   const classes = useStyles();
-  const [currentChat, setCurrentChat] = useState<string>("1");
+  const [currentChat, setCurrentChat] = useState<string>("");
   const onClick = (value: string) => {
     setCurrentChat(value);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popper" : undefined;
-
-  const [modalOpen, setModalOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setModalOpen(true);
-  };
-
-  const handleClose = () => {
-    setModalOpen(false);
-  };
+  useEffect(() => {
+    getChats(tempUserId) // userId is hardcoded for now
+      .then((res) => {
+        console.log(res);
+        setMyChats(res);
+        console.log("chats loaded");
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <Container component="main" maxWidth="md">
       <Grid container className={classes.root}>
-        <Grid container item direction="column" md={4}>
-          {dummyChatsData.map((thisChatSelector, index) => (
-            <Grid item key={index}>
-              <ChatSelect
-                //we are putting a ListItem in a grid item in a grid contianer instead of list. is this sus
-                id={thisChatSelector.id}
-                chatName={thisChatSelector.chatName}
-                memberNames={thisChatSelector.memberNames}
-                messages={thisChatSelector.messages}
-                onClick={onClick}
-              />
+        {" "}
+        {/*top level horizontal grid*/}
+        <Grid
+          container
+          sm={4}
+          item
+          direction="column"
+          className={classes.leftSide}
+        >
+          {" "}
+          {/*left side of view*/}
+          <Grid item container className={classes.topbarLeft}>
+            <Grid item>
+              <ChatsToolbar />
             </Grid>
-          ))}
+          </Grid>
+          <Divider />
+          <Grid item style={{ height: 400 }}>
+            {" "}
+            {/*Grid item to hold <List> of <chatSelect> listItems*/}
+            <List className={classes.list}>
+              {myChats.map((thisChatSelector, index) => (
+                <React.Fragment key={index}>
+                  <ChatSelect
+                    id={thisChatSelector.id}
+                    chatName={thisChatSelector.chatName}
+                    memberNames={thisChatSelector.memberNames}
+                    messages={thisChatSelector.messages}
+                    onClick={onClick}
+                  />
+                </React.Fragment>
+              ))}
+            </List>
+          </Grid>
         </Grid>
-        <Grid item md={8}>
-          <Grid
+        <Grid container sm={8} item direction="column">
+          {" "}
+          {/*right side of view*/}
+          <Grid item container className={classes.topbarRight}>
+            <Grid item>
+              <ChatsToolbar2 />
+            </Grid>
+          </Grid>
+          <Divider />
+          <Grid // all the messages rendered in this at Grid items in MessageBox
+            item
             container
             className={classes.rootChat}
-            direction="column"
-            spacing={2}
+            direction="row"
+            spacing={0}
           >
             <MessageBox chatId={currentChat} />
           </Grid>
-          <Grid
-            container
-            className={classes.root}
-            direction="column-reverse"
-            justifyContent="flex-start"
-          >
-            <WriteMessage />
+          <Divider />
+          <Grid item style={{ height: 40, backgroundColor: "#f0f0f0" }}>
+            <WriteMessage
+              chatId={currentChat}
+              submitMessage={(message: messageModel) => {
+                //setMyMessage([message, ...myMessage]);
+                addMessages(message);
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>
     </Container>
   );
 }
-
-/* 
-<Grid container className={classes.topbar} spacing={3}>
-        <Grid item xs={2}></Grid>
-
-        <Grid item xs={1}>
-          <IconButton type="button" onClick={handleOpen}>
-            <CreateIcon />
-          </IconButton>
-          <Modal
-            className={classes.newChatModal}
-            open={modalOpen}
-            onClose={handleClose}
-            aria-labelledby="simple-modal-title"
-            aria-describedby="simple-modal-description"
-          >
-            <NewChat />
-          </Modal>
-        </Grid>
-
-        <Grid item xs={8}></Grid>
-
-        <Grid item xs={1}>
-          <IconButton aria-describedby={id} type="button" onClick={handleClick}>
-            <InfoIcon />
-          </IconButton>
-          <Popper
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-            placement="bottom-end"
-          >
-            <div>
-              {" "}
-              <EditChat />
-            </div>
-          </Popper>
-*/

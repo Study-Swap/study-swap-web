@@ -87,11 +87,9 @@ export default function Profile() {
     //}
   }, []);
 
-  function handleSave(user: userModel) {
-    return function () {
-      setMyUser(user);
-      setEditing(!editing);
-    };
+  function handleSave(updatedUser: userModel) {
+    setMyUser(updatedUser);
+    setEditing(!editing);
   }
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {

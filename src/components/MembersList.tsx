@@ -13,6 +13,11 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 
+interface nameAndId {
+  memberName: string;
+  memberId: string;
+}
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
@@ -33,8 +38,8 @@ export default function MembersList(props: any) {
 
   return (
     <List dense={true} disablePadding={true}>
-      {props.currentMembers.map((memberName: string, index: number) => (
-        <ListItem>
+      {props.currentMembers.map((member: nameAndId, index: number) => (
+        <ListItem key={index}>
           <ListItemAvatar>
             <Avatar
               className={classes.media}
@@ -42,7 +47,7 @@ export default function MembersList(props: any) {
               src={require("./apoorv.png")}
             ></Avatar>
           </ListItemAvatar>
-          <ListItemText primary={memberName} />
+          <ListItemText primary={member.memberName} />
 
           <ListItemSecondaryAction>
             <IconButton edge="end" aria-label="delete">

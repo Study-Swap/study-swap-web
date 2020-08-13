@@ -7,6 +7,10 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
+import ShareIcon from "@material-ui/icons/Share";
 
 const useStyles = makeStyles({
   root: {
@@ -22,8 +26,15 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   media: {
-    height: 50,
-    width: 50,
+    height: 45,
+    width: 45,
+  },
+  button: {
+    height: "100%",
+    width: "30%",
+  },
+  buttonDivider: {
+    marginLeft: "10px",
   },
 });
 
@@ -31,7 +42,9 @@ export default function Post(props: any) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
+    //<Card className={classes.root}>
+
+    <React.Fragment>
       <CardContent>
         <Grid container>
           <Grid item xs={2}>
@@ -58,13 +71,35 @@ export default function Post(props: any) {
           {props.postText}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">React</Button>
-        <Button size="small">Comment</Button>
-        <Button size="small" onClick={props.onClick}>
-          Toggle Comments{" "}
+
+      <Divider className={classes.buttonDivider} />
+      <CardActions style={{ justifyContent: "center" }}>
+        <Button
+          startIcon={<ThumbUpIcon />}
+          className={classes.button}
+          size="small"
+        >
+          Like
+        </Button>
+        <Button
+          startIcon={<ChatBubbleIcon />}
+          className={classes.button}
+          size="small"
+          onClick={props.onClick}
+        >
+          Toggle
+        </Button>
+        <Button
+          startIcon={<ShareIcon />}
+          className={classes.button}
+          size="small"
+          disabled
+        >
+          Share
         </Button>
       </CardActions>
-    </Card>
+      <Divider className={classes.buttonDivider} />
+    </React.Fragment>
+    // </Card>
   );
 }

@@ -114,36 +114,7 @@ export default function EditProfile({
             </Grid>
           </Grid>
           <Grid container item xs={3} direction="column" alignItems="flex-end">
-            <Grid item>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "flex-end",
-                }}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={() => {
-                    setUser({});
-                  }}
-                >
-                  Save
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={() => {
-                    setEditing(false);
-                  }}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </Grid>
+            <Grid item></Grid>
             <br />
             {classNames.map((name: string, index: number) => {
               return (

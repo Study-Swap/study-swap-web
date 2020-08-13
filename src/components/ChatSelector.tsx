@@ -10,6 +10,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
+import { getMessage } from "../utils/firebaseUtils/chats";
+import { messageModel } from "../constants/Models";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -28,22 +30,26 @@ const useStyles = makeStyles((theme) => ({
     borderRightWidth: 1,
     borderRightColor: "#D9D9D9",
   },
-  inline: {
-    display: "inline",
-  },
+
   hover: {
     "&:hover": {
       backgroundColor: "#D3D3D3 !important",
     },
   },
-  list: {
-    maxHeight: 600,
-    maxWidth: 300,
-    overflow: "auto",
+
+  chatTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+
+  message: {
+    display: "inline",
+    fontSize: 14,
   },
 }));
 
 export default function ChatSelect({
+  key,
   id,
   chatName,
   memberNames,
@@ -57,8 +63,26 @@ export default function ChatSelect({
 
   const classes = useStyles();
 
+  const [firstMessage, setFirstMessage] = useState<messageModel>({
+    chatId: "",
+    messageText:
+      "This is me testing a longer message for rendering in cutting off the message",
+    senderId: "",
+    senderName: "Chintan Modi",
+  });
+
+  useEffect(() => {
+    if (messages !== undefined && messages.size > 0) {
+      getMessage(messages[0]) // classId is hardcoded for now
+        .then((res) => {
+          setFirstMessage(res);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, []);
+
   return (
-    <List className={classes.list}>
+    <React.Fragment>
       <ListItem
         alignItems="flex-start"
         className={classes.hover}
@@ -69,23 +93,35 @@ export default function ChatSelect({
         </ListItemAvatar>
 
         <ListItemText
-          primary={chatName}
+          primary={
+            <React.Fragment>
+              <Typography
+                component="span"
+                variant="body2"
+                className={classes.chatTitle}
+                color="textPrimary"
+                noWrap={true}
+              >
+                {chatName}
+              </Typography>
+            </React.Fragment>
+          }
           secondary={
             <React.Fragment>
               <Typography
                 component="span"
                 variant="body2"
-                className={classes.inline}
-                color="textPrimary"
+                className={classes.message}
+                color="textSecondary"
+                //noWrap = {true}
               >
-                Ali Connors
+                {firstMessage.messageText}
               </Typography>
-              {" — I'll be in your neighborhood doing errands this…"}
             </React.Fragment>
           }
         />
       </ListItem>
       <Divider variant="fullWidth" component="li" />
-    </List>
+    </React.Fragment>
   );
 }
