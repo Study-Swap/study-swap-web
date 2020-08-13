@@ -28,22 +28,17 @@ import { dummyChatsData } from "../DummyData/chats";
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 import { Autorenew } from "@material-ui/icons";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
-  newChatModal: {
-    position: "absolute",
-    left: "50%",
-    top: " 50%",
-
-    //might switch to:
-    //position: fixed;
-    //top: 50%;
-    //left: 50%;
-    //transform: translate(-50%, -50%);
+  name: {
+    fontSize: 12,
+    marginLeft: "15px",
+    //fontWeight: "bold"
   },
 }));
 
-export default function ChatsToolbar2() {
+export default function ChatsToolbar2(props: any) {
   //get the ChatSelect working with the .map() function.
   const classes = useStyles();
 
@@ -58,7 +53,13 @@ export default function ChatsToolbar2() {
 
   return (
     <React.Fragment>
-      <Grid item xs={1}>
+      <Grid item>
+        <Typography className={classes.name}>
+          {"To: " + props.chatName}
+        </Typography>
+      </Grid>
+
+      <Grid item>
         <IconButton aria-describedby={id} type="button" onClick={handleClick}>
           <InfoIcon />
         </IconButton>

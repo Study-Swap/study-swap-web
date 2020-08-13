@@ -15,7 +15,7 @@ import history from "../utils/historyUtils";
 
 const useStyles = makeStyles({
   root: {
-    flexGrow: 1,
+    flex: 1,
   },
 
   control: {
@@ -51,13 +51,17 @@ export default function Home() {
         <Grid item>
           <NewPost
             onClick={(post: postModel) => {
+              addPost(post.userId, post.classId, post).then(
+                (resultingId: any) => {
+                  post.id = resultingId;
+                }
+              );
               setPostState([post, ...postState]);
-              addPost(post.userId, post.classId, post);
             }}
           />
         </Grid>
         {postState.map((thisPost, index) => (
-          <Grid item key={index} style={{ width: "500px" }}>
+          <Grid item key={thisPost.id} style={{ width: "500px" }}>
             <FeedItem
               id={thisPost.id}
               postUserName={thisPost.postUserName}
