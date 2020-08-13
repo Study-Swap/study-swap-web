@@ -24,6 +24,14 @@ const useStyles = makeStyles((theme) => ({
   iconButton: {
     padding: 10,
   },
+  mainDiv: { display: "flex", flexDirection: "row" },
+  bottomRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+  },
+  lengthLimit: { marginBottom: 8, fontSize: 15, marginRight: 5 },
 }));
 
 const options = ["Choose class", "EECS 183", "BIO 172", "ENGR 100"];
@@ -58,7 +66,7 @@ export default function CustomizedInputBase() {
 
   return (
     <Paper component="form" className={classes.root}>
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div className={classes.mainDiv}>
         <Menu
           id="simple-menu"
           anchorEl={anchorEl}
@@ -91,19 +99,12 @@ export default function CustomizedInputBase() {
           type="submit"
           className={classes.iconButton}
           aria-label="Send"
-          disabled={selectedIndex === 0}
+          disabled={selectedIndex === 0 || len === 0}
         >
           <SendIcon />
         </IconButton>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-        }}
-      >
+      <div className={classes.bottomRow}>
         <Button
           aria-controls="simple-menu"
           aria-haspopup="true"
@@ -112,9 +113,7 @@ export default function CustomizedInputBase() {
         >
           {options[selectedIndex]}
         </Button>
-        <div style={{ marginBottom: 8, fontSize: 15, marginRight: 5 }}>
-          {len}/300
-        </div>
+        <div className={classes.lengthLimit}>{len}/300</div>
       </div>
     </Paper>
   );
