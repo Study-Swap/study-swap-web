@@ -20,6 +20,7 @@ import { getChats, addMessages } from "../utils/firebaseUtils";
 import history from "../utils/historyUtils";
 import { Autorenew } from "@material-ui/icons";
 import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     height: 50,
     backgroundColor: "#f0f0f0", //change to theme
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
   },
 
   newChatModal: {
@@ -79,9 +80,11 @@ export default function Chats() {
   const [myChats, setMyChats] = useState<chatsModel[]>([]);
   const [myMessage, setMyMessage] = useState<messageModel[]>([]);
   const classes = useStyles();
-  const [currentChat, setCurrentChat] = useState<string>("");
-  const onClick = (value: string) => {
-    setCurrentChat(value);
+  const [currentChatId, setCurrentChatId] = useState<string>("");
+  const [currentChatName, setCurrentChatName] = useState<string>("");
+  const onClick = ({ id, chatName }: any) => {
+    setCurrentChatId(id);
+    setCurrentChatName(chatName);
   };
 
   useEffect(() => {
@@ -89,79 +92,80 @@ export default function Chats() {
       .then((res) => {
         console.log(res);
         setMyChats(res);
-        console.log("chats loaded");
+        console.log("loading chats");
       })
       .catch((err) => console.error(err));
   }, []);
 
   return (
     <Container component="main" maxWidth="md">
-      <Grid container className={classes.root}>
-        {" "}
-        {/*top level horizontal grid*/}
-        <Grid
-          container
-          sm={4}
-          item
-          direction="column"
-          className={classes.leftSide}
-        >
+      <div style={{ justifyContent: "center", display: "flex" }}>
+        <Grid container className={classes.root}>
           {" "}
-          {/*left side of view*/}
-          <Grid item container className={classes.topbarLeft}>
-            <Grid item>
-              <ChatsToolbar />
-            </Grid>
-          </Grid>
-          <Divider />
-          <Grid item style={{ height: 400 }}>
-            {" "}
-            {/*Grid item to hold <List> of <chatSelect> listItems*/}
-            <List className={classes.list}>
-              {myChats.map((thisChatSelector, index) => (
-                <React.Fragment key={index}>
-                  <ChatSelect
-                    id={thisChatSelector.id}
-                    chatName={thisChatSelector.chatName}
-                    memberNames={thisChatSelector.memberNames}
-                    messages={thisChatSelector.messages}
-                    onClick={onClick}
-                  />
-                </React.Fragment>
-              ))}
-            </List>
-          </Grid>
-        </Grid>
-        <Grid container sm={8} item direction="column">
-          {" "}
-          {/*right side of view*/}
-          <Grid item container className={classes.topbarRight}>
-            <Grid item>
-              <ChatsToolbar2 />
-            </Grid>
-          </Grid>
-          <Divider />
-          <Grid // all the messages rendered in this at Grid items in MessageBox
-            item
+          {/*top level horizontal grid*/}
+          <Grid
             container
-            className={classes.rootChat}
-            direction="row"
-            spacing={0}
+            sm={4}
+            item
+            direction="column"
+            className={classes.leftSide}
           >
-            <MessageBox chatId={currentChat} />
+            {" "}
+            {/*left side of view*/}
+            <Grid item container className={classes.topbarLeft}>
+              <Grid item>
+                <ChatsToolbar />
+              </Grid>
+            </Grid>
+            <Divider />
+            <Grid item style={{ height: 400 }}>
+              {" "}
+              {/*Grid item to hold <List> of <chatSelect> listItems*/}
+              <List className={classes.list}>
+                {myChats.map((thisChatSelector, index) => (
+                  <React.Fragment key={thisChatSelector.id}>
+                    <ChatSelect
+                      id={thisChatSelector.id}
+                      chatName={thisChatSelector.chatName}
+                      memberNames={thisChatSelector.memberNames}
+                      messages={thisChatSelector.messages}
+                      onClick={onClick}
+                    />
+                  </React.Fragment>
+                ))}
+              </List>
+            </Grid>
           </Grid>
-          <Divider />
-          <Grid item style={{ height: 40, backgroundColor: "#f0f0f0" }}>
-            <WriteMessage
-              chatId={currentChat}
-              submitMessage={(message: messageModel) => {
-                //setMyMessage([message, ...myMessage]);
-                addMessages(message);
-              }}
-            />
+          <Grid container sm={8} item direction="column">
+            {" "}
+            {/*right side of view*/}
+            <Grid item container className={classes.topbarRight}>
+              <ChatsToolbar2 chatName={currentChatName} />
+            </Grid>
+            <Divider />
+            <Grid // all the messages rendered in this at Grid items in MessageBox
+              item
+              container
+              className={classes.rootChat}
+              direction="row"
+              alignContent="flex-start"
+              spacing={0}
+            >
+              <MessageBox chatId={currentChatId} />
+            </Grid>
+            <Divider />
+            <Grid item style={{ height: 40, backgroundColor: "#f0f0f0" }}>
+              <WriteMessage
+                chatId={currentChatId}
+                submitMessage={(message: messageModel) => {
+                  //setMyMessage([message, ...myMessage]);
+                  addMessages(message);
+                }}
+              />
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </div>
     </Container>
   );
 }

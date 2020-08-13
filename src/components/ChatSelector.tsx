@@ -56,11 +56,6 @@ export default function ChatSelect({
   messages,
   onClick,
 }: any) {
-  //destructured the chatsModel so you can refer to them as just their name instead of props.name
-  //Chatname can be used outright. memberNames as well.  You might have to get just the most recent
-  //message from the messages array.  onClick should be passed from Chats.tsx as arrow function to change
-  //some state, and then called from here by uncommenting out.
-
   const classes = useStyles();
 
   const [firstMessage, setFirstMessage] = useState<messageModel>({
@@ -86,7 +81,7 @@ export default function ChatSelect({
       <ListItem
         alignItems="flex-start"
         className={classes.hover}
-        onClick={() => onClick(id)}
+        onClick={() => onClick({ id, chatName })}
       >
         <ListItemAvatar>
           <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />

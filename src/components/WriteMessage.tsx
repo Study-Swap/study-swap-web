@@ -94,8 +94,9 @@ export default function WriteMessage({
             //hard coded to test if new message sent
             chatId: chatId,
             messageText: value,
-            senderId: "12",
-            senderName: "Akul",
+            //senderId: "7k1MF9w490XOeFH5ygGY",
+            senderId: "1",
+            senderName: "Chintan",
           });
           setValue("");
         }}
