@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
   input: {
     //marginLeft: theme.spacing(2),
-    backgroundColor: "#d1d1d1",
+    backgroundColor: "#f0f0f0",
     flex: 1,
     overflow: "auto",
     fontSize: 14,

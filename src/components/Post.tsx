@@ -87,12 +87,13 @@ export default function Post(props: any) {
           size="small"
           onClick={props.onClick}
         >
-          Comment
+          Toggle
         </Button>
         <Button
           startIcon={<ShareIcon />}
           className={classes.button}
           size="small"
+          disabled
         >
           Share
         </Button>
