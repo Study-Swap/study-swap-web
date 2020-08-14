@@ -13,6 +13,7 @@ import history from "../utils/historyUtils";
 import { dummyMessagesData1, dummyMessagesData2 } from "../DummyData/chats";
 import { messageModel } from "../constants/Models";
 import CardContent from "@material-ui/core/CardContent";
+import { theme } from "../constants/theme";
 
 const useStyles = makeStyles((theme) => ({
   textMessageLeft: {
@@ -121,11 +122,11 @@ export default function MessageBox(props: any) {
                 <Grid item>
                   <div
                     className={classes.textMessageRight}
-                    style={{ backgroundColor: "#4bbbfa" }}
+                    style={{ backgroundColor: theme.palette.primary.main }} //"#000C76"    //</Grid></Grid>#4bbbfa
                   >
                     <Typography
                       className={classes.textOnly}
-                      style={{ color: "#F8F8F8" }}
+                      style={{ color: "#FFFFFF" }}
                     >
                       {messageText}
                     </Typography>

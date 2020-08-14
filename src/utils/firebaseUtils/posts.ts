@@ -105,13 +105,20 @@ function getFeed(userId: string): Promise<any> {
 
 /*
   @type     POST -> Posts
-  @desc     add a new post into a class
+  @desc     add a new post into a class, returns the timestamp
 */
-function addPost(userId: string, classId: string, post: postModel): void {
-  postsDB
+function addPost(
+  userId: string,
+  classId: string,
+  post: postModel
+): Promise<any> {
+  return postsDB
     .add({
       timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
       ...post,
+    })
+    .then((addedPost: any) => {
+      return addedPost.id;
     })
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
