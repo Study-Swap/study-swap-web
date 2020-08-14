@@ -23,19 +23,19 @@ export default function AppDrawer({
 }: AppDrawerProps) {
   return (
     <SwipeableDrawer
-      anchor='left'
+      anchor="left"
       open={open}
       onClose={toggleDrawer(false)}
       onOpen={toggleDrawer(true)}
     >
       <div
         className={clsx(classes.list)}
-        role='presentation'
+        role="presentation"
         onClick={toggleDrawer(false)}
         onKeyDown={toggleDrawer(false)}
       >
-        <ListItem button key='copyright' disabled>
-          <ListItemText primary='Study Swap' className={classes.centerAlign} />
+        <ListItem button key="copyright" disabled>
+          <ListItemText primary="Study Swap" className={classes.centerAlign} />
         </ListItem>
         <Divider />
         <List>
@@ -50,7 +50,7 @@ export default function AppDrawer({
                 variant={
                   window.location.pathname === element[2] ? "contained" : "text"
                 }
-                color='secondary'
+                color="secondary"
                 className={classes.button}
                 startIcon={element[1]}
               >

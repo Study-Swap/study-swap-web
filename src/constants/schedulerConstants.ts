@@ -22,7 +22,7 @@ export const days = [
   "Saturday",
 ];
 
-const initArray = (size: number, value: any): Array<any> => {
+export const initArray = (size: number, value: any): Array<any> => {
   var array: Array<any>;
   for (var i = 0, array = new Array(times.length); i < size; i++) {
     array[i] = value;

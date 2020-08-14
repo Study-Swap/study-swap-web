@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, Theme } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
@@ -9,7 +9,7 @@ import CardContent from "@material-ui/core/CardContent";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
-import { times, emptyArray, days } from "../constants/schedulerConstants";
+import { times, days, initArray } from "../constants/schedulerConstants";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     alignItems: "center",
     userSelect: "none",
+    userDrag: "none",
   },
   timeColumn: {
     marginRight: 3,
@@ -74,24 +75,46 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     alignItems: "flex-end",
     userSelect: "none",
+    userDrag: "none",
   },
 }));
 
 export default function Scheduler() {
+  /*
+    Scheduling Alogorithm:
+    - Pivots around mouse down and mouse up listeners
+    - Main data is stored in timeSlots array, tempMouseDown array,
+    isAdd (boolean to tell if we are adding or removing time slots),
+    and initial/current coordinates. 
+      - tempMouseDown array is the array that we compare the current
+        selection to when the mouse is down so that we have current
+        state and state before the mouse went down
+      - isAdd depends on the initial coordinate of the drag. If the 
+      initial coordinate is filled then we assume that we are removing
+      if it is empty we assume we are adding
+    - When mouse is down and we hover over a rectangle the clickDrag 
+    function fires calculating the selection we need to highlight and
+    comparing it with our tempMouseDown array in order to make our 
+    current timeSlots array
+  */
   const classes = useStyles();
   const [expanded, setExpanded] = useState<string | false>(false);
-  const [timeSlots, setTimeSlots] = useState<any[][]>(emptyArray);
-  const [tempTimeSlots, setTempTimeSlots] = useState<any[][]>(emptyArray);
+  // If we should add boxes or remove boxes
+  const [isAdd, setIsAdd] = useState<boolean>(false);
+  // Time Slots
+  const [timeSlots, setTimeSlots] = useState<any[][]>(
+    initArray(times.length, [false, false, false, false, false, false, false])
+  );
+  // Temporary Time slots to compare to before mouse was pressed
+  const [tempMouseDown, setTempMouseDown] = useState<any[][]>(
+    initArray(times.length, [false, false, false, false, false, false, false])
+  );
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
   // coordinate arrays will always have length 2
-  const [currentIndex, setCurrentIndex] = useState<number[]>([0, 0]);
   const [initIndex, setInitIndex] = useState<number[]>([]);
-  const { innerWidth, innerHeight } = useWindowDimensions();
+  const [currentIndex, setCurrentIndex] = useState<number[]>([]);
 
-  useEffect(() => {
-    console.log(`Initial Index: ${initIndex[0]}, ${initIndex[1]}`);
-    console.log(`Current Index: ${currentIndex[0]}, ${currentIndex[1]}`);
-  }, [currentIndex]);
+  const { innerWidth, innerHeight } = useWindowDimensions();
 
   const mouseDown = (ev: MouseEvent) => {
     setIsMouseDown(true);
@@ -99,17 +122,20 @@ export default function Scheduler() {
 
   const mouseUp = (ev: MouseEvent) => {
     setIsMouseDown(false);
-    setTempTimeSlots(timeSlots); // set temp array as main array
+    setIsAdd(false); // reset isAdd
     setInitIndex([]); // reset initial index
   };
 
   useEffect(() => {
+    // Add/Remove listeners
     window.addEventListener("mousedown", mouseDown);
     window.addEventListener("mouseup", mouseUp);
+    window.addEventListener("dragstart", mouseUp);
 
     return () => {
       window.removeEventListener("mousedown", mouseDown);
       window.removeEventListener("mouseup", mouseUp);
+      window.removeEventListener("dragstart", mouseUp);
     };
   }, []);
 
@@ -126,53 +152,44 @@ export default function Scheduler() {
   };
 
   const clickDrag = (initial: number[], current: number[]): void => {
-    /* 
-      Make temp array bc you cant directly change state, so to make the change more simple,
-      make a copy, change values then set again 
-    */
-    if (initial === current) return;
-    const temp = tempTimeSlots;
-    if (initial[0] === current[0]) {
-      // Case 1: Horizontal Line
-      for (
-        var i = initial[1] < current[1] ? initial[1] : current[1];
-        i < Math.abs(initial[1] - current[1]) + 1;
-        i++
-      ) {
-        temp[initial[0]][i] = !temp[initial[0]][i];
-      }
-      console.log("horiz");
-    } else if (initial[1] === current[1]) {
-      // Case 2: Vertical Line
-      for (
-        var i = initial[0] < current[0] ? initial[0] : current[0];
-        i < Math.abs(initial[0] - current[0]) + 1;
-        i++
-      ) {
-        temp[0][initial[1]] = !temp[0][initial[1]];
-      }
-      console.log("vert");
+    // Set max and mins of each coordinate
+    var minX = -1,
+      maxX = -1,
+      minY = -1,
+      maxY = -1;
+    if (initial[0] > current[0]) {
+      minX = current[0];
+      maxX = initial[0];
     } else {
-      // Case 3: Gotta do real math :(
-      var upperLeft = [
-        // Find the upper left vertex
-        Math.min(initial[0], current[0]),
-        Math.min(initial[1], current[1]),
-      ];
-      var diffXY = [
-        // Find differences in Xs and Ys
-        Math.abs(initial[0] - current[0]) + 1,
-        Math.abs(initial[1] - current[1]) + 1,
-      ];
+      maxX = current[0];
+      minX = initial[0];
+    }
+    if (initial[1] > current[1]) {
+      minY = current[1];
+      maxY = initial[1];
+    } else {
+      maxY = current[1];
+      minY = initial[1];
+    }
 
-      for (var i = upperLeft[0]; i < diffXY[0]; i++) {
-        for (var j = upperLeft[1]; j < diffXY[1]; j++) {
-          temp[i][j] = !temp[i][j];
-        }
+    // Make temp array -- remember to make DEEP COPY of mouse down array using map
+    var temp = tempMouseDown.map((row) => {
+      return row.slice();
+    });
+
+    // Change temp based on isAdd and what's selected
+    for (var i = minX; i < maxX + 1; i++) {
+      for (var j = minY; j < maxY + 1; j++) {
+        temp[i][j] = isAdd;
       }
     }
-    console.log(temp);
-    setTimeSlots(temp);
+
+    // Set time slots -- remember to make DEEP COPY of temp using map
+    setTimeSlots(
+      temp.map((row) => {
+        return row.slice();
+      })
+    );
   };
 
   const handleChange = (panel: string) => (
@@ -237,25 +254,45 @@ export default function Scheduler() {
                               : classes.column
                           }
                           style={{ width: innerWidth * 0.07 }}
-                          onMouseMove={() => {
+                          onMouseDown={(event) => {
+                            // Prevent default in order to stop drag/select
+                            event.preventDefault();
+                          }}
+                          onMouseMove={(event) => {
+                            event.preventDefault();
+                            if (isMouseDown) {
+                              if (initIndex.length === 0) {
+                                // If mouse is down and init is empty that means
+                                // we are beginning our drag
+                                setInitIndex([timeIndex, dayIndex]);
+                                setIsAdd(!timeSlots[timeIndex][dayIndex]);
+                              }
+                            }
+                          }}
+                          onMouseEnter={(event) => {
+                            event.preventDefault();
                             if (isMouseDown) {
                               setCurrentIndex([timeIndex, dayIndex]);
-                              if (initIndex.length === 0) {
-                                console.log("setting init");
-                                setInitIndex([timeIndex, dayIndex]);
-                                // Sometimes indices dont update in time
-                                clickDrag(
-                                  [timeIndex, dayIndex],
-                                  [timeIndex, dayIndex]
-                                );
-                              }
-                              // Sometimes current index doesnt update in time
-                              clickDrag(initIndex, currentIndex);
+                              if (
+                                initIndex.length > 0 &&
+                                currentIndex.length > 0
+                              )
+                                // If mouse is down and there are values for coordinates
+                                // Continue/Start Drag
+                                clickDrag(initIndex, [timeIndex, dayIndex]);
                             }
                           }}
                           onClick={() => {
-                            setInitIndex([timeIndex, dayIndex]);
                             onTimeClick(timeIndex, dayIndex);
+                          }}
+                          onMouseUp={(event) => {
+                            // On mouse up of a rectangle we want to set the temp mouse down array
+                            event.preventDefault();
+                            setTempMouseDown(
+                              timeSlots.map((row) => {
+                                return row.slice();
+                              })
+                            );
                           }}
                         />
                       );
