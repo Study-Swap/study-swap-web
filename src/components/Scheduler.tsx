@@ -8,6 +8,11 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import IconButton from "@material-ui/core/IconButton";
+import EditIcon from "@material-ui/icons/Edit";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+
+import SchedulerEditing from "./SchedulerEditing";
 
 import { times, days, initArray } from "../constants/schedulerConstants";
 
@@ -113,6 +118,7 @@ export default function Scheduler() {
   // coordinate arrays will always have length 2
   const [initIndex, setInitIndex] = useState<number[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number[]>([]);
+  const [editing, setEditing] = useState<boolean>(false);
 
   const { innerWidth, innerHeight } = useWindowDimensions();
 
@@ -214,6 +220,8 @@ export default function Scheduler() {
         </AccordionSummary>
         <AccordionDetails>
           <Card raised={false} className={classes.content}>
+            <SchedulerEditing editing={editing} setEditing={setEditing} />
+
             <CardContent>
               <div className={classes.row}>
                 <div
@@ -245,7 +253,7 @@ export default function Scheduler() {
                       {time}
                     </div>
                     {days.map((_day, dayIndex) => {
-                      return (
+                      return editing ? (
                         <div
                           key={`${timeIndex}, ${dayIndex}`}
                           className={
@@ -294,6 +302,16 @@ export default function Scheduler() {
                               })
                             );
                           }}
+                        />
+                      ) : (
+                        <div
+                          key={`${timeIndex}, ${dayIndex}`}
+                          className={
+                            timeSlots[timeIndex][dayIndex]
+                              ? classes.columnClicked
+                              : classes.column
+                          }
+                          style={{ width: innerWidth * 0.07 }}
                         />
                       );
                     })}
