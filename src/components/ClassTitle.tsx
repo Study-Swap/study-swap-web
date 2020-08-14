@@ -13,7 +13,23 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ClassTitle() {
+interface ClassTitleProps {
+  classTitle: string;
+  classTime: string;
+  classSection: string;
+  profName: string;
+  gsiName: string;
+  iaNames: string;
+}
+
+export default function ClassTitle({
+  classTitle,
+  classTime,
+  classSection,
+  profName,
+  gsiName,
+  iaNames,
+}: ClassTitleProps) {
   const classes = useStyles();
 
   return (
@@ -26,20 +42,19 @@ export default function ClassTitle() {
           src={require("../DummyData/Engineering.jpg")}
         />
         <div style={{ marginLeft: 10 }}>
-          <Typography variant="h3">Engineering 100</Typography>
+          <Typography variant="h3">{classTitle}</Typography>
           <Typography style={{ color: "grey" }}>
-            Section: 200 - Mondays, Wednesdays 2-3:30 PM
+            Section: {classSection} - {classTime}
           </Typography>
         </div>
       </div>
       <Typography>
-        <strong>Professor:</strong> Professor Name{" "}
+        <strong>Professor:</strong> {profName}{" "}
         <span style={{ marginLeft: 20 }} />
-        <strong>GSI:</strong> GSI Name
+        <strong>GSI:</strong> {gsiName}
       </Typography>
       <Typography>
-        <strong>Instructional Aids:</strong> Name 1, Name 2, Name 3, Name 4,
-        Name 5,
+        <strong>Instructional Aids:</strong> {iaNames}
       </Typography>
       <Typography>Name 6, etc.</Typography>
     </div>
