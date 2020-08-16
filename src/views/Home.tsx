@@ -74,11 +74,15 @@ export default function Home() {
 
   return (
     <Container component="main" maxWidth="md" className={classes.root}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <Feed />
 
         <Card className={classes.filterBox}>
-          <FormControl component="fieldset" className={classes.formControl}>
+          <CardContent>
+
+            <Grid container justifyContent="center" alignContent="center">
+              <Grid item>
+
+      <FormControl component="fieldset" className={classes.formControl}>
             <FormLabel component="legend">Choose Categories</FormLabel>
             <FormGroup>
               <FormControlLabel
@@ -135,8 +139,12 @@ export default function Home() {
               />
             </FormGroup>
           </FormControl>
-        </Card>
-      </div>
+          </Grid>
+          </Grid>
+
+          </CardContent>
+         
+         </Card>
     </Container>
   );
 }
