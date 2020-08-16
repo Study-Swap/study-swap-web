@@ -17,7 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { userModel } from "../constants/Models";
 import { dummyUser } from "../DummyData/profile";
 import firebase from "firebase";
-import FileUploader from "react-firebase-file-uploader";
+import firebaseConfig from "../constants/Firebase";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -68,13 +68,61 @@ export default function EditProfile({
   handleSave,
 }: any) {
   // eslint-disable-next-line
-
+  const storage = firebase.storage();
   const classes = useStyles();
 
   const [bioInput, setBioInput] = useState(bio);
   const [firstInput, setFirstInput] = useState(firstName);
   const [lastInput, setLastInput] = useState(lastName);
   const [gradeInput, setGradeInput] = useState(grade);
+  const allInputs = { imgUrl: "" };
+  const [imageAsFile, setImageAsFile] = useState("");
+  const [imageAsUrl, setImageAsUrl] = useState(allInputs);
+
+  console.log(imageAsFile);
+  const handleImageAsFile = (e: any) => {
+    const image = e.target.files[0];
+    setImageAsFile(image);
+  };
+
+  const handleFireBaseUpload = (e: any) => {
+    e.preventDefault();
+    console.log("start of upload");
+    // async magic goes here...
+    if (imageAsFile === "") {
+      console.error(`not an image, the image file is a ${typeof imageAsFile}`);
+    }
+    const uploadTask = storage
+      .ref(`/images/${imageAsFile.name}`)
+      .putString(imageAsFile);
+    //initiates the firebase side uploading
+    uploadTask.on(
+      "state_changed",
+      (snapShot) => {
+        //takes a snap shot of the process as it is happening
+        console.log(snapShot);
+      },
+      (err) => {
+        //catches the errors
+        console.log(err);
+      },
+      () => {
+        // gets the functions from storage refences the image storage in firebase by the children
+        // gets the download url then sets the image from firebase as the value for the imgUrl key:
+        storage
+          .ref("images")
+          .child(imageAsFile.name)
+          .getDownloadURL()
+          .then((fireBaseUrl) => {
+            setImageAsUrl((prevObject) => ({
+              ...prevObject,
+              imgUrl: fireBaseUrl,
+            }));
+            console.log(imageAsUrl);
+          });
+      }
+    );
+  };
 
   return (
     <Container component="main" maxWidth="md">
@@ -82,20 +130,22 @@ export default function EditProfile({
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={2}>
-              <input
-                accept="image/*"
-                className={classes.picInput}
-                id="change-image"
-                multiple
-                type="file"
-              />
-              <label htmlFor="change-image">
-                <Avatar
-                  className={classes.media}
-                  alt="Prof Pic"
-                  src={require("../components/apoorv.png")}
+              <form onSubmit={handleFireBaseUpload}>
+                <input
+                  className={classes.picInput}
+                  id="change-image"
+                  type="file"
+                  onChange={handleImageAsFile}
                 />
-              </label>
+                <label htmlFor="change-image">
+                  <Avatar
+                    className={classes.media}
+                    alt="Prof Pic"
+                    src={imageAsUrl.imgUrl}
+                  />
+                </label>
+                <Button>upload</Button>
+              </form>
             </Grid>
 
             <Grid item xs={5}>
