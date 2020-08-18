@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
-import EditProfile from "../components/EditProfile2";
 import ViewProfile from "../components/ViewProfile2";
 import Modal from "@material-ui/core/Modal";
 import Paper from "@material-ui/core/Paper";

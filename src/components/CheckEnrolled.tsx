@@ -8,10 +8,6 @@ import Typography from "@material-ui/core/Typography";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import EditIcon from "@material-ui/icons/Edit";
-import Modal from "@material-ui/core/Modal";
-import Paper from "@material-ui/core/Paper";
-
-import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const useStyles = makeStyles((theme) => ({
   checkButton: {
@@ -53,7 +49,7 @@ interface CheckEnrolledProps {
 
 export default function CheckEnrolled({ setEditing }: CheckEnrolledProps) {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
