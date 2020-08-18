@@ -23,7 +23,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Feed() {
+export default function Feed(props: any) {
+  console.log(props.filter);
   const classes = useStyles();
   // eslint-disable-next-line
   const [postState, setPostState] = useState<any[]>([]);
@@ -36,6 +37,17 @@ export default function Feed() {
       })
       .catch((err) => console.error(err));
   }, []); // TODO: Add loading indicator and put "refresh" into empty array
+
+  function isInToShow(post: postModel) {
+    var toShow = true;
+    try {
+      toShow = props.categoryFilter[post.postCategory];
+      console.log(props.categoryFilter);
+    } catch (error) {
+      console.error(error);
+    }
+    return toShow;
+  }
 
   return (
     <Grid
@@ -59,20 +71,23 @@ export default function Feed() {
           }}
         />
       </Grid>
-      {postState.map((thisPost, index) => (
-        <Grid item key={thisPost.id} style={{ width: "500px" }}>
-          <FeedItem
-            id={thisPost.id}
-            postUserName={thisPost.postUserName}
-            postClassName={thisPost.postClassName}
-            postText={thisPost.postText}
-            timestamp={thisPost.timestamp}
-            edited={thisPost.edited}
-            userId={thisPost.userId}
-            classId={thisPost.classId}
-          />
-        </Grid>
-      ))}
+      {postState
+        .filter((post) => isInToShow(post))
+        .map((thisPost, index) => (
+          <Grid item key={thisPost.id} style={{ width: "500px" }}>
+            <FeedItem
+              id={thisPost.id}
+              postUserName={thisPost.postUserName}
+              postClassName={thisPost.postClassName}
+              postText={thisPost.postText}
+              timestamp={thisPost.timestamp}
+              postCategory={thisPost.postCategory}
+              edited={thisPost.edited}
+              userId={thisPost.userId}
+              classId={thisPost.classId}
+            />
+          </Grid>
+        ))}
     </Grid>
   );
 }

@@ -20,7 +20,7 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
 import CircleCheckedFilled from "@material-ui/icons/CheckCircle";
 import CircleUnchecked from "@material-ui/icons/RadioButtonUnchecked";
-import { Paper } from "@material-ui/core";
+import { Paper, Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -32,10 +32,10 @@ const useStyles = makeStyles({
     //position: "-webkit-sticky", /* Safari */
     position: "fixed",
     right: "100px",
-    top: "200px",
+    top: "150px",
 
-    height: "300px",
-    width: "200px",
+    height: "350px",
+    width: "250px",
   },
 
   formControl: {
@@ -52,6 +52,10 @@ const useStyles = makeStyles({
     fontSize: 14,
     marginTop: "12px",
   },
+  labelText: {
+    //fontWeight: "bold",
+    fontSize: 14,
+  },
 
   formCheckBox: {},
 });
@@ -59,92 +63,171 @@ const useStyles = makeStyles({
 export default function Home() {
   const classes = useStyles();
   // eslint-disable-next-line
-  const [state, setState] = React.useState({
-    announcement: true,
-    hw: true,
-    project: true,
-    exam: true,
+  const [filter, setFilter] = React.useState({
+    Announcement: true,
+    HW: true,
+    Project: true,
+    Exam: true,
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+    setFilter({ ...filter, [event.target.name]: event.target.checked });
   };
 
-  const { announcement, hw, project, exam } = state;
+  const { Announcement, HW, Project, Exam } = filter;
 
   return (
     <Container component="main" maxWidth="md" className={classes.root}>
-        <Feed />
+      <Feed categoryFilter={filter} />
 
-        <Card className={classes.filterBox}>
-          <CardContent>
+      <Card className={classes.filterBox}>
+        <CardContent>
+          <Grid
+            container
+            justifyContent="center"
+            alignContent="center"
+            spacing={3}
+          >
+            <Grid item>
+              <FormControl component="fieldset" className={classes.formControl}>
+                <FormLabel component="legend">
+                  Choose Categories to Show
+                </FormLabel>
+                <FormGroup style={{ fontSize: 10 }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checkedIcon={<CircleCheckedFilled />}
+                        icon={<CircleUnchecked />}
+                        checked={Announcement}
+                        onChange={handleChange}
+                        name="Announcement"
+                      />
+                    }
+                    label={
+                      <Typography
+                        className={classes.labelText}
+                        variant="subtitle2"
+                        color="textPrimary"
+                      >
+                        Announcement
+                      </Typography>
+                    }
+                    className={classes.formLabel}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checkedIcon={<CircleCheckedFilled />}
+                        icon={<CircleUnchecked />}
+                        checked={HW}
+                        onChange={handleChange}
+                        name="HW"
+                      />
+                    }
+                    label={
+                      <Typography
+                        className={classes.labelText}
+                        variant="subtitle2"
+                        color="textPrimary"
+                      >
+                        HW
+                      </Typography>
+                    }
+                    className={classes.formLabel}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checkedIcon={<CircleCheckedFilled />}
+                        icon={<CircleUnchecked />}
+                        checked={Exam}
+                        onChange={handleChange}
+                        name="Exam"
+                      />
+                    }
+                    label={
+                      <Typography
+                        className={classes.labelText}
+                        variant="subtitle2"
+                        color="textPrimary"
+                      >
+                        Exam
+                      </Typography>
+                    }
+                    className={classes.formLabel}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checkedIcon={<CircleCheckedFilled />}
+                        icon={<CircleUnchecked />}
+                        checked={Project}
+                        onChange={handleChange}
+                        name="Project"
+                      />
+                    }
+                    label={
+                      <Typography
+                        className={classes.labelText}
+                        variant="subtitle2"
+                        color="textPrimary"
+                      >
+                        Project
+                      </Typography>
+                    }
+                    className={classes.formLabel}
+                  />
+                </FormGroup>
+              </FormControl>
+            </Grid>
 
-            <Grid container justifyContent="center" alignContent="center">
-              <Grid item>
+            <Grid item>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ fontSize: 12, width: "48%" }}
+                  onClick={() => {
+                    //get this working programatically
+                    //let temp = Object.create(filter);
+                    //temp = Object.keys(temp).forEach(i=> temp[i] = true);
 
-      <FormControl component="fieldset" className={classes.formControl}>
-            <FormLabel component="legend">Choose Categories</FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checkedIcon={<CircleCheckedFilled />}
-                    icon={<CircleUnchecked />}
-                    checked={announcement}
-                    onChange={handleChange}
-                    name="announcement"
-                  />
-                }
-                label="Announcement"
-                className={classes.formLabel}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checkedIcon={<CircleCheckedFilled />}
-                    icon={<CircleUnchecked />}
-                    checked={hw}
-                    onChange={handleChange}
-                    name="hw"
-                  />
-                }
-                label="HW"
-                className={classes.formLabel}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checkedIcon={<CircleCheckedFilled />}
-                    icon={<CircleUnchecked />}
-                    checked={project}
-                    onChange={handleChange}
-                    name="project"
-                  />
-                }
-                label="Exam"
-                className={classes.formLabel}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checkedIcon={<CircleCheckedFilled />}
-                    icon={<CircleUnchecked />}
-                    checked={exam}
-                    onChange={handleChange}
-                    name="exam"
-                  />
-                }
-                label="Project"
-                className={classes.formLabel}
-              />
-            </FormGroup>
-          </FormControl>
+                    setFilter({
+                      Announcement: true,
+                      HW: true,
+                      Project: true,
+                      Exam: true,
+                    });
+                  }}
+                >
+                  Select All
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ fontSize: 12, width: "48%" }}
+                  onClick={() => {
+                    //get this working programatically, deep copy mad annoying
+                    //let temp = Object.create(filter);
+                    //temp = Object.keys(temp).forEach(i=> temp[i] = true);
+
+                    setFilter({
+                      Announcement: false,
+                      HW: false,
+                      Project: false,
+                      Exam: false,
+                    });
+                  }}
+                >
+                  Unselect All
+                </Button>
+              </div>
+            </Grid>
           </Grid>
-          </Grid>
-
-          </CardContent>
-         
-         </Card>
+        </CardContent>
+      </Card>
     </Container>
   );
 }

@@ -31,6 +31,7 @@ export interface postModel {
   postText: string;
   postUserName: string;
   postClassName: string;
+  postCategory: string;
   timestamp?: any;
   edited: boolean;
 }
