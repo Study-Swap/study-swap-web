@@ -16,13 +16,13 @@ import SaveIcon from "@material-ui/icons/Save";
 import { makeStyles } from "@material-ui/core/styles";
 import { userModel } from "../constants/Models";
 import { dummyUser } from "../DummyData/profile";
-import firebase from "firebase";
+import firebase from "../constants/Firebase";
 import firebaseConfig from "../constants/Firebase";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 import { logoutUser } from "../utils/firebaseUtils";
-import { NONAME } from "dns";
+import { NONAME, AnyRecordWithTtl } from "dns";
 
 const useStyles = makeStyles({
   root: {
@@ -59,6 +59,15 @@ const useStyles = makeStyles({
   },
 });
 
+interface imageAsFileType {
+  name: string;
+  lastModified: any;
+  lastModifiedDate: any;
+  size: any;
+  type: any;
+  webkitRelativePath: any;
+}
+
 export default function EditProfile({
   bio,
   firstName,
@@ -76,25 +85,29 @@ export default function EditProfile({
   const [lastInput, setLastInput] = useState(lastName);
   const [gradeInput, setGradeInput] = useState(grade);
   const allInputs = { imgUrl: "" };
-  const [imageAsFile, setImageAsFile] = useState("");
+  const [imageAsFile, setImageAsFile] = useState<Blob>(new Blob());
   const [imageAsUrl, setImageAsUrl] = useState(allInputs);
+  const [name, setName] = useState("");
 
   console.log(imageAsFile);
   const handleImageAsFile = (e: any) => {
     const image = e.target.files[0];
     setImageAsFile(image);
+    setName(image.name);
   };
 
   const handleFireBaseUpload = (e: any) => {
     e.preventDefault();
     console.log("start of upload");
     // async magic goes here...
+    /*
     if (imageAsFile === "") {
       console.error(`not an image, the image file is a ${typeof imageAsFile}`);
     }
+    **/
     const uploadTask = storage
-      .ref(`/images/${imageAsFile.name}`)
-      .putString(imageAsFile);
+      .ref(`/images/profileImages/${name}`)
+      .put(imageAsFile);
     //initiates the firebase side uploading
     uploadTask.on(
       "state_changed",
@@ -110,8 +123,8 @@ export default function EditProfile({
         // gets the functions from storage refences the image storage in firebase by the children
         // gets the download url then sets the image from firebase as the value for the imgUrl key:
         storage
-          .ref("images")
-          .child(imageAsFile.name)
+          .ref("images/profileImages")
+          .child(name)
           .getDownloadURL()
           .then((fireBaseUrl) => {
             setImageAsUrl((prevObject) => ({
