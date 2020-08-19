@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   lengthLimit: { marginBottom: 8, fontSize: 15, marginRight: 5 },
 }));
 
-const options = ["Choose class", "EECS 183", "BIO 172", "ENGR 100"];
+const options = ["Choose Category", "Announcement", "HW", "Exam", "Project"];
 
 interface newPostProps {
   onClick: Function;
@@ -115,12 +115,14 @@ export default function NewPost({ onClick }: newPostProps) {
               // post specific
               postText: value,
               postUserName: "Ashish Mahuli",
-              postClassName: options[selectedIndex],
+              postCategory: options[selectedIndex],
+              postClassName: "ENGR 100",
               //timestamp?: any;
               edited: false,
             });
             setValue("");
             setLen(0);
+            setSelectedIndex(0);
           }}
         >
           <SendIcon />
