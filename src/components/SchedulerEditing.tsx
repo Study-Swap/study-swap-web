@@ -5,14 +5,19 @@ import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 
+import { arrayToTimes } from "../constants/schedulerConstants";
+import { editUserSchedule } from "../utils/firebaseUtils";
+
 interface SchedulerEditingProps {
   editing: boolean;
   setEditing: Function;
+  timeSlots: boolean[][];
 }
 
 export default function SchedulerEditing({
   editing,
   setEditing,
+  timeSlots,
 }: SchedulerEditingProps) {
   return (
     <div
@@ -24,6 +29,9 @@ export default function SchedulerEditing({
     >
       <IconButton
         onClick={() => {
+          if (editing) {
+            editUserSchedule(arrayToTimes(timeSlots), "123"); // HARDCODED ID - TODO CHANGE ID
+          }
           setEditing(!editing);
         }}
       >

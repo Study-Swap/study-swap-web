@@ -14,7 +14,12 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 
 import SchedulerEditing from "./SchedulerEditing";
 
-import { times, days, initArray } from "../constants/schedulerConstants";
+import {
+  times,
+  days,
+  initArray,
+  timesToArray,
+} from "../constants/schedulerConstants";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -84,7 +89,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function Scheduler() {
+interface SchedulerProps {
+  timeStrings: string;
+}
+
+export default function Scheduler({ timeStrings }) {
   /*
     Scheduling Alogorithm:
     - Pivots around mouse down and mouse up listeners
@@ -108,11 +117,11 @@ export default function Scheduler() {
   const [isAdd, setIsAdd] = useState<boolean>(false);
   // Time Slots
   const [timeSlots, setTimeSlots] = useState<any[][]>(
-    initArray(times.length, [false, false, false, false, false, false, false])
+    timesToArray(timeStrings)
   );
   // Temporary Time slots to compare to before mouse was pressed
   const [tempMouseDown, setTempMouseDown] = useState<any[][]>(
-    initArray(times.length, [false, false, false, false, false, false, false])
+    timesToArray(timeStrings)
   );
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
   // coordinate arrays will always have length 2
@@ -220,7 +229,11 @@ export default function Scheduler() {
         </AccordionSummary>
         <AccordionDetails>
           <Card raised={false} className={classes.content}>
-            <SchedulerEditing editing={editing} setEditing={setEditing} />
+            <SchedulerEditing
+              editing={editing}
+              setEditing={setEditing}
+              timeSlots={timeSlots}
+            />
 
             <CardContent>
               <div className={classes.row}>

@@ -12,6 +12,7 @@ export interface userModel {
   classNames: Array<string>;
   chats: Array<string>;
   signedUp: boolean;
+  schedule: string[];
 }
 
 export interface classModel {

@@ -20,26 +20,13 @@ import Scheduler from "../components/Scheduler";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
-import { logoutUser } from "../utils/firebaseUtils";
+import { logoutUser, editUser } from "../utils/firebaseUtils";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-
-function getModalStyle() {
-  const top = 25;
-  const left = 25;
-
-  return {
-    top: `${top}%`,
-    margin: "auto",
-    left: `${left}%`,
-    // transform: `translate(-${top}%, -${left}%)`,
-  };
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "80%",
   },
-
   title: {
     fontSize: 30,
     fontWeight: "bold",
@@ -78,7 +65,11 @@ export default function Profile() {
   const [editing, setEditing] = useState(false);
   const { innerWidth, innerHeight } = useWindowDimensions();
 
-  const [fullName, setFullName] = useState<string>("");
+  const [fullName, setFullName] = useState<string>(
+    user.firstName + " " + user.lastName
+  );
+  const [bio, setBio] = useState<string>(user.bio);
+  const [grade, setGrade] = useState<string>(user.grade);
 
   useEffect(() => {
     //if (user.id === "") {
@@ -92,7 +83,7 @@ export default function Profile() {
   }
 
   const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setMyUser({ ...myUser, grade: event.target.value as string });
+    setGrade(event.target.value as string);
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,31 +91,38 @@ export default function Profile() {
   };
 
   const handleBioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMyUser({ ...myUser, bio: event.target.value });
+    setBio(event.target.value);
   };
 
   const onSave = () => {
     const nameVals = fullName.split(" ");
-    setMyUser({ ...myUser, firstName: nameVals[0], lastName: nameVals[1] });
+    setUser({
+      ...user,
+      bio,
+      firstName: nameVals[0],
+      lastName: nameVals[1],
+      grade,
+    });
+    editUser({ ...user, signedUp: true });
     setEditing(false);
   };
 
   return (
     <Container component="main" maxWidth="md">
       <ViewProfile
-        firstName={myUser.firstName}
-        lastName={myUser.lastName}
-        grade={myUser.grade}
-        bio={myUser.bio}
+        firstName={user.firstName}
+        lastName={user.lastName}
+        grade={user.grade}
+        bio={user.bio}
         editingClick={() => {
-          setFullName(myUser.firstName + " " + myUser.lastName);
+          setFullName(user.firstName + " " + user.lastName);
           setEditing(!editing);
         }}
-        classIds={myUser.classes}
-        classNames={myUser.classNames}
-        setUser={setMyUser}
+        classIds={user.classes}
+        classNames={user.classNames}
+        setUser={setUser}
       />
-      <Scheduler />
+      <Scheduler timeStrings={user.schedule} />
 
       <Modal
         open={editing}
@@ -171,7 +169,7 @@ export default function Profile() {
                     id: "demo-mutiple-name-label",
                   }}
                   label="Grade"
-                  value={myUser.grade}
+                  value={grade}
                   onChange={handleSelectChange}
                 >
                   <MenuItem value={"Freshman"}>Freshman</MenuItem>
@@ -188,7 +186,7 @@ export default function Profile() {
                 id="bio"
                 label="Biography"
                 name="bio"
-                value={myUser.bio}
+                value={bio}
                 onChange={handleBioChange}
               />
             </div>

@@ -7,6 +7,10 @@ interface initState {
     email: string;
     classes: string[];
     chats: string[];
+    bio: string;
+    schedule: string[];
+    grade: string;
+    classNames: Array<string>;
   };
   setUser: React.Dispatch<
     React.SetStateAction<{
@@ -16,6 +20,10 @@ interface initState {
       email: string;
       classes: string[];
       chats: string[];
+      bio: string;
+      schedule: string[];
+      grade: string;
+      classNames: Array<string>;
     }>
   >;
 }
@@ -27,6 +35,10 @@ const initialState: initState = {
     email: "",
     classes: [""],
     chats: [""],
+    schedule: [],
+    bio: "",
+    grade: "Junior",
+    classNames: [],
   },
   setUser: () => {},
 };

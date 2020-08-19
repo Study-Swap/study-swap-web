@@ -69,6 +69,7 @@ async function addUser(
                   classes_,
                   chats,
                   signedUp: true,
+                  schedule: [],
                 })
                 .then(() => {
                   // To make sure they validate email
@@ -87,6 +88,7 @@ async function addUser(
                   classes,
                   chats,
                   signedUp: true,
+                  schedule: [],
                 })
                 .then(() => {
                   // To make sure they validate email
@@ -167,6 +169,7 @@ function logoutUser(setUser: Function): Promise<string> {
         email: "",
         classes: [""],
         chats: [""],
+        schedule: [],
       });
       return "Logged Out";
     });
@@ -192,6 +195,18 @@ function addUsersByEmail(classId: string, emailList: Array<string>): any {
   });
 }
 
+function editUserSchedule(timeStrings: string[], userId: string): void {
+  userDB.doc(userId).update({
+    schedule: timeStrings,
+  });
+}
+
+function editUser(user: userModel): void {
+  userDB.doc(user.id).update({
+    user,
+  });
+}
+
 export {
   addUser,
   loginUser,
@@ -200,4 +215,6 @@ export {
   sendPasswordResetEmail,
   logoutUser,
   addUsersByEmail,
+  editUserSchedule,
+  editUser,
 };

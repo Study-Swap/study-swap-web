@@ -1,4 +1,4 @@
-export const times = [
+export const times: string[] = [
   "8-9 AM",
   "9-10 AM",
   "10-11 AM",
@@ -12,7 +12,7 @@ export const times = [
   "7-8 PM",
 ];
 
-export const days = [
+export const days: string[] = [
   "Sunday",
   "Monday",
   "Tuesday",
@@ -30,7 +30,7 @@ export const initArray = (size: number, value: any): Array<any> => {
   return array;
 };
 
-export const emptyArray = initArray(times.length, [
+export const emptyArray: boolean[][] = initArray(times.length, [
   false,
   false,
   false,
@@ -39,3 +39,37 @@ export const emptyArray = initArray(times.length, [
   false,
   false,
 ]);
+
+export const arrayToTimes = (timeSlots: boolean[][]): string[] => {
+  const stringTimes: string[] = [];
+  for (var j = 0; j < timeSlots.length; j++) {
+    var timeOptions = "";
+    for (var i = 0; i < timeSlots[0].length; i++) {
+      if (timeSlots[i][j]) {
+        timeOptions = timeOptions.concat(`,${times[j]}`);
+      }
+    }
+    stringTimes.push(timeOptions);
+  }
+  return stringTimes;
+};
+
+export const timesToArray = (stringTimes: string[]): boolean[][] => {
+  var timeSlots: boolean[][] = initArray(times.length, [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  stringTimes.forEach((stringTime, index) => {
+    const arrayTime = stringTime.split(",");
+    arrayTime.forEach((time: string) => {
+      timeSlots[index][times.indexOf(time)] = true;
+    });
+  });
+
+  return timeSlots;
+};
