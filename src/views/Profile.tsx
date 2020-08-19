@@ -87,11 +87,11 @@ export default function Profile() {
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFullName(event.target.value);
+    setFullName(event.target.value as string);
   };
 
   const handleBioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setBio(event.target.value);
+    setBio(event.target.value as string);
   };
 
   const onSave = () => {
