@@ -85,7 +85,7 @@ export default function EditProfile({
   const [lastInput, setLastInput] = useState(lastName);
   const [gradeInput, setGradeInput] = useState(grade);
   const allInputs = { imgUrl: "" };
-  const [imageAsFile, setImageAsFile] = useState<Blob>(new Blob());
+  const [imageAsFile, setImageAsFile] = useState("");
   const [imageAsUrl, setImageAsUrl] = useState(allInputs);
   const [name, setName] = useState("");
 
@@ -100,14 +100,8 @@ export default function EditProfile({
     e.preventDefault();
     console.log("start of upload");
     // async magic goes here...
-    /*
-    if (imageAsFile === "") {
-      console.error(`not an image, the image file is a ${typeof imageAsFile}`);
-    }
-    **/
-    const uploadTask = storage
-      .ref(`/images/profileImages/${name}`)
-      .put(imageAsFile);
+    console.log(`not an image, the image file is a ${typeof imageAsFile}`);
+    const uploadTask = storage.ref(`/images/${name}`).putString(imageAsFile);
     //initiates the firebase side uploading
     uploadTask.on(
       "state_changed",
@@ -123,7 +117,7 @@ export default function EditProfile({
         // gets the functions from storage refences the image storage in firebase by the children
         // gets the download url then sets the image from firebase as the value for the imgUrl key:
         storage
-          .ref("images/profileImages")
+          .ref("images")
           .child(name)
           .getDownloadURL()
           .then((fireBaseUrl) => {
@@ -131,7 +125,6 @@ export default function EditProfile({
               ...prevObject,
               imgUrl: fireBaseUrl,
             }));
-            console.log(imageAsUrl);
           });
       }
     );
@@ -157,7 +150,7 @@ export default function EditProfile({
                     src={imageAsUrl.imgUrl}
                   />
                 </label>
-                <Button>upload</Button>
+                <Button type="submit">upload</Button>
               </form>
             </Grid>
 
