@@ -1,4 +1,3 @@
-import React from "react";
 import firebase from "../../constants/Firebase";
 const storage = firebase.storage();
 
@@ -87,9 +86,10 @@ enum folderEnums {
   PROFILE_FOLDER,
   POST_FOLDER,
   CHAT_FOLDER,
+  CLASS_FOLDER,
 }
 
-const folders = ["profileImages", "postImages", "chatImages"];
+const folders = ["profileImages", "postImages", "chatImages", "classImages"];
 
 function uploadImage(
   type: folderEnums, // Must be one of the enums
@@ -114,6 +114,10 @@ function getImageURI(
 
 function makeProfilePicName(firstName: string, lastName: string): string {
   return `${firstName}_${lastName}_Profile_Picture`;
+}
+
+function makeClassPicName(className: string): string {
+  return `${className}_Class_Picture`;
 }
 
 function makeChatPostPicName(userId: string): string {
