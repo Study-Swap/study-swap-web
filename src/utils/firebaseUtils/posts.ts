@@ -13,7 +13,7 @@ const commentsDB = firebase.firestore().collection(collections.comments);
 @type     GET -> Posts
 @desc     get all posts in a certain class
 */
-function getPosts(classId: string): Promise<postModel[] | void> {
+function getPosts(classId: string): Promise<any> {
   return postsDB
     .where("classId", "==", classId)
     .orderBy("timestamp", "asc")
@@ -23,12 +23,13 @@ function getPosts(classId: string): Promise<postModel[] | void> {
         const posts: Array<postModel> = [];
         snapShot.forEach((post: any): void => {
           const data = post.data();
-          posts.push({
+          posts.unshift({
             userId: data.userId,
             classId: data.classId,
             postText: data.postText,
             postUserName: data.postUserName,
             postClassName: data.postClassName,
+            postCategory: data.postCategory,
             id: post.id,
             edited: false,
             timestamp: data.timestamp.toDate().toDateString(),
@@ -62,6 +63,7 @@ function getUserPosts(userId: string): Promise<postModel[] | void> {
             postText: data.postText,
             postUserName: data.postUserName,
             postClassName: data.postClassName,
+            postCategory: data.postCategory,
             id: post.id,
             edited: false,
             timestamp: data.timestamp.toDate().toDateString(),
@@ -105,13 +107,20 @@ function getFeed(userId: string): Promise<any> {
 
 /*
   @type     POST -> Posts
-  @desc     add a new post into a class
+  @desc     add a new post into a class, returns the timestamp
 */
-function addPost(userId: string, classId: string, post: postModel): void {
-  postsDB
+function addPost(
+  userId: string,
+  classId: string,
+  post: postModel
+): Promise<any> {
+  return postsDB
     .add({
       timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
       ...post,
+    })
+    .then((addedPost: any) => {
+      return addedPost.id;
     })
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen

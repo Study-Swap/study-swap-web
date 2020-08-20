@@ -1,52 +1,41 @@
 // eslint-disable-next-line
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
-import Container from "@material-ui/core/Container";
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import InputBase from "@material-ui/core/InputBase";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import ImageIcon from "@material-ui/icons/Image";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
-import SendIcon from "@material-ui/icons/Send";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import { watchMessages } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 import { dummyMessagesData1, dummyMessagesData2 } from "../DummyData/chats";
-import { StringifyOptions } from "querystring";
-import { ExecOptionsWithStringEncoding } from "child_process";
 import { messageModel } from "../constants/Models";
-import WriteMessage from "../components/WriteMessage";
+import CardContent from "@material-ui/core/CardContent";
+import { theme } from "../constants/theme";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-    maxHeight: 500,
+  textMessageLeft: {
+    borderRadius: "10px",
+    minwidth: "10px",
+    maxWidth: "300px",
+    marginLeft: "5px",
   },
-  textMessage: {
-    width: "100%",
+  textMessageRight: {
+    borderRadius: "10px",
+    minwidth: "10px",
+    maxWidth: "300px",
   },
-  chatSide: {
-    maxWidth: "36ch",
-    borderRight: "solid",
-    borderRightWidth: 3,
+
+  textOnly: {
+    paddingTop: "3px",
+    paddingBottom: "3px",
+    paddingLeft: "6px",
+    paddingRight: "6px",
+    fontSize: 14,
   },
+
   inline: {
     display: "inline",
   },
@@ -56,54 +45,98 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   media: {
-    height: "30px",
-    width: "30px",
+    height: "25px",
+    width: "25px",
+  },
+  messageContainer: {
+    //marginVertical: "4px",
+    paddingTop: "6px",
+    paddingLeft: "6px",
+    paddingRight: "6px",
+    paddingBottom: "6px",
   },
 }));
 
-export default function ChatSelect(chatId: any) {
-  useEffect(() => {
-    if (chatId.chatId === 1) {
-      //chatId is the passed state variable. Is an object (weird)
-      setMessageArray(dummyMessagesData1);
-    } else if (chatId.chatId === 2) {
-      setMessageArray(dummyMessagesData2);
-    }
-  }); //if you want to only run on first render, add [] as second arg
-  //https://stackoverflow.com/questions/53120972/how-to-call-loading-function-with-react-useeffect-only-once
-
+export default function MessageBox(props: any) {
   const classes = useStyles();
 
-  const [messageArray, setMessageArray] = useState<messageModel[]>(
-    dummyMessagesData1
-  );
-  const userID = "12";
+  const [messageArray, setMessageArray] = useState<messageModel[]>([]);
+  const tempUserId = "7k1MF9w490XOeFH5ygGY";
 
   function isUser(senderID: string) {
-    if (userID === senderID) return "flex-end";
-    else return "flex-start";
+    if (tempUserId === senderID) {
+      return true;
+    } else return false;
   }
 
-  return (
-    <Grid>
-      {messageArray.map((thisMessage, index) => (
-        <Grid container item justifyContent={isUser(thisMessage.senderId)}>
-          <Grid item>
-            <Avatar
-              alt="Remy Sharp"
-              src="/static/images/avatar/1.jpg"
-              className={classes.media}
-            />
-          </Grid>
+  useEffect(() => {
+    console.log(props.chatId + "messages is loading");
+    //ask chintan how to get watchMessages working and async properly
+    const unsubscribe = watchMessages(props.chatId, setMessageArray); // userId is hardcoded for now
 
-          <Grid item>
-            <Card className={classes.textMessage} variant="outlined">
-              <Typography gutterBottom>{thisMessage.messageText}</Typography>
-            </Card>
-            <Typography variant="caption">{thisMessage.timestamp}</Typography>
-          </Grid>
-        </Grid>
-      ))}
-    </Grid>
+    return () => unsubscribe();
+    //.catch((err) => console.error(err));
+  }, [props.chatId]);
+
+  return (
+    <React.Fragment>
+      {messageArray.map((thisMessage, index) => {
+        const { id, senderId, messageText, timestamp } = thisMessage;
+        return (
+          <React.Fragment key={id}>
+            {!isUser(senderId) ? (
+              <Grid
+                container
+                item
+                sm={12}
+                justifyContent="flex-start"
+                className={classes.messageContainer}
+              >
+                <Grid item>
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="/static/images/avatar/1.jpg"
+                    className={classes.media}
+                  />
+                </Grid>
+
+                <Grid item>
+                  <div
+                    className={classes.textMessageLeft}
+                    style={{ backgroundColor: "#e5e5ea" }}
+                  >
+                    <Typography className={classes.textOnly}>
+                      {messageText}
+                    </Typography>
+                  </div>
+                </Grid>
+              </Grid>
+            ) : (
+              <Grid
+                container
+                item
+                sm={12}
+                justifyContent="flex-end"
+                className={classes.messageContainer}
+              >
+                <Grid item>
+                  <div
+                    className={classes.textMessageRight}
+                    style={{ backgroundColor: theme.palette.primary.main }} //"#000C76"    //</Grid></Grid>#4bbbfa
+                  >
+                    <Typography
+                      className={classes.textOnly}
+                      style={{ color: "#FFFFFF" }}
+                    >
+                      {messageText}
+                    </Typography>
+                  </div>
+                </Grid>
+              </Grid>
+            )}
+          </React.Fragment>
+        );
+      })}
+    </React.Fragment>
   );
 }

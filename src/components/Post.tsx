@@ -7,6 +7,10 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
+import ShareIcon from "@material-ui/icons/Share";
 
 const useStyles = makeStyles({
   root: {
@@ -22,8 +26,22 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   media: {
-    height: 50,
-    width: 50,
+    height: 45,
+    width: 45,
+  },
+  button: {
+    height: "100%",
+    width: "30%",
+  },
+  buttonDivider: {
+    marginLeft: "10px",
+  },
+  tag: {
+    fontSize: 11,
+    fontWeight: "bold",
+    backgroundColor: "#E3E3E3",
+    borderRadius: "40px",
+    padding: "2px 6px 2px 6px", //top right bottom left
   },
 });
 
@@ -31,26 +49,31 @@ export default function Post(props: any) {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root}>
+    //<Card className={classes.root}>
+
+    <React.Fragment>
       <CardContent>
-        <Grid container>
-          <Grid item xs={2}>
+        <Grid container justifyContent="space-between">
+          <Grid item style={{ display: "flex" }}>
             <Avatar
               className={classes.media}
               alt="Prof Pic"
               src={require("./apoorv.png")}
             />
-          </Grid>
 
-          <Grid item xs={9}>
-            <div>
+            <div style={{ display: "block", marginLeft: "8px" }}>
               <Typography className={classes.title} gutterBottom>
-                {props.postUserName} in {props.postClassName}
+                {props.postUserName}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 {props.timestamp}
               </Typography>
             </div>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle2" className={classes.tag}>
+              {props.postCategory}
+            </Typography>
           </Grid>
         </Grid>
 
@@ -58,13 +81,35 @@ export default function Post(props: any) {
           {props.postText}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small">React</Button>
-        <Button size="small">Comment</Button>
-        <Button size="small" onClick={props.onClick}>
-          Toggle Comments{" "}
+
+      <Divider className={classes.buttonDivider} />
+      <CardActions style={{ justifyContent: "center" }}>
+        <Button
+          startIcon={<ThumbUpIcon />}
+          className={classes.button}
+          size="small"
+        >
+          Like
+        </Button>
+        <Button
+          startIcon={<ChatBubbleIcon />}
+          className={classes.button}
+          size="small"
+          onClick={props.onClick}
+        >
+          Toggle
+        </Button>
+        <Button
+          startIcon={<ShareIcon />}
+          className={classes.button}
+          size="small"
+          disabled
+        >
+          Share
         </Button>
       </CardActions>
-    </Card>
+      <Divider className={classes.buttonDivider} />
+    </React.Fragment>
+    // </Card>
   );
 }

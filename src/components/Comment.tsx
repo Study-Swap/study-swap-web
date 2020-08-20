@@ -16,12 +16,23 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 14,
     //fontWeight: "regular"
   },
-  pos: {
+  timestamp: {
     fontSize: 12,
+    paddingLeft: "10px",
   },
   media: {
-    height: 50,
-    width: 50,
+    height: 30,
+    width: 30,
+  },
+
+  commentText: {
+    backgroundColor: "#f0f0f0",
+    borderRadius: "15px",
+    paddingTop: "4px",
+    paddingBottom: "4px",
+    paddingLeft: "10px",
+    paddingRight: "10px",
+    display: "inline-block",
   },
 }));
 
@@ -30,29 +41,28 @@ export default function Comment(props: commentModel) {
   //const theme = useTheme();
 
   return (
-    <Card className={classes.root}>
-      <CardContent>
-        <Grid container>
-          <Grid item xs={2}>
-            <Avatar
-              className={classes.media}
-              alt="Prof Pic"
-              src={require("./apoorv.png")}
-            />
-          </Grid>
+    <Grid container item>
+      <Grid item xs={1}>
+        <Avatar
+          className={classes.media}
+          alt="Prof Pic"
+          src={require("./apoorv.png")}
+        />
+      </Grid>
 
-          <Grid item xs={9}>
-            <div>
-              <Typography className={classes.title} gutterBottom>
-                <b>{props.commenterName}</b> {"   " + props.commentText}
-              </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                {props.timestamp}
-              </Typography>
-            </div>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+      <Grid item xs={9}>
+        <div className={classes.commentText}>
+          <Typography className={classes.title}>
+            <b>{props.commenterName}</b>
+          </Typography>
+          <Typography className={classes.title} gutterBottom>
+            {props.commentText}
+          </Typography>
+        </div>
+        <Typography className={classes.timestamp} color="textSecondary">
+          {props.timestamp}
+        </Typography>
+      </Grid>
+    </Grid>
   );
 }

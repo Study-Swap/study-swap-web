@@ -9,6 +9,7 @@ export interface userModel {
   grade?: string;
   bio?: string;
   classes: Array<string>;
+  classNames: Array<string>;
   chats: Array<string>;
   signedUp: boolean;
   profilePicture: string; // will be firebase uri
@@ -32,6 +33,7 @@ export interface postModel {
   postText: string;
   postUserName: string;
   postClassName: string;
+  postCategory: string;
   timestamp?: any;
   edited: boolean;
   attachPicture?: string; // will be firebase uri

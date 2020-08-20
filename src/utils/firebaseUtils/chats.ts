@@ -13,25 +13,31 @@ const usersDB = firebase.firestore().collection(collections.users);
   @type     GET -> Messages
   @desc     watch all messages that belong to a chat -> return on change
 */
-function watchMessages(chatId: string, setMessages: Function): any {
+function watchMessages(chatId: string, setMessageArray: Function): any {
   //TODO Fix any return....
   return messagesDB
     .where("chatId", "==", chatId)
     .orderBy("timestamp", "desc")
     .onSnapshot((querySnapshot: any): void => {
       const messages: Array<messageModel> = [];
-      querySnapshot.forEach((message: any): void => {
-        const data = message.data();
-        messages.push({
-          id: message.id,
-          chatId: data.chatId,
-          messageText: data.messageText,
-          senderId: data.senderId,
-          senderName: data.senderName,
-          timestamp: data.timestamp,
-        });
-      });
-      setMessages(messages);
+      querySnapshot.forEach(
+        async (message: any): Promise<void> => {
+          const data = await message.data({ serverTimestamps: "estimate" });
+          messages.unshift({
+            id: message.id,
+            chatId: data.chatId,
+            messageText: data.messageText,
+            senderId: data.senderId,
+            senderName: data.senderName,
+            timestamp: data.timestamp
+              ? data.timestamp.toDate().toDateString()
+              : new Date().toDateString(),
+          });
+        }
+      );
+      setTimeout(() => {
+        setMessageArray(messages);
+      }, 0);
     });
 }
 
@@ -40,17 +46,33 @@ function watchMessages(chatId: string, setMessages: Function): any {
   @desc     add new message
 */
 function addMessages(message: messageModel): void {
-  messagesDB.add({
-    timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
-    ...message,
-  });
+  messagesDB
+    .add({
+      timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+      ...message,
+    })
+    .then((res: any) => {
+      console.log(res);
+      chatsDB
+        .doc(message.chatId)
+        .update({
+          messages: firebaseApp.firestore.FieldValue.arrayUnion(res.id),
+        })
+
+        .catch((err: any): void => {
+          console.error(err); // will be changed to redirect to error screen
+        });
+    })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
 }
 
 /*
   @type     GET -> Chats
   @desc     get user chats
 */
-function getChats(userId: string): Promise<chatsModel[] | void> {
+function getChats(userId: string): Promise<any> {
   return chatsDB
     .where("members", "array-contains", userId)
     .get()
@@ -79,33 +101,32 @@ function getChats(userId: string): Promise<chatsModel[] | void> {
   @type     POST -> Chats
   @desc     add new chat
 */
-function addChats(userId: string, recepientId: string): any {
+function addChats(newChat: chatsModel): any {
   //TODO Fix any return....
   // Make new chat
   chatsDB
     .add({
-      members: [userId, recepientId],
+      chatName: newChat.chatName,
+      members: newChat.members,
+      memberNames: newChat.memberNames,
       messages: [],
     })
     .then((chat: any): void => {
+      //console.log(chat.id);
+
       // Then add chat to users chat list
-      usersDB
-        .doc(userId)
-        .update({
-          chats: firebaseApp.firestore.FieldValue.arrayUnion(chat.id),
-        })
-        .catch((err: any): void => {
-          console.error(err); // will be changed to redirect to error screen
-        });
-      usersDB
-        .doc(recepientId)
-        .update({
-          chats: firebaseApp.firestore.FieldValue.arrayUnion(chat.id),
-        })
-        .catch((err: any): void => {
-          console.error(err); // will be changed to redirect to error screen
-        });
+      newChat.members.forEach((memberId) => {
+        usersDB
+          .doc(memberId)
+          .update({
+            chats: firebaseApp.firestore.FieldValue.arrayUnion(chat.id),
+          })
+          .catch((err: any): void => {
+            console.error(err); // will be changed to redirect to error screen
+          });
+      });
     })
+
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
     });
@@ -175,4 +196,29 @@ function leaveChat(memberId: string, chatId: string): any {
     });
 }
 
-export { watchMessages, addMessages, getChats, addChats, addMember, leaveChat };
+function getMessage(messageId: string): Promise<any> {
+  return messagesDB
+    .doc(messageId)
+    .get()
+    .then((res: any) => {
+      return {
+        timestamp: res.timestamp,
+        messageText: res.messageText,
+        senderId: res.senderId,
+        senderName: res.senderName,
+      };
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+export {
+  watchMessages,
+  addMessages,
+  getChats,
+  addChats,
+  addMember,
+  leaveChat,
+  getMessage,
+};
