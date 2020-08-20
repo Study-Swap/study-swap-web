@@ -17,7 +17,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { userModel } from "../constants/Models";
 import { dummyUser } from "../DummyData/profile";
 import firebase from "../constants/Firebase";
-import firebaseConfig from "../constants/Firebase";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
