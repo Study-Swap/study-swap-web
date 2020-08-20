@@ -11,15 +11,15 @@ export interface userModel {
   classes: Array<string>;
   classNames: Array<string>;
   chats: Array<string>;
-  signedUp: boolean;
-  profilePicture: string; // will be firebase uri
+  signedUp?: boolean;
+  profilePicture?: string; // will be firebase uri
 }
 
 export interface classModel {
   id?: string;
   className: string;
   classDescription: string;
-  classPicture: string; // will be firebase uri
+  classPicture?: string; // will be firebase uri
 }
 
 export interface postModel {

@@ -146,37 +146,6 @@ export default function EditProfile({
   };
 
   return (
-    <Container component="main" maxWidth="md">
-      <Card className={classes.root}>
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={2}>
-              <form onSubmit={handleFireBaseUpload}>
-                <input
-                  className={classes.picInput}
-                  id="change-image"
-                  type="file"
-                  onChange={handleImageAsFile}
-                />
-                <label htmlFor="change-image">
-                  <Avatar
-                    className={classes.media}
-                    alt="Prof Pic"
-                    src={imageAsUrl}
-                  />
-                </label>
-                <Button type="submit">upload</Button>
-              </form>
-            </Grid>
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  return (
     <Card className={classes.root}>
       <CardContent>
         <Grid container spacing={2}>

@@ -9,6 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import SendIcon from "@material-ui/icons/Send";
 import Avatar from "@material-ui/core/Avatar";
 import CardContent from "@material-ui/core/CardContent";
+import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
 import { addPost } from "../utils/firebaseUtils";
