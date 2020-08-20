@@ -36,6 +36,7 @@ export default function Class() {
             {postState.map((thisPost, index) => (
               <React.Fragment key={index}>
                 <FeedItem
+                  postCategory={thisPost.postCategory}
                   postUserName={thisPost.postUserName}
                   postClassName={thisPost.postClassName}
                   postText={thisPost.postText}
