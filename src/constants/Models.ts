@@ -12,12 +12,14 @@ export interface userModel {
   classNames: Array<string>;
   chats: Array<string>;
   signedUp: boolean;
+  profilePicture: string; // will be firebase uri
 }
 
 export interface classModel {
   id?: string;
   className: string;
   classDescription: string;
+  classPicture: string; // will be firebase uri
 }
 
 export interface postModel {
@@ -34,6 +36,7 @@ export interface postModel {
   postCategory: string;
   timestamp?: any;
   edited: boolean;
+  attachPicture?: string; // will be firebase uri
 }
 
 export interface commentModel {
@@ -86,6 +89,7 @@ export interface messageModel {
   senderId: string;
   senderName: string;
   timestamp?: string;
+  attachPicture?: string; // will be firebase uri
 }
 
 export interface recentActivityModel {

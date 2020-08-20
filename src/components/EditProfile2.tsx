@@ -23,10 +23,12 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { userModel } from "../constants/Models";
 import { dummyUser } from "../DummyData/profile";
+import firebase from "../constants/Firebase";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 import { logoutUser } from "../utils/firebaseUtils";
+import { NONAME, AnyRecordWithTtl } from "dns";
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +44,13 @@ const useStyles = makeStyles({
     marginBottom: 10,
   },
   media: {
+    height: "70%",
+    width: "100%",
+  },
+  picInput: {
+    display: "none",
+  },
+  inputBio: {
     height: 150,
     width: 150,
   },
@@ -63,6 +72,15 @@ const useStyles = makeStyles({
   },
 });
 
+interface imageAsFileType {
+  name: string;
+  lastModified: any;
+  lastModifiedDate: any;
+  size: any;
+  type: any;
+  webkitRelativePath: any;
+}
+
 export default function EditProfile({
   bio,
   firstName,
@@ -74,9 +92,82 @@ export default function EditProfile({
   classNames,
 }: any) {
   // eslint-disable-next-line
+  const storage = firebase.storage();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
+  const [bioInput, setBioInput] = useState(bio);
+  const [firstInput, setFirstInput] = useState(firstName);
+  const [lastInput, setLastInput] = useState(lastName);
+  const [gradeInput, setGradeInput] = useState(grade);
+  const [imageAsFile, setImageAsFile] = useState<File>();
+  const [imageAsUrl, setImageAsUrl] = useState("");
+  const [base64String, setBase64String] = useState<string>("");
+
+  const getImageBase64String = (
+    image: File,
+    setBase64String: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    var reader = new FileReader();
+    reader.onload = function () {
+      const imageString = reader.result?.toString();
+      if (imageString) setBase64String(imageString);
+    };
+    reader.readAsDataURL(image);
+  };
+
+  const handleImageAsFile = async (e: any) => {
+    const image: File = e.target.files[0];
+
+    setImageAsFile(image);
+  };
+
+  const firebaseUploadImageFile = (imageFile: File) => {
+    storage
+      .ref(`/images/profileImages/${imageFile.name}`)
+      .put(imageFile)
+      .then(() => {
+        storage
+          .ref(`/images/profileImages`)
+          .child(imageFile.name)
+          .getDownloadURL()
+          .then((fireBaseUrl) => {
+            console.log(fireBaseUrl);
+            setImageAsUrl(fireBaseUrl);
+          });
+      });
+  };
+
+  const handleFireBaseUpload = (e: any) => {
+    e.preventDefault();
+    if (imageAsFile) {
+      firebaseUploadImageFile(imageAsFile);
+    }
+  };
+
+  return (
+    <Container component="main" maxWidth="md">
+      <Card className={classes.root}>
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={2}>
+              <form onSubmit={handleFireBaseUpload}>
+                <input
+                  className={classes.picInput}
+                  id="change-image"
+                  type="file"
+                  onChange={handleImageAsFile}
+                />
+                <label htmlFor="change-image">
+                  <Avatar
+                    className={classes.media}
+                    alt="Prof Pic"
+                    src={imageAsUrl}
+                  />
+                </label>
+                <Button type="submit">upload</Button>
+              </form>
+            </Grid>
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
