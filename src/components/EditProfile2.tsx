@@ -84,50 +84,49 @@ export default function EditProfile({
   const [firstInput, setFirstInput] = useState(firstName);
   const [lastInput, setLastInput] = useState(lastName);
   const [gradeInput, setGradeInput] = useState(grade);
-  const allInputs = { imgUrl: "" };
-  const [imageAsFile, setImageAsFile] = useState("");
-  const [imageAsUrl, setImageAsUrl] = useState(allInputs);
-  const [name, setName] = useState("");
+  const [imageAsFile, setImageAsFile] = useState<File>();
+  const [imageAsUrl, setImageAsUrl] = useState("");
+  const [base64String, setBase64String] = useState<string>("");
 
-  console.log(imageAsFile);
-  const handleImageAsFile = (e: any) => {
-    const image = e.target.files[0];
+  const getImageBase64String = (
+    image: File,
+    setBase64String: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    var reader = new FileReader();
+    reader.onload = function () {
+      const imageString = reader.result?.toString();
+      if (imageString) setBase64String(imageString);
+    };
+    reader.readAsDataURL(image);
+  };
+
+  const handleImageAsFile = async (e: any) => {
+    const image: File = e.target.files[0];
+
     setImageAsFile(image);
-    setName(image.name);
+  };
+
+  const firebaseUploadImageFile = (imageFile: File) => {
+    storage
+      .ref(`/images/profileImages/${imageFile.name}`)
+      .put(imageFile)
+      .then(() => {
+        storage
+          .ref(`/images/profileImages`)
+          .child(imageFile.name)
+          .getDownloadURL()
+          .then((fireBaseUrl) => {
+            console.log(fireBaseUrl);
+            setImageAsUrl(fireBaseUrl);
+          });
+      });
   };
 
   const handleFireBaseUpload = (e: any) => {
     e.preventDefault();
-    console.log("start of upload");
-    // async magic goes here...
-    console.log(`not an image, the image file is a ${typeof imageAsFile}`);
-    const uploadTask = storage.ref(`/images/${name}`).putString(imageAsFile);
-    //initiates the firebase side uploading
-    uploadTask.on(
-      "state_changed",
-      (snapShot) => {
-        //takes a snap shot of the process as it is happening
-        console.log(snapShot);
-      },
-      (err) => {
-        //catches the errors
-        console.log(err);
-      },
-      () => {
-        // gets the functions from storage refences the image storage in firebase by the children
-        // gets the download url then sets the image from firebase as the value for the imgUrl key:
-        storage
-          .ref("images")
-          .child(name)
-          .getDownloadURL()
-          .then((fireBaseUrl) => {
-            setImageAsUrl((prevObject) => ({
-              ...prevObject,
-              imgUrl: fireBaseUrl,
-            }));
-          });
-      }
-    );
+    if (imageAsFile) {
+      firebaseUploadImageFile(imageAsFile);
+    }
   };
 
   return (
@@ -147,7 +146,7 @@ export default function EditProfile({
                   <Avatar
                     className={classes.media}
                     alt="Prof Pic"
-                    src={imageAsUrl.imgUrl}
+                    src={imageAsUrl}
                   />
                 </label>
                 <Button type="submit">upload</Button>
