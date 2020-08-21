@@ -36,6 +36,13 @@ const useStyles = makeStyles({
   buttonDivider: {
     marginLeft: "10px",
   },
+  tag: {
+    fontSize: 11,
+    fontWeight: "bold",
+    backgroundColor: "#E3E3E3",
+    borderRadius: "40px",
+    padding: "2px 6px 2px 6px", //top right bottom left
+  },
 });
 
 export default function Post(props: any) {
@@ -46,24 +53,27 @@ export default function Post(props: any) {
 
     <React.Fragment>
       <CardContent>
-        <Grid container>
-          <Grid item xs={2}>
+        <Grid container justifyContent="space-between">
+          <Grid item style={{ display: "flex" }}>
             <Avatar
               className={classes.media}
               alt="Prof Pic"
               src={require("./apoorv.png")}
             />
-          </Grid>
 
-          <Grid item xs={9}>
-            <div>
+            <div style={{ display: "block", marginLeft: "8px" }}>
               <Typography className={classes.title} gutterBottom>
-                {props.postUserName} in {props.postClassName}
+                {props.postUserName}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 {props.timestamp}
               </Typography>
             </div>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle2" className={classes.tag}>
+              {props.postCategory}
+            </Typography>
           </Grid>
         </Grid>
 

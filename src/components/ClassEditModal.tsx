@@ -25,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  mainDiv: {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+  },
 }));
 
 interface ClassEditModalProps {
@@ -76,14 +82,7 @@ export default function ClassEditModal({
         className={classes.paper}
         style={{ width: innerWidth * 0.8, height: innerHeight * 0.75 }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <div className={classes.mainDiv}>
           <Avatar
             style={{ height: 90, width: 90 }}
             alt="Engineering"

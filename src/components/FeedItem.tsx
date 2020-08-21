@@ -99,6 +99,7 @@ export default function FeedItem(props: postModel) {
       <Post
         postUserName={props.postUserName}
         postClassName={props.postClassName}
+        postCategory={props.postCategory}
         postText={props.postText}
         timestamp={props.timestamp}
         edited={props.edited}
