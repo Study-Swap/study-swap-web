@@ -135,6 +135,21 @@ export default function Scheduler({ timeStrings }: SchedulerProps) {
 
   const { innerWidth, innerHeight } = useWindowDimensions();
 
+  useEffect(() => {
+    // On initial load the timeSlot vars do not initialize correctly sometimes
+    console.log("editing times");
+    setTimeSlots(
+      timesToArray(timeStrings).map((row) => {
+        return row.slice();
+      })
+    );
+    setTempMouseDown(
+      timesToArray(timeStrings).map((row) => {
+        return row.slice();
+      })
+    );
+  }, [timeStrings]);
+
   const mouseDown = (ev: MouseEvent) => {
     setIsMouseDown(true);
   };

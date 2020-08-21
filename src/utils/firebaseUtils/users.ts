@@ -204,7 +204,7 @@ function editUserSchedule(timeStrings: string[], userId: string): void {
 
 function editUser(user: userModel): void {
   userDB.doc(user.id).update({
-    user,
+    ...user,
   });
 }
 

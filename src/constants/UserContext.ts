@@ -11,6 +11,7 @@ interface initState {
     schedule: string[];
     grade: string;
     classNames: Array<string>;
+    profilePicture?: string;
   };
   setUser: React.Dispatch<
     React.SetStateAction<{
@@ -24,6 +25,7 @@ interface initState {
       schedule: string[];
       grade: string;
       classNames: Array<string>;
+      profilePicture?: string;
     }>
   >;
 }
@@ -39,6 +41,7 @@ const initialState: initState = {
     bio: "",
     grade: "Junior",
     classNames: [],
+    profilePicture: "",
   },
   setUser: () => {},
 };
