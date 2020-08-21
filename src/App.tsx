@@ -25,7 +25,10 @@ function App() {
     email: "",
     classes: [""],
     chats: [""],
-    schedule: [],
+    schedule: [""],
+    bio: "",
+    grade: "",
+    classNames: [""],
   });
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);

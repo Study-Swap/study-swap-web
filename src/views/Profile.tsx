@@ -103,7 +103,14 @@ export default function Profile() {
       lastName: nameVals[1],
       grade,
     });
-    editUser({ ...user, signedUp: true });
+    editUser({
+      ...user,
+      bio,
+      firstName: nameVals[0],
+      lastName: nameVals[1],
+      grade,
+      signedUp: true,
+    });
     setEditing(false);
   };
 

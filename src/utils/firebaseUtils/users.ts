@@ -82,13 +82,14 @@ async function addUser(
                 .set({
                   firstName,
                   lastName,
-                  //grade,
+                  grade: "Junior",
                   email,
-                  //bio,
+                  bio: "",
                   classes,
                   chats,
                   signedUp: true,
                   schedule: [],
+                  classNames: ["EECS 281", "EECS 376"],
                 })
                 .then(() => {
                   // To make sure they validate email

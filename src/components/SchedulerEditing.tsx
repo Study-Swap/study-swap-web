@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import { UserContext } from "../constants/UserContext";
 
 import { arrayToTimes } from "../constants/schedulerConstants";
 import { editUserSchedule } from "../utils/firebaseUtils";
@@ -19,6 +20,7 @@ export default function SchedulerEditing({
   setEditing,
   timeSlots,
 }: SchedulerEditingProps) {
+  const { user, setUser } = useContext(UserContext);
   return (
     <div
       style={{
@@ -30,7 +32,9 @@ export default function SchedulerEditing({
       <IconButton
         onClick={() => {
           if (editing) {
-            editUserSchedule(arrayToTimes(timeSlots), "123"); // HARDCODED ID - TODO CHANGE ID
+            console.log(arrayToTimes(timeSlots));
+            editUserSchedule(arrayToTimes(timeSlots), user.id); // HARDCODED ID - TODO CHANGE ID
+            setUser({ ...user, schedule: arrayToTimes(timeSlots) });
           }
           setEditing(!editing);
         }}

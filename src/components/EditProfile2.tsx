@@ -6,17 +6,17 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
-import CardActions from "@material-ui/core/CardActions";
+import Select from "@material-ui/core/Select";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
-import IconButton from "@material-ui/core/IconButton";
+import InputLabel from "@material-ui/core/InputLabel";
 import CancelIcon from "@material-ui/icons/Cancel";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ComputerIcon from "@material-ui/icons/Computer";
 import SaveIcon from "@material-ui/icons/Save";
-import Link from "@material-ui/core/Link";
-import Menu from "@material-ui/core/Menu";
+import FormControl from "@material-ui/core/FormControl";
+import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import TextField from "@material-ui/core/TextField";
@@ -104,102 +104,101 @@ export default function EditProfile({
   const [imageAsUrl, setImageAsUrl] = useState("");
   const [base64String, setBase64String] = useState<string>("");
 
-  const getImageBase64String = (
-    image: File,
-    setBase64String: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    var reader = new FileReader();
-    reader.onload = function () {
-      const imageString = reader.result?.toString();
-      if (imageString) setBase64String(imageString);
-    };
-    reader.readAsDataURL(image);
+  /*
+
+  const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setGrade(event.target.value as string);
   };
 
-  const handleImageAsFile = async (e: any) => {
-    const image: File = e.target.files[0];
-
-    setImageAsFile(image);
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFullName(event.target.value as string);
   };
 
-  const firebaseUploadImageFile = (imageFile: File) => {
-    storage
-      .ref(`/images/profileImages/${imageFile.name}`)
-      .put(imageFile)
-      .then(() => {
-        storage
-          .ref(`/images/profileImages`)
-          .child(imageFile.name)
-          .getDownloadURL()
-          .then((fireBaseUrl) => {
-            console.log(fireBaseUrl);
-            setImageAsUrl(fireBaseUrl);
-          });
-      });
+  const handleBioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBio(event.target.value as string);
   };
 
-  const handleFireBaseUpload = (e: any) => {
-    e.preventDefault();
-    if (imageAsFile) {
-      firebaseUploadImageFile(imageAsFile);
-    }
+  const onSave = () => {
+    const nameVals = fullName.split(" ");
+    setUser({
+      ...user,
+      bio,
+      firstName: nameVals[0],
+      lastName: nameVals[1],
+      grade,
+    });
+    editUser({ ...user, signedUp: true });
+    setEditing(false);
   };
+*/
 
   return (
-    <Card className={classes.root}>
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid container item xs={9}>
-            <Grid container item direction="row" alignItems="flex-start">
-              <Grid item xs={3}>
-                <Avatar
-                  className={classes.media}
-                  alt="Prof Pic"
-                  src={require("../components/apoorv.png")}
-                />
-              </Grid>
-              <Grid item xs={9}>
-                <div className={classes.userInfo}>
-                  <div>
-                    <TextField id="name" label="Outlined" variant="outlined" />
-                  </div>
-                  <div>
-                    <TextField id="grade" label="Outlined" variant="outlined" />
-                  </div>
-                  <div>
-                    <TextField id="bio" label="Outlined" variant="outlined" />
-                  </div>
-                </div>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid container item xs={3} direction="column" alignItems="flex-end">
-            <Grid item></Grid>
-            <br />
-            {classNames.map((name: string, index: number) => {
-              return (
-                <Grid item>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "flex-end",
-                    }}
-                  >
-                    <ComputerIcon />
-                    <Link
-                      href={`/class/${classIds[index]}`}
-                      style={{ fontSize: 15, marginRight: 30, marginLeft: 5 }}
-                    >
-                      {name}
-                    </Link>
-                  </div>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+    <div></div>
+    /*
+    <Paper
+      className={classes.paper}
+      style={{ width: innerWidth * 0.8, height: innerHeight * 0.75 }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar
+          className={classes.media}
+          alt="Prof Pic"
+          src={require("../components/apoorv.png")}
+        />
+        <div className={classes.input}>
+          <TextField
+            variant="outlined"
+            fullWidth
+            id="name"
+            label="Name"
+            name="name"
+            value={fullName}
+            onChange={handleNameChange}
+          />
+        </div>
+        <div className={classes.input}>
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel id="demo-mutiple-name-label">Grade</InputLabel>
+            <Select
+              labelId="grade-select-label"
+              id="demo-simple-select"
+              inputProps={{
+                id: "demo-mutiple-name-label",
+              }}
+              label="Grade"
+              value={grade}
+              onChange={handleSelectChange}
+            >
+              <MenuItem value={"Freshman"}>Freshman</MenuItem>
+              <MenuItem value={"Sophomore"}>Sophomore</MenuItem>
+              <MenuItem value={"Junior"}>Junior</MenuItem>
+              <MenuItem value={"Senior"}>Senior</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div className={classes.input}>
+          <TextField
+            variant="outlined"
+            fullWidth
+            id="bio"
+            label="Biography"
+            name="bio"
+            value={bio}
+            onChange={handleBioChange}
+          />
+        </div>
+        <Button variant="contained" color="primary" onClick={() => onSave()}>
+          Save
+        </Button>
+      </div>
+    </Paper>
+    */
   );
 }

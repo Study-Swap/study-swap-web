@@ -22,10 +22,10 @@ export const days: string[] = [
   "Saturday",
 ];
 
-export const initArray = (size: number, value: any): Array<any> => {
+export const initArray = (size: number, value: boolean[]): Array<any> => {
   var array: Array<any>;
   for (var i = 0, array = new Array(times.length); i < size; i++) {
-    array[i] = value;
+    array[i] = [...value];
   }
   return array;
 };
@@ -42,11 +42,11 @@ export const emptyArray: boolean[][] = initArray(times.length, [
 
 export const arrayToTimes = (timeSlots: boolean[][]): string[] => {
   const stringTimes: string[] = [];
-  for (var j = 0; j < timeSlots.length; j++) {
+  for (var j = 0; j < timeSlots[0].length; j++) {
     var timeOptions = "";
-    for (var i = 0; i < timeSlots[0].length; i++) {
+    for (var i = 0; i < timeSlots.length; i++) {
       if (timeSlots[i][j]) {
-        timeOptions = timeOptions.concat(`,${times[j]}`);
+        timeOptions = timeOptions.concat(`${times[i]},`);
       }
     }
     stringTimes.push(timeOptions);
@@ -67,9 +67,8 @@ export const timesToArray = (stringTimes: string[]): boolean[][] => {
   stringTimes.forEach((stringTime, index) => {
     const arrayTime = stringTime.split(",");
     arrayTime.forEach((time: string) => {
-      timeSlots[index][times.indexOf(time)] = true;
+      if (time && time !== "") timeSlots[times.indexOf(time)][index] = true;
     });
   });
-
   return timeSlots;
 };

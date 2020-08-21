@@ -90,10 +90,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface SchedulerProps {
-  timeStrings: string;
+  timeStrings: string[];
 }
 
-export default function Scheduler({ timeStrings }) {
+export default function Scheduler({ timeStrings }: SchedulerProps) {
   /*
     Scheduling Alogorithm:
     - Pivots around mouse down and mouse up listeners
@@ -117,11 +117,15 @@ export default function Scheduler({ timeStrings }) {
   const [isAdd, setIsAdd] = useState<boolean>(false);
   // Time Slots
   const [timeSlots, setTimeSlots] = useState<any[][]>(
-    timesToArray(timeStrings)
+    timesToArray(timeStrings).map((row) => {
+      return row.slice();
+    })
   );
   // Temporary Time slots to compare to before mouse was pressed
   const [tempMouseDown, setTempMouseDown] = useState<any[][]>(
-    timesToArray(timeStrings)
+    timesToArray(timeStrings).map((row) => {
+      return row.slice();
+    })
   );
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
   // coordinate arrays will always have length 2
