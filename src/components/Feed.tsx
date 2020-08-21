@@ -7,8 +7,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import NewPost from "../components/NewPost";
 import FeedItem from "../components/FeedItem";
 import { postData } from "../DummyData/home";
-import { getPosts, getFeed, addPost } from "../utils/firebaseUtils";
+import {
+  getPosts,
+  getFeed,
+  addPost,
+  getMorePosts,
+} from "../utils/firebaseUtils/posts";
 import { postModel } from "../constants/Models";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -24,25 +30,47 @@ const useStyles = makeStyles({
 });
 
 export default function Feed(props: any) {
-  console.log(props.filter);
   const classes = useStyles();
   // eslint-disable-next-line
   const [postState, setPostState] = useState<any[]>([]);
+  const [lastTimestamp, setLastTimestamp] = useState<string>("");
 
   useEffect(() => {
-    console.log(postState);
     getPosts("1") // classId is hardcoded for now
       .then((res) => {
-        setPostState(res);
+        setPostState(res.posts);
+        setLastTimestamp(res.lastTimestamp);
       })
       .catch((err) => console.error(err));
   }, []); // TODO: Add loading indicator and put "refresh" into empty array
+
+  function fetchData() {
+    console.log(lastTimestamp);
+
+    setTimeout(() => {
+      getMorePosts("1", lastTimestamp) // classId is hardcoded for now
+        .then((res) => {
+          const newPosts: postModel[] = res.posts;
+          setPostState([...postState, ...newPosts]);
+          setLastTimestamp(res.lastTimestamp);
+        })
+        .catch((err) => console.error(err));
+    }, 500);
+  }
+
+  window.onscroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
+    ) {
+      fetchData();
+    }
+  };
 
   function isInToShow(post: postModel) {
     var toShow = true;
     try {
       toShow = props.categoryFilter[post.postCategory];
-      console.log(props.categoryFilter);
     } catch (error) {
       console.error(error);
     }
@@ -71,6 +99,7 @@ export default function Feed(props: any) {
           }}
         />
       </Grid>
+
       {postState
         .filter((post) => isInToShow(post))
         .map((thisPost, index) => (

@@ -11,38 +11,74 @@ const commentsDB = firebase.firestore().collection(collections.comments);
 
 /*
 @type     GET -> Posts
-@desc     get all posts in a certain class
+@desc     get first {num} of posts in a certain class
 */
 function getPosts(classId: string): Promise<any> {
   return postsDB
     .where("classId", "==", classId)
     .orderBy("timestamp", "asc")
+    .limit(5)
     .get()
-    .then(
-      (snapShot: any): Array<postModel> => {
-        const posts: Array<postModel> = [];
-        snapShot.forEach((post: any): void => {
-          const data = post.data();
-          posts.unshift({
-            userId: data.userId,
-            classId: data.classId,
-            postText: data.postText,
-            postUserName: data.postUserName,
-            postClassName: data.postClassName,
-            postCategory: data.postCategory,
-            id: post.id,
-            edited: false,
-            timestamp: data.timestamp.toDate().toDateString(),
-          });
+    .then((snapShot: any): any => {
+      const posts: Array<postModel> = [];
+      let lastTimestamp = "";
+      snapShot.forEach((post: any): void => {
+        const data = post.data();
+        posts.unshift({
+          userId: data.userId,
+          classId: data.classId,
+          postText: data.postText,
+          postUserName: data.postUserName,
+          postClassName: data.postClassName,
+          postCategory: data.postCategory,
+          id: post.id,
+          edited: false,
+          timestamp: data.timestamp.toDate().toDateString(),
         });
-        return posts;
-      }
-    )
+        lastTimestamp = data.timestamp.toDate().toDateString();
+      });
+      return { posts: posts, lastTimestamp: lastTimestamp };
+    })
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
     });
 }
 
+/*
+@type     GET -> Posts
+@desc     get {num} of a posts in a class after start date, used for infinite scroll
+*/
+function getMorePosts(classId: string, lastTimestamp: string): Promise<any> {
+  return postsDB
+    .where("classId", "==", classId)
+    .orderBy("timestamp", "asc")
+    .startAfter(lastTimestamp)
+    .limit(5)
+    .get()
+    .then((snapShot: any): any => {
+      const morePosts: Array<postModel> = [];
+      let newLastTimestamp = "";
+      snapShot.forEach((post: any): void => {
+        const data = post.data();
+        morePosts.unshift({
+          userId: data.userId,
+          classId: data.classId,
+          postText: data.postText,
+          postUserName: data.postUserName,
+          postClassName: data.postClassName,
+          postCategory: data.postCategory,
+          id: post.id,
+          edited: false,
+          timestamp: data.timestamp.toDate().toDateString(),
+        });
+        newLastTimestamp = data.timestamp.toDate().toDateString();
+      });
+      return { posts: morePosts, lastTimestamp: newLastTimestamp };
+    })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
 /*
   @type     GET -> Posts
   @desc     get all posts made by a certain user
@@ -168,4 +204,12 @@ function editPost(postId: string, newText: string): void {
     });
 }
 
-export { getPosts, getUserPosts, getFeed, addPost, removePost, editPost };
+export {
+  getPosts,
+  getMorePosts,
+  getUserPosts,
+  getFeed,
+  addPost,
+  removePost,
+  editPost,
+};
