@@ -32,6 +32,8 @@ function getPosts(classId: string): Promise<any> {
             id: post.id,
             edited: false,
             timestamp: data.timestamp.toDate().toDateString(),
+            numLikes: data.numLikes,
+            likedBy: data.likedBy,
           });
         });
         return posts;
@@ -65,6 +67,8 @@ function getUserPosts(userId: string): Promise<postModel[] | void> {
             id: post.id,
             edited: false,
             timestamp: data.timestamp.toDate().toDateString(),
+            numLikes: data.numLikes,
+            likedBy: data.likedBy,
           });
         });
         return posts;
@@ -166,4 +170,16 @@ function editPost(postId: string, newText: string): void {
     });
 }
 
-export { getPosts, getUserPosts, getFeed, addPost, removePost, editPost };
+function handleLikes(postID: string): void {
+  postsDB.doc(postID);
+}
+
+export {
+  getPosts,
+  getUserPosts,
+  getFeed,
+  addPost,
+  removePost,
+  editPost,
+  handleLikes,
+};

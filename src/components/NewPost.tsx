@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     maxHeight: 200,
-    width: 450,
+    width: 486,
   },
   input: {
     marginLeft: theme.spacing(2),

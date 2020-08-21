@@ -104,6 +104,8 @@ export default function FeedItem(props: postModel) {
         edited={props.edited}
         userId={props.userId}
         classId={props.classId}
+        numLikes={props.numLikes}
+        likedBy={props.likedBy}
         onClick={toggleCommentClick}
       />
 

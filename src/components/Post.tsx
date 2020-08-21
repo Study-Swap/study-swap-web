@@ -79,7 +79,7 @@ export default function Post(props: any) {
           className={classes.button}
           size="small"
         >
-          Like
+          Like {props.numLikes}
         </Button>
         <Button
           startIcon={<ChatBubbleIcon />}

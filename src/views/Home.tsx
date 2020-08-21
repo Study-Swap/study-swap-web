@@ -44,7 +44,7 @@ export default function Home() {
         direction="column"
         justifyContent="center"
         alignItems="center"
-        spacing={6}
+        spacing={2}
         className={classes.root}
         //style={{ width: "500px" }}
       >
@@ -71,6 +71,8 @@ export default function Home() {
               edited={thisPost.edited}
               userId={thisPost.userId}
               classId={thisPost.classId}
+              numLikes={thisPost.numLikes}
+              likedBy={thisPost.likedBy}
             />
           </Grid>
         ))}

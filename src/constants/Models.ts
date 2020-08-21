@@ -26,7 +26,8 @@ export interface postModel {
   // foreign key relations
   userId: string; // points to post-er
   classId: string; // points to class post belongs to
-
+  numLikes: number;
+  likedBy: Array<string>;
   // post specific
   postText: string;
   postUserName: string;

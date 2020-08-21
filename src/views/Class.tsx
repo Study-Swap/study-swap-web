@@ -49,6 +49,8 @@ export default function Class() {
                   edited={thisPost.edited}
                   userId={thisPost.userId}
                   classId={thisPost.classId}
+                  numLikes={thisPost.numLikes}
+                  likedBy={thisPost.likedBy}
                 />
                 <br />
               </React.Fragment>
