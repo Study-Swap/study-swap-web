@@ -28,7 +28,6 @@ export interface postModel {
   // foreign key relations
   userId: string; // points to post-er
   classId: string; // points to class post belongs to
-  numLikes: number;
   likedBy: Array<string>;
   // post specific
   postText: string;
@@ -38,6 +37,7 @@ export interface postModel {
   timestamp?: any;
   edited: boolean;
   attachPicture?: string; // will be firebase uri
+  isLiked: boolean;
 }
 
 export interface commentModel {

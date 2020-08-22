@@ -11,6 +11,7 @@ import Divider from "@material-ui/core/Divider";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import ShareIcon from "@material-ui/icons/Share";
+import { render } from "@testing-library/react";
 
 const useStyles = makeStyles({
   root: {
@@ -48,6 +49,33 @@ const useStyles = makeStyles({
 export default function Post(props: any) {
   const classes = useStyles();
 
+  function UserHasLiked(props: any) {
+    console.log(props.likedBy);
+    const hasBeenLiked = props.isLiked;
+    const isLikedBy = props.likedBy;
+    if (hasBeenLiked === true) {
+      return (
+        <Button
+          startIcon={<ThumbUpIcon />}
+          className={classes.button}
+          size="small"
+        >
+          Unlike {isLikedBy.length}
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          startIcon={<ThumbUpIcon />}
+          className={classes.button}
+          size="small"
+        >
+          Like {isLikedBy.length}
+        </Button>
+      );
+    }
+  }
+
   return (
     //<Card className={classes.root}>
 
@@ -84,13 +112,7 @@ export default function Post(props: any) {
 
       <Divider className={classes.buttonDivider} />
       <CardActions style={{ justifyContent: "center" }}>
-        <Button
-          startIcon={<ThumbUpIcon />}
-          className={classes.button}
-          size="small"
-        >
-          Like {props.numLikes}
-        </Button>
+        <UserHasLiked hasBeenLiked={props.isLiked} isLikedBy={props.likedBy} />
         <Button
           startIcon={<ChatBubbleIcon />}
           className={classes.button}

@@ -55,7 +55,7 @@ export default function Feed(props: any) {
       direction="column"
       justifyContent="center"
       alignItems="center"
-      spacing={6}
+      spacing={4}
       //className={classes.root}
       style={{ overflow: "auto" }}
     >
@@ -73,21 +73,26 @@ export default function Feed(props: any) {
       </Grid>
       {postState
         .filter((post) => isInToShow(post))
-        .map((thisPost, index) => (
-          <Grid item key={thisPost.id} style={{ width: "500px" }}>
-            <FeedItem
-              id={thisPost.id}
-              postUserName={thisPost.postUserName}
-              postClassName={thisPost.postClassName}
-              postText={thisPost.postText}
-              timestamp={thisPost.timestamp}
-              postCategory={thisPost.postCategory}
-              edited={thisPost.edited}
-              userId={thisPost.userId}
-              classId={thisPost.classId}
-            />
-          </Grid>
-        ))}
+        .map((thisPost, index) => {
+          console.log(thisPost);
+          return (
+            <Grid item key={thisPost.id} style={{ width: "500px" }}>
+              <FeedItem
+                id={thisPost.id}
+                postUserName={thisPost.postUserName}
+                postClassName={thisPost.postClassName}
+                postText={thisPost.postText}
+                timestamp={thisPost.timestamp}
+                postCategory={thisPost.postCategory}
+                edited={thisPost.edited}
+                userId={thisPost.userId}
+                classId={thisPost.classId}
+                likedBy={thisPost.likedBy}
+                isLiked={thisPost.isLiked}
+              />
+            </Grid>
+          );
+        })}
     </Grid>
   );
 }

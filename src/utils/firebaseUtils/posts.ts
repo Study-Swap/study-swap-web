@@ -33,8 +33,8 @@ function getPosts(classId: string): Promise<any> {
             id: post.id,
             edited: false,
             timestamp: data.timestamp.toDate().toDateString(),
-            numLikes: data.numLikes,
             likedBy: data.likedBy,
+            isLiked: false,
           });
         });
         return posts;
@@ -69,8 +69,8 @@ function getUserPosts(userId: string): Promise<postModel[] | void> {
             id: post.id,
             edited: false,
             timestamp: data.timestamp.toDate().toDateString(),
-            numLikes: data.numLikes,
             likedBy: data.likedBy,
+            isLiked: false,
           });
         });
         return posts;
