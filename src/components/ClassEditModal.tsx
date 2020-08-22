@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -31,6 +31,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
+  buttons: {
+    width: "60%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
 }));
 
 interface ClassEditModalProps {
@@ -48,6 +54,12 @@ interface ClassEditModalProps {
   setGSIName: Function;
   iaNames: string;
   setIANames: Function;
+  canvasLink: string;
+  setCanvasLink: Function;
+  emailLink: string;
+  setEmailLinks: Function;
+  classWebsiteLinks: string;
+  setClassWebsiteLink: Function;
 }
 
 export default function ClassEditModal({
@@ -65,8 +77,41 @@ export default function ClassEditModal({
   setGSIName,
   iaNames,
   setIANames,
+  canvasLink,
+  setCanvasLink,
+  emailLink,
+  setEmailLinks,
+  classWebsiteLinks,
+  setClassWebsiteLink,
 }: ClassEditModalProps) {
   const classes = useStyles();
+
+  // Edit State Variables
+  const [editClassTitle, setEditClassTitle] = useState<string>(classTitle);
+  const [editClassTime, setEditClassTime] = useState<string>(classTime);
+  const [editClassSection, setEditClassSection] = useState<string>(
+    classSection
+  );
+  const [editProfName, setEditProfName] = useState<string>(profName);
+  const [editGSIName, setEditGSIName] = useState<string>(gsiName);
+  const [editIANames, setEditIANames] = useState<string>(iaNames);
+  const [editCanvasLink, setEditCanvasLink] = useState<string>(canvasLink);
+  const [editEmailLink, setEditEmailLink] = useState<string>(emailLink);
+  const [editClassWebsiteLinks, setEditClassWebsiteLinks] = useState<string>(
+    classWebsiteLinks
+  );
+
+  useEffect(() => {
+    // Sometimes state vars dont reset on close
+    if (editing) {
+      setEditClassTitle(classTitle);
+      setEditClassTime(classTime);
+      setEditClassSection(classSection);
+      setEditProfName(profName);
+      setEditGSIName(gsiName);
+      setEditIANames(iaNames);
+    }
+  }, [editing]);
 
   const { innerWidth, innerHeight } = useWindowDimensions();
 
@@ -95,9 +140,9 @@ export default function ClassEditModal({
               id="class name"
               label="Class Name"
               name="name"
-              value={classTitle}
+              value={editClassTitle}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setClassTitle(event.target.value);
+                setEditClassTitle(event.target.value);
               }}
             />
           </div>
@@ -108,9 +153,9 @@ export default function ClassEditModal({
               id="class time"
               label="Class Time"
               name="name"
-              value={classTime}
+              value={editClassTime}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setClassTime(event.target.value);
+                setEditClassTime(event.target.value);
               }}
             />
           </div>
@@ -121,9 +166,9 @@ export default function ClassEditModal({
               id="class section"
               label="Section"
               name="name"
-              value={classSection}
+              value={editClassSection}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setClassSection(event.target.value);
+                setEditClassSection(event.target.value);
               }}
             />
           </div>
@@ -134,9 +179,9 @@ export default function ClassEditModal({
               id="professor name"
               label="Professor Name"
               name="name"
-              value={profName}
+              value={editProfName}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setProfName(event.target.value);
+                setEditProfName(event.target.value);
               }}
             />
           </div>
@@ -147,9 +192,9 @@ export default function ClassEditModal({
               id="gsi name"
               label="GSI Name"
               name="name"
-              value={gsiName}
+              value={editGSIName}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setGSIName(event.target.value);
+                setEditGSIName(event.target.value);
               }}
             />
           </div>
@@ -160,21 +205,38 @@ export default function ClassEditModal({
               id="is names"
               label="IA Names"
               name="name"
-              value={iaNames}
+              value={editIANames}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setIANames(event.target.value);
+                setEditIANames(event.target.value);
               }}
             />
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              setEditing(false);
-            }}
-          >
-            Save
-          </Button>
+          <div className={classes.buttons}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setClassTitle(editClassTitle);
+                setClassTime(editClassTime);
+                setClassSection(editClassTime);
+                setProfName(editProfName);
+                setGSIName(editGSIName);
+                setIANames(editIANames);
+                setEditing(false);
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setEditing(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       </Paper>
     </Modal>

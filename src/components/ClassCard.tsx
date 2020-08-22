@@ -11,11 +11,18 @@ import CheckEnrolled from "./CheckEnrolled";
 import ClassEditModal from "./ClassEditModal";
 
 const useStyles = makeStyles((theme) => ({
-  mainPaper: { width: 870, height: 200, padding: 20 },
+  mainPaper: {
+    width: 870,
+    height: 200,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+  },
   mainDiv: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    height: "100%",
   },
   rightSide: {
     display: "flex",
@@ -38,6 +45,11 @@ export default function ClassCard() {
   const [iaNames, setIANames] = useState<string>(
     "Name 1, Name 2, Name 3, Name 4, Name 5,"
   );
+  const [canvasLink, setCanvasLink] = useState<string>("www.canvas.com");
+  const [emailLink, setEmailLink] = useState<string>("www.gmail.com");
+  const [classWebsiteLink, setClassWebsiteLink] = useState<string>(
+    "www.google.com"
+  );
 
   return (
     <Card>
@@ -54,7 +66,11 @@ export default function ClassCard() {
             />
             <div className={classes.rightSide}>
               <CheckEnrolled setEditing={setEditing} />
-              <ClassLinkSelect />
+              <ClassLinkSelect
+                canvasLink={canvasLink}
+                emailLink={emailLink}
+                classWebsiteLink={classWebsiteLink}
+              />
             </div>
             <ClassEditModal
               editing={editing}
@@ -71,6 +87,12 @@ export default function ClassCard() {
               setGSIName={setGSIName}
               iaNames={iaNames}
               setIANames={setIANames}
+              canvasLink={canvasLink}
+              setCanvasLink={setCanvasLink}
+              emailLink={emailLink}
+              setEmailLink={setEmailLink}
+              classWebsiteLink={classWebsiteLink}
+              setClassWebsiteLink={setClassWebsiteLink}
             />
           </div>
         </Paper>
