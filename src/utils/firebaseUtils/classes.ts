@@ -41,8 +41,15 @@ async function getClasses(classes: Array<string>): Promise<any> {
             const data = class_.data();
             return {
               id: class_.id,
-              className: data.className,
-              classDescription: data.classDescription,
+              classTitle: data.classTitle,
+              classTime: data.classTime,
+              classSection: data.classSection,
+              profName: data.profName,
+              gsiName: data.gsiName,
+              iaNames: data.iaNames,
+              canvasLink: data.canvasLink,
+              emailLink: data.emailLink,
+              classWebsiteLink: data.classWebsiteLink,
             };
           }
         )
@@ -51,6 +58,20 @@ async function getClasses(classes: Array<string>): Promise<any> {
         });
     })
   );
+}
+
+/*
+  @type     GET -> Classes
+  @desc     get all classes for a classId array
+*/
+function editClass(classObj: classModel): void {
+  // TODO Later: Fix 'any' in return...
+  classesDB
+    .doc(classObj.id)
+    .update({ ...classObj })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
 }
 
 /*
@@ -100,4 +121,11 @@ function createClass(newClass: classModel): void {
   });
 }
 
-export { getClassList, getClasses, addClasses, removeClasses, createClass };
+export {
+  getClassList,
+  getClasses,
+  addClasses,
+  removeClasses,
+  createClass,
+  editClass,
+};

@@ -18,8 +18,15 @@ export interface userModel {
 
 export interface classModel {
   id?: string;
-  className: string;
-  classDescription: string;
+  classTitle: string;
+  classTime: string;
+  classSection: string;
+  profName: string;
+  gsiName: string;
+  iaNames: string;
+  canvasLink: string;
+  emailLink: string;
+  classWebsiteLink: string;
   classPicture?: string; // will be firebase uri
 }
 

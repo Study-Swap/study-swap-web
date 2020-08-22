@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
@@ -9,6 +9,8 @@ import ClassTitle from "./ClassTitle";
 import ClassLinkSelect from "./ClassLinkSelect";
 import CheckEnrolled from "./CheckEnrolled";
 import ClassEditModal from "./ClassEditModal";
+
+import { getClasses } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
@@ -50,6 +52,20 @@ export default function ClassCard() {
   const [classWebsiteLink, setClassWebsiteLink] = useState<string>(
     "www.google.com"
   );
+
+  useEffect(() => {
+    getClasses(["1"]).then((classList) => {
+      setClassTitle(classList[0].classTitle);
+      setClassTime(classList[0].classTime);
+      setClassSection(classList[0].classSection);
+      setProfName(classList[0].profName);
+      setGSIName(classList[0].gsiName);
+      setIANames(classList[0].iaNames);
+      setCanvasLink(classList[0].canvasLink);
+      setEmailLink(classList[0].emailLink);
+      setClassWebsiteLink(classList[0].classWebsiteLink);
+    });
+  }, []);
 
   return (
     <Card>

@@ -7,6 +7,8 @@ import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
+import { editClass } from "../utils/firebaseUtils";
+
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
 const useStyles = makeStyles((theme) => ({
@@ -57,8 +59,8 @@ interface ClassEditModalProps {
   canvasLink: string;
   setCanvasLink: Function;
   emailLink: string;
-  setEmailLinks: Function;
-  classWebsiteLinks: string;
+  setEmailLink: Function;
+  classWebsiteLink: string;
   setClassWebsiteLink: Function;
 }
 
@@ -80,8 +82,8 @@ export default function ClassEditModal({
   canvasLink,
   setCanvasLink,
   emailLink,
-  setEmailLinks,
-  classWebsiteLinks,
+  setEmailLink,
+  classWebsiteLink,
   setClassWebsiteLink,
 }: ClassEditModalProps) {
   const classes = useStyles();
@@ -97,8 +99,8 @@ export default function ClassEditModal({
   const [editIANames, setEditIANames] = useState<string>(iaNames);
   const [editCanvasLink, setEditCanvasLink] = useState<string>(canvasLink);
   const [editEmailLink, setEditEmailLink] = useState<string>(emailLink);
-  const [editClassWebsiteLinks, setEditClassWebsiteLinks] = useState<string>(
-    classWebsiteLinks
+  const [editClassWebsiteLink, setEditClassWebsiteLink] = useState<string>(
+    classWebsiteLink
   );
 
   useEffect(() => {
@@ -110,6 +112,9 @@ export default function ClassEditModal({
       setEditProfName(profName);
       setEditGSIName(gsiName);
       setEditIANames(iaNames);
+      setEditCanvasLink(canvasLink);
+      setEditEmailLink(emailLink);
+      setEditClassWebsiteLink(classWebsiteLink);
     }
   }, [editing]);
 
@@ -211,6 +216,45 @@ export default function ClassEditModal({
               }}
             />
           </div>
+          <div className={classes.input}>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="canvas link"
+              label="Canvas Link"
+              name="canvas link"
+              value={editCanvasLink}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setEditCanvasLink(event.target.value);
+              }}
+            />
+          </div>
+          <div className={classes.input}>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="email link"
+              label="Email Link"
+              name="email link"
+              value={editEmailLink}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setEditEmailLink(event.target.value);
+              }}
+            />
+          </div>
+          <div className={classes.input}>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="class link"
+              label="Class Website Link"
+              name="class link"
+              value={editClassWebsiteLink}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setEditClassWebsiteLink(event.target.value);
+              }}
+            />
+          </div>
           <div className={classes.buttons}>
             <Button
               variant="contained"
@@ -218,10 +262,25 @@ export default function ClassEditModal({
               onClick={() => {
                 setClassTitle(editClassTitle);
                 setClassTime(editClassTime);
-                setClassSection(editClassTime);
+                setClassSection(editClassSection);
                 setProfName(editProfName);
                 setGSIName(editGSIName);
                 setIANames(editIANames);
+                setCanvasLink(editCanvasLink);
+                setEmailLink(editEmailLink);
+                setClassWebsiteLink(editClassWebsiteLink);
+                editClass({
+                  id: "1",
+                  classTitle: editClassTitle,
+                  classTime: editClassTime,
+                  classSection: editClassSection,
+                  profName: editProfName,
+                  gsiName: editGSIName,
+                  iaNames: editIANames,
+                  canvasLink: editCanvasLink,
+                  emailLink: editEmailLink,
+                  classWebsiteLink: editClassWebsiteLink,
+                });
                 setEditing(false);
               }}
             >

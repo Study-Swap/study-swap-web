@@ -14,6 +14,7 @@ import {
   addClasses,
   removeClasses,
   createClass,
+  editClass,
 } from "./classes";
 
 import {
@@ -91,4 +92,5 @@ export {
   sendAdminAccess,
   editUserSchedule,
   editUser,
+  editClass,
 };
