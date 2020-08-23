@@ -17,7 +17,7 @@ function getPosts(classId: string): Promise<any> {
   return postsDB
     .where("classId", "==", classId)
     .orderBy("timestamp", "asc")
-    .limit(5)
+    .limit(3)
     .get()
     .then((snapShot: any): any => {
       const posts: Array<postModel> = [];
@@ -35,7 +35,7 @@ function getPosts(classId: string): Promise<any> {
           edited: false,
           timestamp: data.timestamp.toDate().toDateString(),
         });
-        lastTimestamp = data.timestamp.toDate().toDateString();
+        lastTimestamp = data.timestamp;
       });
       return { posts: posts, lastTimestamp: lastTimestamp };
     })
@@ -48,12 +48,13 @@ function getPosts(classId: string): Promise<any> {
 @type     GET -> Posts
 @desc     get {num} of a posts in a class after start date, used for infinite scroll
 */
-function getMorePosts(classId: string, lastTimestamp: string): Promise<any> {
+function getMorePosts(classId: string, lastTimestamp: any): Promise<any> {
+  console.log(lastTimestamp);
   return postsDB
     .where("classId", "==", classId)
     .orderBy("timestamp", "asc")
+    .limit(3)
     .startAfter(lastTimestamp)
-    .limit(5)
     .get()
     .then((snapShot: any): any => {
       const morePosts: Array<postModel> = [];
@@ -71,7 +72,7 @@ function getMorePosts(classId: string, lastTimestamp: string): Promise<any> {
           edited: false,
           timestamp: data.timestamp.toDate().toDateString(),
         });
-        newLastTimestamp = data.timestamp.toDate().toDateString();
+        newLastTimestamp = data.timestamp;
       });
       return { posts: morePosts, lastTimestamp: newLastTimestamp };
     })

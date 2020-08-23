@@ -14,7 +14,7 @@ import {
   getMorePosts,
 } from "../utils/firebaseUtils/posts";
 import { postModel } from "../constants/Models";
-import InfiniteScroll from "react-infinite-scroll-component";
+import InfiniteScroll from "react-infinite-scroller";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -33,7 +33,7 @@ export default function Feed(props: any) {
   const classes = useStyles();
   // eslint-disable-next-line
   const [postState, setPostState] = useState<any[]>([]);
-  const [lastTimestamp, setLastTimestamp] = useState<string>("");
+  const [lastTimestamp, setLastTimestamp] = useState<any>("");
 
   useEffect(() => {
     getPosts("1") // classId is hardcoded for now
@@ -44,28 +44,26 @@ export default function Feed(props: any) {
       .catch((err) => console.error(err));
   }, []); // TODO: Add loading indicator and put "refresh" into empty array
 
-  function fetchData() {
-    console.log(lastTimestamp);
-
-    setTimeout(() => {
-      getMorePosts("1", lastTimestamp) // classId is hardcoded for now
-        .then((res) => {
-          const newPosts: postModel[] = res.posts;
-          setPostState([...postState, ...newPosts]);
-          setLastTimestamp(res.lastTimestamp);
-        })
-        .catch((err) => console.error(err));
-    }, 500);
-  }
-
-  window.onscroll = () => {
+  window.onscroll = function () {
     if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 100
     ) {
-      fetchData();
+      alert("you're at the bottom of the page");
     }
   };
+
+  function fetchData() {
+    console.log("fetchDataCalled");
+
+    getMorePosts("1", lastTimestamp) // classId is hardcoded for now
+      .then((res) => {
+        const newPosts: postModel[] = res.posts;
+        setPostState([...postState, ...newPosts]);
+        setLastTimestamp(res.lastTimestamp);
+      })
+      .catch((err) => console.error(err));
+  }
 
   function isInToShow(post: postModel) {
     var toShow = true;
@@ -103,7 +101,15 @@ export default function Feed(props: any) {
       {postState
         .filter((post) => isInToShow(post))
         .map((thisPost, index) => (
-          <Grid item key={thisPost.id} style={{ width: "500px" }}>
+          <Grid
+            item
+            key={thisPost.id}
+            style={{
+              width: "500px",
+              paddingTop: "50px",
+              paddingBottom: "50px",
+            }}
+          >
             <FeedItem
               id={thisPost.id}
               postUserName={thisPost.postUserName}
