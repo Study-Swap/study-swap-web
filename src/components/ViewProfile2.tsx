@@ -1,15 +1,11 @@
 // eslint-disable-next-line
-import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../constants/UserContext";
-import Container from "@material-ui/core/Container";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ComputerIcon from "@material-ui/icons/Computer";
@@ -18,8 +14,6 @@ import Link from "@material-ui/core/Link";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import { userModel } from "../constants/Models";
-import { dummyUser } from "../DummyData/profile";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -42,13 +36,6 @@ const useStyles = makeStyles({
     height: 150,
     width: 150,
   },
-  input: {
-    //marginLeft: theme.spacing(2),
-    flex: 1,
-    overflow: "auto",
-    fontSize: 14,
-    width: "100%",
-  },
   userInfo: {
     marginLeft: 20,
   },
@@ -56,6 +43,18 @@ const useStyles = makeStyles({
     height: 40,
   },
 });
+
+interface ViewProfileProps {
+  firstName: string;
+  lastName: string;
+  grade: string;
+  bio: string;
+  editingClick: Function;
+  classIds: string[];
+  classNames: string[];
+  setUser: Function;
+  profilePicture: string;
+}
 
 export default function ViewProfile({
   firstName,
@@ -66,7 +65,8 @@ export default function ViewProfile({
   classIds,
   classNames,
   setUser,
-}: any) {
+  profilePicture,
+}: ViewProfileProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -88,7 +88,7 @@ export default function ViewProfile({
                 <Avatar
                   className={classes.media}
                   alt="Prof Pic"
-                  src={require("../components/apoorv.png")}
+                  src={profilePicture}
                 />
               </Grid>
               <Grid item xs={9}>

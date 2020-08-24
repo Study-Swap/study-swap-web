@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -6,6 +6,8 @@ import Modal from "@material-ui/core/Modal";
 import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+
+import { editClass } from "../utils/firebaseUtils";
 
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
@@ -31,6 +33,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
+  buttons: {
+    width: "60%",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
 }));
 
 interface ClassEditModalProps {
@@ -48,6 +56,12 @@ interface ClassEditModalProps {
   setGSIName: Function;
   iaNames: string;
   setIANames: Function;
+  canvasLink: string;
+  setCanvasLink: Function;
+  emailLink: string;
+  setEmailLink: Function;
+  classWebsiteLink: string;
+  setClassWebsiteLink: Function;
 }
 
 export default function ClassEditModal({
@@ -65,8 +79,44 @@ export default function ClassEditModal({
   setGSIName,
   iaNames,
   setIANames,
+  canvasLink,
+  setCanvasLink,
+  emailLink,
+  setEmailLink,
+  classWebsiteLink,
+  setClassWebsiteLink,
 }: ClassEditModalProps) {
   const classes = useStyles();
+
+  // Edit State Variables
+  const [editClassTitle, setEditClassTitle] = useState<string>(classTitle);
+  const [editClassTime, setEditClassTime] = useState<string>(classTime);
+  const [editClassSection, setEditClassSection] = useState<string>(
+    classSection
+  );
+  const [editProfName, setEditProfName] = useState<string>(profName);
+  const [editGSIName, setEditGSIName] = useState<string>(gsiName);
+  const [editIANames, setEditIANames] = useState<string>(iaNames);
+  const [editCanvasLink, setEditCanvasLink] = useState<string>(canvasLink);
+  const [editEmailLink, setEditEmailLink] = useState<string>(emailLink);
+  const [editClassWebsiteLink, setEditClassWebsiteLink] = useState<string>(
+    classWebsiteLink
+  );
+
+  useEffect(() => {
+    // Sometimes state vars dont reset on close
+    if (editing) {
+      setEditClassTitle(classTitle);
+      setEditClassTime(classTime);
+      setEditClassSection(classSection);
+      setEditProfName(profName);
+      setEditGSIName(gsiName);
+      setEditIANames(iaNames);
+      setEditCanvasLink(canvasLink);
+      setEditEmailLink(emailLink);
+      setEditClassWebsiteLink(classWebsiteLink);
+    }
+  }, [editing]);
 
   const { innerWidth, innerHeight } = useWindowDimensions();
 
@@ -95,9 +145,9 @@ export default function ClassEditModal({
               id="class name"
               label="Class Name"
               name="name"
-              value={classTitle}
+              value={editClassTitle}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setClassTitle(event.target.value);
+                setEditClassTitle(event.target.value);
               }}
             />
           </div>
@@ -108,9 +158,9 @@ export default function ClassEditModal({
               id="class time"
               label="Class Time"
               name="name"
-              value={classTime}
+              value={editClassTime}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setClassTime(event.target.value);
+                setEditClassTime(event.target.value);
               }}
             />
           </div>
@@ -121,9 +171,9 @@ export default function ClassEditModal({
               id="class section"
               label="Section"
               name="name"
-              value={classSection}
+              value={editClassSection}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setClassSection(event.target.value);
+                setEditClassSection(event.target.value);
               }}
             />
           </div>
@@ -134,9 +184,9 @@ export default function ClassEditModal({
               id="professor name"
               label="Professor Name"
               name="name"
-              value={profName}
+              value={editProfName}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setProfName(event.target.value);
+                setEditProfName(event.target.value);
               }}
             />
           </div>
@@ -147,9 +197,9 @@ export default function ClassEditModal({
               id="gsi name"
               label="GSI Name"
               name="name"
-              value={gsiName}
+              value={editGSIName}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setGSIName(event.target.value);
+                setEditGSIName(event.target.value);
               }}
             />
           </div>
@@ -160,21 +210,92 @@ export default function ClassEditModal({
               id="is names"
               label="IA Names"
               name="name"
-              value={iaNames}
+              value={editIANames}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                setIANames(event.target.value);
+                setEditIANames(event.target.value);
               }}
             />
           </div>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              setEditing(false);
-            }}
-          >
-            Save
-          </Button>
+          <div className={classes.input}>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="canvas link"
+              label="Canvas Link"
+              name="canvas link"
+              value={editCanvasLink}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setEditCanvasLink(event.target.value);
+              }}
+            />
+          </div>
+          <div className={classes.input}>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="email link"
+              label="Email Link"
+              name="email link"
+              value={editEmailLink}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setEditEmailLink(event.target.value);
+              }}
+            />
+          </div>
+          <div className={classes.input}>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="class link"
+              label="Class Website Link"
+              name="class link"
+              value={editClassWebsiteLink}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setEditClassWebsiteLink(event.target.value);
+              }}
+            />
+          </div>
+          <div className={classes.buttons}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setClassTitle(editClassTitle);
+                setClassTime(editClassTime);
+                setClassSection(editClassSection);
+                setProfName(editProfName);
+                setGSIName(editGSIName);
+                setIANames(editIANames);
+                setCanvasLink(editCanvasLink);
+                setEmailLink(editEmailLink);
+                setClassWebsiteLink(editClassWebsiteLink);
+                editClass({
+                  id: "1",
+                  classTitle: editClassTitle,
+                  classTime: editClassTime,
+                  classSection: editClassSection,
+                  profName: editProfName,
+                  gsiName: editGSIName,
+                  iaNames: editIANames,
+                  canvasLink: editCanvasLink,
+                  emailLink: editEmailLink,
+                  classWebsiteLink: editClassWebsiteLink,
+                });
+                setEditing(false);
+              }}
+            >
+              Save
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setEditing(false);
+              }}
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       </Paper>
     </Modal>

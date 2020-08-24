@@ -14,6 +14,7 @@ import {
   addClasses,
   removeClasses,
   createClass,
+  editClass,
 } from "./classes";
 
 import {
@@ -49,6 +50,8 @@ import {
   sendPasswordResetEmail,
   logoutUser,
   addUsersByEmail,
+  editUserSchedule,
+  editUser,
 } from "./users";
 
 /********** EXPORT **********/
@@ -87,4 +90,7 @@ export {
   sendLikeComment,
   sendNewChat,
   sendAdminAccess,
+  editUserSchedule,
+  editUser,
+  editClass,
 };
