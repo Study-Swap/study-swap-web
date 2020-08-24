@@ -28,6 +28,11 @@ const useStyles = makeStyles((theme) => ({
 export default function SearchBox(props: any) {
   const classes = useStyles();
   const [value, setValue] = React.useState<nameAndId | null>(null);
+  const { options } = props;
+
+  useEffect(() => {
+    console.log(options);
+  }, [options]);
 
   return (
     <Autocomplete

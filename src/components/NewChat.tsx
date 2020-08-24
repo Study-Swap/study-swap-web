@@ -105,16 +105,20 @@ export default function NewChat(props: any) {
                 dropDownHeight="150px"
                 onChange={(user: nameAndId) => {
                   setCurrentMembers([...currentMembers, user]);
-                  const tempOptions = currentOptions.slice();
+                  //const tempOptions = currentOptions.slice();
                   let toRemove = 0;
-                  tempOptions.filter((member, index) => {
+                  currentOptions.filter((member, index) => {
                     if (member.memberId == user.memberId) {
                       toRemove = index;
                     }
                   });
                   //console.log(toRemove);
-                  delete tempOptions[toRemove];
-                  setCurrentOptions([...tempOptions]);
+                  setCurrentOptions([
+                    ...currentOptions.slice(0, toRemove),
+                    ...currentOptions.slice(toRemove + 1),
+                  ]);
+                  //delete tempOptions[toRemove];
+                  //setCurrentOptions([...tempOptions]);
                 }}
               />
             </Grid>
