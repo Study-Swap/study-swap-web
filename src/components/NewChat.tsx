@@ -17,6 +17,7 @@ import SearchBox from "./SearchBox";
 import { CardContent } from "@material-ui/core";
 import Popper from "@material-ui/core/Popper";
 import { addChats } from "../utils/firebaseUtils";
+import { getUsersForChatCreation } from "../utils/firebaseUtils/users";
 
 interface nameAndId {
   memberName: string;
@@ -53,7 +54,19 @@ export default function NewChat(props: any) {
   const classes = useStyles();
   const [chatName, setChatName] = React.useState("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
+  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
   //const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  useEffect(() => {
+    getUsersForChatCreation()
+      .then((res: any) => {
+        setCurrentOptions(res);
+        console.log(res);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <Card className={classes.root}>
@@ -88,11 +101,21 @@ export default function NewChat(props: any) {
           <Grid container item spacing={2}>
             <Grid item xs={8} className={classes.middleSection}>
               <SearchBox
-                options={options}
+                options={currentOptions}
                 dropDownHeight="150px"
-                onChange={(user: nameAndId) =>
-                  setCurrentMembers([...currentMembers, user])
-                }
+                onChange={(user: nameAndId) => {
+                  setCurrentMembers([...currentMembers, user]);
+                  const tempOptions = currentOptions.slice();
+                  let toRemove = 0;
+                  tempOptions.filter((member, index) => {
+                    if (member.memberId == user.memberId) {
+                      toRemove = index;
+                    }
+                  });
+                  //console.log(toRemove);
+                  delete tempOptions[toRemove];
+                  setCurrentOptions([...tempOptions]);
+                }}
               />
             </Grid>
 

@@ -192,6 +192,32 @@ function addUsersByEmail(classId: string, emailList: Array<string>): any {
   });
 }
 
+interface nameAndId {
+  memberName: string;
+  memberId: string;
+}
+
+//ENGR100 hardcoded for now, will take in a userModel once we set that up
+function getUsersForChatCreation(/*user:userModel*/): Promise<any> {
+  return userDB
+    .where("classes", "array-contains", "ENGR100")
+    .orderBy("firstName")
+    .get()
+    .then((users: any) => {
+      const toReturn: Array<nameAndId> = [];
+      users.forEach((user: any) => {
+        toReturn.push({
+          memberName: user.data().firstName + " " + user.data().lastName,
+          memberId: user.id,
+        });
+      });
+      return toReturn;
+    })
+    .catch((err: any) => {
+      console.log(err);
+    });
+}
+
 export {
   addUser,
   loginUser,
@@ -200,4 +226,5 @@ export {
   sendPasswordResetEmail,
   logoutUser,
   addUsersByEmail,
+  getUsersForChatCreation,
 };
