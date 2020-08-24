@@ -34,7 +34,6 @@ function getPosts(classId: string): Promise<any> {
             edited: false,
             timestamp: data.timestamp.toDate().toDateString(),
             likedBy: data.likedBy,
-            isLiked: false,
           });
         });
         return posts;
@@ -70,7 +69,6 @@ function getUserPosts(userId: string): Promise<postModel[] | void> {
             edited: false,
             timestamp: data.timestamp.toDate().toDateString(),
             likedBy: data.likedBy,
-            isLiked: false,
           });
         });
         return posts;
@@ -172,8 +170,22 @@ function editPost(postId: string, newText: string): void {
     });
 }
 
-function handleLikes(postID: string): void {
-  postsDB.doc(postID);
+function addLike(postId: string, userID: string): void {
+  postsDB
+    .doc(postId)
+    .update({ likedBy: firebaseApp.firestore.FieldValue.arrayUnion(userID) })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
+
+function removeLike(postId: string, userID: string): void {
+  postsDB
+    .doc(postId)
+    .update({ likedBy: firebaseApp.firestore.FieldValue.arrayRemove(userID) })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
 }
 
 export {
@@ -183,5 +195,6 @@ export {
   addPost,
   removePost,
   editPost,
-  handleLikes,
+  addLike,
+  removeLike,
 };

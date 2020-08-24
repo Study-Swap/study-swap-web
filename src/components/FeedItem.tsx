@@ -34,7 +34,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function FeedItem(props: postModel) {
+export default function FeedItem(props: any) {
   const [commentState, setCommentState] = useState<commentModel[]>([]);
   //stores comment dummydata, replace with backend function
 

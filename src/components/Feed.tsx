@@ -48,7 +48,6 @@ export default function Feed(props: any) {
     }
     return toShow;
   }
-
   return (
     <Grid
       container
@@ -74,7 +73,11 @@ export default function Feed(props: any) {
       {postState
         .filter((post) => isInToShow(post))
         .map((thisPost, index) => {
-          console.log(thisPost);
+          var isLiked;
+          thisPost.likedBy.indexOf("1111") !== -1
+            ? (isLiked = true)
+            : (isLiked = false);
+          console.log(isLiked);
           return (
             <Grid item key={thisPost.id} style={{ width: "500px" }}>
               <FeedItem
@@ -88,7 +91,7 @@ export default function Feed(props: any) {
                 userId={thisPost.userId}
                 classId={thisPost.classId}
                 likedBy={thisPost.likedBy}
-                isLiked={thisPost.isLiked}
+                isLiked={isLiked}
               />
             </Grid>
           );

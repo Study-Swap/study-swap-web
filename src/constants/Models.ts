@@ -37,7 +37,6 @@ export interface postModel {
   timestamp?: any;
   edited: boolean;
   attachPicture?: string; // will be firebase uri
-  isLiked: boolean;
 }
 
 export interface commentModel {

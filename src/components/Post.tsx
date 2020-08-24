@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
@@ -12,6 +12,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import ShareIcon from "@material-ui/icons/Share";
 import { render } from "@testing-library/react";
+import { addLike, removeLike } from "../utils/firebaseUtils/posts";
 
 const useStyles = makeStyles({
   root: {
@@ -48,34 +49,49 @@ const useStyles = makeStyles({
 
 export default function Post(props: any) {
   const classes = useStyles();
+  const [likeState, setLikeState] = React.useState("");
+  //hard coded userId for now
+
+  function hitLike() {
+    setLikeState("Unlike");
+    addLike(props.id, "1111");
+  }
+
+  function hitUnlike() {
+    setLikeState("Like");
+    removeLike(props.id, "1111");
+  }
 
   function UserHasLiked(props: any) {
     console.log(props.likedBy);
-    const hasBeenLiked = props.isLiked;
-    const isLikedBy = props.likedBy;
-    if (hasBeenLiked === true) {
+    const isLiked = props.isLiked;
+    const likedBy = props.likedBy;
+    if (isLiked === true) {
+      setLikeState("Unlike");
       return (
         <Button
           startIcon={<ThumbUpIcon />}
           className={classes.button}
           size="small"
+          onClick={hitUnlike}
         >
-          Unlike {isLikedBy.length}
+          {likeState} {likedBy.length}
         </Button>
       );
     } else {
+      setLikeState("Like");
       return (
         <Button
           startIcon={<ThumbUpIcon />}
           className={classes.button}
           size="small"
+          onClick={hitLike}
         >
-          Like {isLikedBy.length}
+          {likeState} {likedBy.length}
         </Button>
       );
     }
   }
-
   return (
     //<Card className={classes.root}>
 
@@ -112,7 +128,7 @@ export default function Post(props: any) {
 
       <Divider className={classes.buttonDivider} />
       <CardActions style={{ justifyContent: "center" }}>
-        <UserHasLiked hasBeenLiked={props.isLiked} isLikedBy={props.likedBy} />
+        <UserHasLiked isLiked={props.isLiked} likedBy={props.likedBy} />
         <Button
           startIcon={<ChatBubbleIcon />}
           className={classes.button}
