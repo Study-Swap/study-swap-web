@@ -14,7 +14,11 @@ import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel, messageModel } from "../constants/Models";
 import { dummyChatsData } from "../DummyData/chats";
-import { getChats, addMessages } from "../utils/firebaseUtils";
+import {
+  getChats,
+  addMessages,
+  watchChats,
+} from "../utils/firebaseUtils/chats";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -69,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
   list: {
     height: "100%",
+    width: "100%",
     overflow: "auto",
   },
 }));
@@ -88,13 +93,11 @@ export default function Chats() {
   };
 
   useEffect(() => {
-    getChats(tempUserId) // userId is hardcoded for now
-      .then((res) => {
-        console.log(res);
-        setMyChats(res);
-        console.log("loading chats");
-      })
-      .catch((err) => console.error(err));
+    //tempUserId
+    const unsubscribe = watchChats(tempUserId, setMyChats); // userId is hardcoded for now
+
+    return () => unsubscribe();
+    //.catch((err) => console.error(err));
   }, []);
 
   return (

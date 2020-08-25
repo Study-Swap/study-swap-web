@@ -43,8 +43,11 @@ const useStyles = makeStyles((theme) => ({
   },
 
   message: {
-    display: "inline",
+    display: "inline-block",
     fontSize: 14,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    width: "20%",
   },
 }));
 
@@ -60,17 +63,17 @@ export default function ChatSelect({
 
   const [firstMessage, setFirstMessage] = useState<messageModel>({
     chatId: "",
-    messageText:
-      "This is me testing a longer message for rendering in cutting off the message",
+    messageText: "",
     senderId: "",
     senderName: "Chintan Modi",
   });
 
   useEffect(() => {
-    if (messages !== undefined && messages.size > 0) {
+    if (messages.length > 0) {
       getMessage(messages[0]) // classId is hardcoded for now
         .then((res) => {
           setFirstMessage(res);
+          console.log(res);
         })
         .catch((err) => console.error(err));
     }
@@ -95,7 +98,7 @@ export default function ChatSelect({
                 variant="body2"
                 className={classes.chatTitle}
                 color="textPrimary"
-                noWrap={true}
+                //noWrap={true}
               >
                 {chatName}
               </Typography>
@@ -108,7 +111,7 @@ export default function ChatSelect({
                 variant="body2"
                 className={classes.message}
                 color="textSecondary"
-                //noWrap = {true}
+                noWrap={true}
               >
                 {firstMessage.messageText}
               </Typography>

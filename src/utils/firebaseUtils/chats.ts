@@ -42,6 +42,37 @@ function watchMessages(chatId: string, setMessageArray: Function): any {
 }
 
 /*
+  @type     GET -> Messages
+  @desc     watch all messages that belong to a chat -> return on change
+*/
+function watchChats(userId: string, setChatArray: Function): any {
+  //TODO Fix any return....
+  return (
+    chatsDB
+      .where("members", "array-contains", userId)
+      //.orderBy("timestamp", "desc")
+      .onSnapshot((querySnapshot: any): void => {
+        const chats: Array<chatsModel> = [];
+        querySnapshot.forEach(
+          async (chat: any): Promise<void> => {
+            const data = await chat.data();
+            chats.unshift({
+              id: chat.id,
+              chatName: data.chatName,
+              memberNames: data.memberNames,
+              members: data.members,
+              messages: data.messages,
+            });
+          }
+        );
+        setTimeout(() => {
+          setChatArray(chats);
+        }, 0);
+      })
+  );
+}
+
+/*
   @type     POST -> Messages
   @desc     add new message
 */
@@ -197,15 +228,17 @@ function leaveChat(memberId: string, chatId: string): any {
 }
 
 function getMessage(messageId: string): Promise<any> {
+  console.log("get message called");
   return messagesDB
     .doc(messageId)
     .get()
     .then((res: any) => {
       return {
-        timestamp: res.timestamp,
-        messageText: res.messageText,
-        senderId: res.senderId,
-        senderName: res.senderName,
+        id: messageId,
+        timestamp: res.data().timestamp,
+        messageText: res.data().messageText,
+        senderId: res.data().senderId,
+        senderName: res.data().senderName,
       };
     })
     .catch((err) => {
@@ -221,4 +254,5 @@ export {
   addMember,
   leaveChat,
   getMessage,
+  watchChats,
 };
