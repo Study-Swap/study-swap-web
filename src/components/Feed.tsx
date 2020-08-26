@@ -85,6 +85,7 @@ export default function Feed(props: any) {
               edited={thisPost.edited}
               userId={thisPost.userId}
               classId={thisPost.classId}
+              likedBy={[]}
             />
           </Grid>
         ))}

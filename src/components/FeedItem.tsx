@@ -78,6 +78,7 @@ export default function FeedItem(props: postModel) {
         commenterName: "Chintan Modi",
         timestamp: "ADD FIREBASE TIMESTAMP HERE",
         commentText: newCommentInput,
+        likedBy: [],
       },
     ]);
     setNewCommentInput("");
@@ -91,6 +92,7 @@ export default function FeedItem(props: postModel) {
       commenterName: "Chintan Modi",
       //timestamp: "tuesday..",
       commentText: newCommentInput,
+      likedBy: [],
     });
   }
 
@@ -120,6 +122,7 @@ export default function FeedItem(props: postModel) {
                   commenterName={thisComment.commenterName}
                   timestamp={thisComment.timestamp}
                   commentText={thisComment.commentText}
+                  likedBy={thisComment.likedBy}
                 />
               </Grid>
             ))}
@@ -134,6 +137,7 @@ export default function FeedItem(props: postModel) {
                 commenterName={commentState[0].commenterName}
                 timestamp={commentState[0].timestamp}
                 commentText={commentState[0].commentText}
+                likedBy={commentState[0].likedBy}
               />
             </Grid>
           </CardContent>
