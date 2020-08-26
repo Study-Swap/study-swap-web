@@ -45,6 +45,7 @@ export interface postModel {
   timestamp?: any;
   edited: boolean;
   attachPicture?: string; // will be firebase uri
+  likedBy: string[];
 }
 
 export interface commentModel {
@@ -58,6 +59,7 @@ export interface commentModel {
   commenterName: string;
   timestamp?: any;
   commentText: string;
+  likedBy: string[];
 }
 
 export interface notificationModel {
@@ -110,4 +112,9 @@ export interface recentActivityModel {
   subject: string;
   data: string;
   type: recentActivityTypes;
+}
+
+interface userUsageModel {
+  date: string;
+  users: string[]; // array of user Ids, gets marked whenever a user does something on the app
 }
