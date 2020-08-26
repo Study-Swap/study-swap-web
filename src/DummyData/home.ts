@@ -36,6 +36,7 @@ export let commentData: commentModel[] = [
     commenterName: "Chintan Modi",
     timestamp: "tuesday..",
     commentText: "This is my first comment!",
+    likedBy: [],
   },
   {
     id: "104",
@@ -47,6 +48,7 @@ export let commentData: commentModel[] = [
     timestamp: "tuesday..",
     commentText:
       "This is my first comment! This is a commentText with more text to see how it renders when it is much longer than the first one",
+    likedBy: [],
   },
   {
     id: "104",
@@ -57,6 +59,7 @@ export let commentData: commentModel[] = [
     commenterName: "Chintan Modi",
     timestamp: "tuesday..",
     commentText: "This is my first comment!",
+    likedBy: [],
   },
   {
     id: "104",
@@ -68,5 +71,6 @@ export let commentData: commentModel[] = [
     timestamp: "tuesday..",
     commentText:
       "This is my first comment! This is a commentText with more text to see how it renders when it is much longer than the first one",
+    likedBy: [],
   },
 ];

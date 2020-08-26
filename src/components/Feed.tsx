@@ -77,7 +77,6 @@ export default function Feed(props: any) {
           thisPost.likedBy.indexOf("1111") !== -1
             ? (isLiked = true)
             : (isLiked = false);
-          console.log(isLiked);
           return (
             <Grid item key={thisPost.id} style={{ width: "500px" }}>
               <FeedItem

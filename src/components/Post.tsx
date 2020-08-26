@@ -9,7 +9,9 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
+import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import ShareIcon from "@material-ui/icons/Share";
 import { render } from "@testing-library/react";
 import { addLike, removeLike } from "../utils/firebaseUtils/posts";
@@ -49,25 +51,24 @@ const useStyles = makeStyles({
 
 export default function Post(props: any) {
   const classes = useStyles();
-  const [likeState, setLikeState] = React.useState("");
+  const [likeState, setLikeState] = React.useState(props.isLiked);
+  const [lengthState, setLengthState] = React.useState(props.likedBy.length);
   //hard coded userId for now
 
   function hitLike() {
-    setLikeState("Unlike");
+    setLikeState(true);
     addLike(props.id, "1111");
+    setLengthState(lengthState + 1);
   }
 
   function hitUnlike() {
-    setLikeState("Like");
+    setLikeState(false);
     removeLike(props.id, "1111");
+    setLengthState(lengthState - 1);
   }
 
   function UserHasLiked(props: any) {
-    console.log(props.likedBy);
-    const isLiked = props.isLiked;
-    const likedBy = props.likedBy;
-    if (isLiked === true) {
-      setLikeState("Unlike");
+    if (likeState) {
       return (
         <Button
           startIcon={<ThumbUpIcon />}
@@ -75,19 +76,18 @@ export default function Post(props: any) {
           size="small"
           onClick={hitUnlike}
         >
-          {likeState} {likedBy.length}
+          Unlike {lengthState}
         </Button>
       );
     } else {
-      setLikeState("Like");
       return (
         <Button
-          startIcon={<ThumbUpIcon />}
+          startIcon={<ThumbUpAltOutlinedIcon />}
           className={classes.button}
           size="small"
           onClick={hitLike}
         >
-          {likeState} {likedBy.length}
+          Like {lengthState}
         </Button>
       );
     }
@@ -128,7 +128,7 @@ export default function Post(props: any) {
 
       <Divider className={classes.buttonDivider} />
       <CardActions style={{ justifyContent: "center" }}>
-        <UserHasLiked isLiked={props.isLiked} likedBy={props.likedBy} />
+        <UserHasLiked />
         <Button
           startIcon={<ChatBubbleIcon />}
           className={classes.button}

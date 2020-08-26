@@ -78,6 +78,7 @@ export default function FeedItem(props: any) {
         commenterName: "Chintan Modi",
         timestamp: "ADD FIREBASE TIMESTAMP HERE",
         commentText: newCommentInput,
+        likedBy: [],
       },
     ]);
     setNewCommentInput("");
@@ -91,12 +92,14 @@ export default function FeedItem(props: any) {
       commenterName: "Chintan Modi",
       //timestamp: "tuesday..",
       commentText: newCommentInput,
+      likedBy: [],
     });
   }
 
   return (
     <Card className={classes.root}>
       <Post
+        id={props.id}
         postUserName={props.postUserName}
         postClassName={props.postClassName}
         postCategory={props.postCategory}
@@ -113,18 +116,26 @@ export default function FeedItem(props: any) {
       {commentState.length > 0 ? (
         commentsShown ? (
           <CardContent className={classes.commentContainer}>
-            {commentState.map((thisComment, index) => (
-              <Grid item key={index} xs={12}>
-                <Comment
-                  id={thisComment.id}
-                  userId={thisComment.userId}
-                  postId={thisComment.postId}
-                  commenterName={thisComment.commenterName}
-                  timestamp={thisComment.timestamp}
-                  commentText={thisComment.commentText}
-                />
-              </Grid>
-            ))}
+            {commentState.map((thisComment, index) => {
+              var commentLiked;
+              thisComment.likedBy.indexOf("1111") !== -1
+                ? (commentLiked = true)
+                : (commentLiked = false);
+              return (
+                <Grid item key={index} xs={12}>
+                  <Comment
+                    id={thisComment.id}
+                    userId={thisComment.userId}
+                    postId={thisComment.postId}
+                    commenterName={thisComment.commenterName}
+                    timestamp={thisComment.timestamp}
+                    commentText={thisComment.commentText}
+                    likedBy={thisComment.likedBy}
+                    commentLiked={commentLiked}
+                  />
+                </Grid>
+              );
+            })}
           </CardContent>
         ) : (
           <CardContent className={classes.commentContainer}>
@@ -136,6 +147,7 @@ export default function FeedItem(props: any) {
                 commenterName={commentState[0].commenterName}
                 timestamp={commentState[0].timestamp}
                 commentText={commentState[0].commentText}
+                likedBy={commentState[0].likedBy}
               />
             </Grid>
           </CardContent>

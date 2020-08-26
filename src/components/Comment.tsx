@@ -6,6 +6,13 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { commentModel } from "../constants/Models";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+import {
+  addCommentLike,
+  removeCommentLike,
+} from "../utils/firebaseUtils/comments";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +31,11 @@ const useStyles = makeStyles((theme) => ({
     height: 30,
     width: 30,
   },
-
+  button: {
+    height: "30%",
+    width: "5%",
+    justifyContent: "flex-start",
+  },
   commentText: {
     backgroundColor: "#f0f0f0",
     borderRadius: "15px",
@@ -36,9 +47,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Comment(props: commentModel) {
+export default function Comment(props: any) {
   const classes = useStyles();
+  const [likeState, setLikeState] = React.useState(props.commentLiked);
+  const [lengthState, setLengthState] = React.useState(props.likedBy.length);
   //const theme = useTheme();
+
+  function plusLike() {
+    setLikeState(true);
+    addCommentLike(props.id, "1111");
+    setLengthState(lengthState + 1);
+  }
+
+  function minusLike() {
+    setLikeState(false);
+    removeCommentLike(props.id, "1111");
+    setLengthState(lengthState - 1);
+  }
+
+  function HasLiked() {
+    if (likeState) {
+      return (
+        <Button
+          startIcon={<ThumbUpIcon />}
+          className={classes.button}
+          size="small"
+          onClick={minusLike}
+        >
+          {lengthState}
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          startIcon={<ThumbUpAltOutlinedIcon />}
+          className={classes.button}
+          size="small"
+          onClick={plusLike}
+        >
+          {lengthState}
+        </Button>
+      );
+    }
+  }
 
   return (
     <Grid container item>
@@ -59,6 +110,7 @@ export default function Comment(props: commentModel) {
             {props.commentText}
           </Typography>
         </div>
+        <HasLiked />
         <Typography className={classes.timestamp} color="textSecondary">
           {props.timestamp}
         </Typography>

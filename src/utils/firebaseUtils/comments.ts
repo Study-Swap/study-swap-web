@@ -30,6 +30,7 @@ function getComments(postId: string): Promise<any> {
             commenterName: data.commenterName,
             commentText: data.commentText,
             timestamp: data.timestamp.toDate().toDateString(),
+            likedBy: data.likedBy,
           });
         });
         return comments;
@@ -81,4 +82,29 @@ function editComment(commentId: string, newText: string): void {
     });
 }
 
-export { getComments, addComment, deleteComment, editComment };
+function addCommentLike(commentId: string, userId: string): void {
+  commentsDB
+    .doc(commentId)
+    .update({ likedBy: firebaseApp.firestore.FieldValue.arrayUnion(userId) })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
+
+function removeCommentLike(commentId: string, userId: string): void {
+  commentsDB
+    .doc(commentId)
+    .update({ likedBy: firebaseApp.firestore.FieldValue.arrayRemove(userId) })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
+
+export {
+  getComments,
+  addComment,
+  deleteComment,
+  editComment,
+  addCommentLike,
+  removeCommentLike,
+};

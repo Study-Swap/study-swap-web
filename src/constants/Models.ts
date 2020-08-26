@@ -45,7 +45,7 @@ export interface commentModel {
   // foreign key relations
   userId: string;
   postId: string;
-
+  likedBy: Array<string>;
   // comment specific
   commenterName: string;
   timestamp?: any;
