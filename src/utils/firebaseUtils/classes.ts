@@ -50,6 +50,7 @@ async function getClasses(classes: Array<string>): Promise<any> {
               canvasLink: data.canvasLink,
               emailLink: data.emailLink,
               classWebsiteLink: data.classWebsiteLink,
+              hasRoster: data.hasRoster,
             };
           }
         )

@@ -28,6 +28,7 @@ export interface classModel {
   emailLink: string;
   classWebsiteLink: string;
   classPicture?: string; // will be firebase uri
+  hasRoster?: boolean;
 }
 
 export interface postModel {

@@ -176,24 +176,35 @@ function logoutUser(setUser: Function): Promise<string> {
     });
 }
 
-function addUsersByEmail(classId: string, emailList: Array<string>): any {
-  emailList.forEach((email: string) => {
-    userDB
-      .where("email", "==", email)
-      .get()
-      .then((res) => {
-        if (res.empty) {
-          // If empty make a blank user
-          userDB
-            .doc(email)
-            .set({ email: email, classes: [classId], signedUp: false });
-        } else {
-          userDB.doc(res.docs[0].id).update({
-            classes: firebaseApp.firestore.FieldValue.arrayUnion(classId),
-          });
-        }
-      });
-  });
+function addUsersByEmail(
+  classId: string,
+  emailList: Array<string>,
+  fullNames: string[][]
+): Promise<any> {
+  return Promise.all(
+    emailList.map((email: string, index: number) => {
+      return userDB
+        .where("email", "==", email)
+        .get()
+        .then((res) => {
+          if (res.empty) {
+            // If empty make a blank user
+            userDB.doc(email).set({
+              email: email,
+              classes: [classId],
+              signedUp: false,
+              firstName: fullNames[index][0],
+              lastName: fullNames[index][1],
+            });
+          } else {
+            userDB.doc(res.docs[0].id).update({
+              classes: firebaseApp.firestore.FieldValue.arrayUnion(classId),
+            });
+          }
+          return "success";
+        });
+    })
+  );
 }
 
 function editUserSchedule(timeStrings: string[], userId: string): void {
@@ -206,6 +217,20 @@ function editUser(user: userModel): void {
   userDB.doc(user.id).update({
     ...user,
   });
+}
+
+function getClassRoster(classId: string): Promise<any> {
+  return userDB
+    .where("classes", "array-contains", classId)
+    .get()
+    .then((snapshot) => {
+      const classRoster: any[] = [];
+      snapshot.forEach((user) => {
+        const { firstName, lastName, email } = user.data();
+        classRoster.push({ name: `${firstName} ${lastName}`, email });
+      });
+      return classRoster;
+    });
 }
 
 function addUsagePoint(userId: string): void {
@@ -244,4 +269,5 @@ export {
   editUserSchedule,
   editUser,
   addUsagePoint,
+  getClassRoster,
 };

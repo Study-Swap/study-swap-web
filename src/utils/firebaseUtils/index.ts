@@ -53,6 +53,7 @@ import {
   editUserSchedule,
   editUser,
   addUsagePoint,
+  getClassRoster,
 } from "./users";
 
 /********** EXPORT **********/
@@ -95,4 +96,5 @@ export {
   editUser,
   editClass,
   addUsagePoint,
+  getClassRoster,
 };

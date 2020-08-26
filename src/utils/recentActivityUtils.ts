@@ -12,6 +12,7 @@ import {
   recentActivityModel,
 } from "../constants/Models";
 import firebaseApp from "firebase/app";
+import { ifError } from "assert";
 const postsDB = firebase.firestore().collection(collections.posts);
 const commentDB = firebase.firestore().collection(collections.comments);
 
@@ -27,13 +28,28 @@ function findTrendingPost(numDays: number): Promise<recentActivityModel[]> {
       const trendingPosts: recentActivityModel[] = [];
       res.forEach((post: any): void => {
         const data: postModel = post.data();
-        if (data.likedBy.length > 5)
-          trendingPosts.push({
-            id: post.id,
-            subject: `Trending Post from ${data.postUserName}`,
-            data: data.postText,
-            type: recentActivityTypes.TRENDING_POST,
-            modelPointer: post.id,
+        commentDB
+          .where("postId", "==", post.id)
+          .get()
+          .then((res) => {
+            if (res.size > 5) {
+              trendingPosts.push({
+                id: post.id,
+                subject: `Trending Post from ${data.postUserName}`,
+                data: data.postText,
+                type: recentActivityTypes.TRENDING_POST,
+                modelPointer: post.id,
+              });
+            } else {
+              if (data.likedBy.length > 5)
+                trendingPosts.push({
+                  id: post.id,
+                  subject: `Trending Post from ${data.postUserName}`,
+                  data: data.postText,
+                  type: recentActivityTypes.TRENDING_POST,
+                  modelPointer: post.id,
+                });
+            }
           });
       });
       return trendingPosts;
@@ -72,7 +88,7 @@ function findPotentialHonorCode(
   date.setDate(date.getDate() - numDays);
   const dayRange = firebaseApp.firestore.Timestamp.fromDate(date);
   const potentialHonorCode: recentActivityModel[] = [];
-  commentDB
+  return commentDB
     .where("timestamp", ">=", dayRange)
     .orderBy("timestamp", "asc")
     .get()
@@ -88,25 +104,25 @@ function findPotentialHonorCode(
             modelPointer: comment.id,
           });
       });
-    });
-  postsDB
-    .where("timestamp", ">=", dayRange)
-    .orderBy("timestamp", "asc")
-    .get()
-    .then((res: firebaseApp.firestore.DocumentData): any => {
-      res.forEach((post: any): void => {
-        const data: postModel = post.data();
-        if (data.postText.indexOf("cheat") !== -1)
-          potentialHonorCode.push({
-            id: post.id,
-            subject: `Trending Post from ${data.postUserName}`,
-            data: data.postText,
-            type: recentActivityTypes.TRENDING_POST,
-            modelPointer: post.id,
+      return postsDB
+        .where("timestamp", ">=", dayRange)
+        .orderBy("timestamp", "asc")
+        .get()
+        .then((res: firebaseApp.firestore.DocumentData): any => {
+          res.forEach((post: any): void => {
+            const data: postModel = post.data();
+            if (data.postText.indexOf("cheat") !== -1)
+              potentialHonorCode.push({
+                id: post.id,
+                subject: `Trending Post from ${data.postUserName}`,
+                data: data.postText,
+                type: recentActivityTypes.TRENDING_POST,
+                modelPointer: post.id,
+              });
           });
-      });
+          return potentialHonorCode;
+        });
     });
-  return new Promise(() => potentialHonorCode);
 }
 
 export async function createRecentActivity(

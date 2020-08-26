@@ -23,7 +23,7 @@ export default function CSVImport({ classId, setHasRoster }: any) {
         e.preventDefault();
         const file = e.target.files[0];
         const reader = new FileReader();
-        let names: string[] = [],
+        let names: string[][] = [],
           uniquenames: string[] = [];
         reader.onload = (event) => {
           var data = event?.target?.result;
@@ -35,21 +35,20 @@ export default function CSVImport({ classId, setHasRoster }: any) {
             header: 1,
           });
           dataParse.slice(1).forEach((item: any[]) => {
-            if (item[2]) uniquenames.push(`${item[2]}@umich.edu`);
-            if (item[3]) names.push(item[3]);
+            if (item[2]) uniquenames.push(`${item[2].toLowerCase()}@umich.edu`);
+            if (item[3]) {
+              // Name is formatted as `lastName,firstName Middle`
+              const slice = item[3].split(",");
+              const firstName = slice[1].split(" ")[0];
+              const lastName = slice[0];
+              names.push([firstName, lastName]);
+            }
           });
           console.log(uniquenames);
           console.log(names);
-          sendEmails({
-            emailList: uniquenames,
-            type: 1,
-            classId: "1",
-            classname: "Engin 100",
-          })
-            .then((res) => {
-              console.log(res);
-            })
-            .catch((err) => console.log(err));
+          addUsersByEmail("1", uniquenames, names).then(() => {
+            setHasRoster(true);
+          });
         };
         reader.readAsBinaryString(file);
       }}
