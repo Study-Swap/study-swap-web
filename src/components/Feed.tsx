@@ -61,12 +61,12 @@ export default function Feed(props: any) {
       <Grid item>
         <NewPost
           onClick={(post: postModel) => {
-            addPost(post.userId, post.classId, post).then(
-              (resultingId: any) => {
-                post.id = resultingId;
-              }
-            );
-            setPostState([post, ...postState]);
+            addPost(post.userId, post.classId, post).then((result: any) => {
+              setPostState([
+                { id: result.id, timestamp: result.timestamp, ...post },
+                ...postState,
+              ]);
+            });
           }}
         />
       </Grid>

@@ -45,14 +45,22 @@ function getComments(postId: string): Promise<any> {
   @type     POST -> Comments
   @desc     add new comment
   */
-function addComment(comment: commentModel): void {
-  commentsDB
+function addComment(comment: commentModel): Promise<any> {
+  return commentsDB
     .add({
       timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
       ...comment,
     })
-    .catch((err: any): void => {
+    .then((ref: firebaseApp.firestore.DocumentData): any => {
+      const date = new Date();
+      return {
+        id: ref.id,
+        timestamp: date.toDateString(),
+      };
+    })
+    .catch((err: any): any => {
       console.error(err); // will be changed to redirect to error screen
+      return "error";
     });
 }
 

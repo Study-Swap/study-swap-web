@@ -72,21 +72,6 @@ export default function FeedItem(props: any) {
 
   function newCommentClick() {
     //adds commentModel object to dummyData
-    setCommentState([
-      ...commentState,
-      {
-        //id: "104",
-        // foreign key relations
-        userId: "amahuli",
-        postId: String(props.id),
-        // comment specific
-        commenterName: "Chintan Modi",
-        timestamp: "ADD FIREBASE TIMESTAMP HERE",
-        commentText: newCommentInput,
-        likedBy: [],
-      },
-    ]);
-    setNewCommentInput("");
 
     addComment({
       //id: "104",
@@ -98,6 +83,22 @@ export default function FeedItem(props: any) {
       //timestamp: "tuesday..",
       commentText: newCommentInput,
       likedBy: [],
+    }).then((ret) => {
+      setCommentState([
+        ...commentState,
+        {
+          id: ret.id,
+          // foreign key relations
+          userId: "amahuli",
+          postId: String(props.id),
+          // comment specific
+          commenterName: "Chintan Modi",
+          timestamp: ret.timestamp,
+          commentText: newCommentInput,
+          likedBy: [],
+        },
+      ]);
+      setNewCommentInput("");
     });
   }
 

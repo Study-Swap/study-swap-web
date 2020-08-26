@@ -122,7 +122,8 @@ function addPost(
       ...post,
     })
     .then((addedPost: any) => {
-      return addedPost.id;
+      const date = new Date();
+      return { id: addedPost.id, timestamp: date.toDateString() };
     })
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
