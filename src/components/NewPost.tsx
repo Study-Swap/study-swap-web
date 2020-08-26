@@ -41,7 +41,14 @@ const useStyles = makeStyles((theme) => ({
   lengthLimit: { marginBottom: 8, fontSize: 15, marginRight: 5 },
 }));
 
-const options = ["Choose Category", "Announcement", "HW", "Exam", "Project"];
+const options = [
+  "Choose Category",
+  "Announcement",
+  "HW",
+  "Exam",
+  "Project",
+  "Social",
+];
 
 interface newPostProps {
   onClick: Function;
@@ -124,6 +131,7 @@ export default function NewPost({ onClick }: newPostProps) {
               postClassName: "ENGR 100",
               //timestamp?: any;
               edited: false,
+              likedBy: [],
             });
             setValue("");
             setLen(0);
