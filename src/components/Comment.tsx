@@ -54,12 +54,14 @@ export default function Comment(props: any) {
   //const theme = useTheme();
 
   function plusLike() {
+    props.onLike(props.index, likeState);
     setLikeState(true);
     addCommentLike(props.id, "1111");
     setLengthState(lengthState + 1);
   }
 
   function minusLike() {
+    props.onLike(props.index, likeState);
     setLikeState(false);
     removeCommentLike(props.id, "1111");
     setLengthState(lengthState - 1);

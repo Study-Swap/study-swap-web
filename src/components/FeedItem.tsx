@@ -34,6 +34,11 @@ const useStyles = makeStyles({
   },
 });
 
+function remove(array: string[], value: string): string[] {
+  const index = array.indexOf(value);
+  return [...array.slice(0, index), ...array.slice(index + 1)];
+}
+
 export default function FeedItem(props: any) {
   const [commentState, setCommentState] = useState<commentModel[]>([]);
   //stores comment dummydata, replace with backend function
@@ -111,6 +116,7 @@ export default function FeedItem(props: any) {
         likedBy={props.likedBy}
         isLiked={props.isLiked}
         onClick={toggleCommentClick}
+        commentsShown={commentsShown}
       />
 
       {commentState.length > 0 ? (
@@ -132,6 +138,23 @@ export default function FeedItem(props: any) {
                     commentText={thisComment.commentText}
                     likedBy={thisComment.likedBy}
                     commentLiked={commentLiked}
+                    index={index}
+                    onLike={(index: number, likedState: boolean) => {
+                      var arrayLikes = commentState[index].likedBy;
+                      if (likedState) {
+                        arrayLikes = remove(arrayLikes, "1111");
+                      } else {
+                        arrayLikes.push("1111");
+                      }
+                      setCommentState([
+                        ...commentState.slice(0, index),
+                        {
+                          ...commentState[index],
+                          likedBy: [...arrayLikes],
+                        },
+                        ...commentState.slice(index + 1),
+                      ]);
+                    }}
                   />
                 </Grid>
               );
@@ -148,6 +171,26 @@ export default function FeedItem(props: any) {
                 timestamp={commentState[0].timestamp}
                 commentText={commentState[0].commentText}
                 likedBy={commentState[0].likedBy}
+                commentLiked={
+                  commentState[0].likedBy.indexOf("1111") !== -1 ? true : false
+                }
+                index={0}
+                onLike={(index: number, likedState: boolean) => {
+                  var arrayLikes = commentState[index].likedBy;
+                  if (likedState) {
+                    arrayLikes = remove(arrayLikes, "1111");
+                  } else {
+                    arrayLikes.push("1111");
+                  }
+                  setCommentState([
+                    ...commentState.slice(0, index),
+                    {
+                      ...commentState[index],
+                      likedBy: [...arrayLikes],
+                    },
+                    ...commentState.slice(index + 1),
+                  ]);
+                }}
               />
             </Grid>
           </CardContent>

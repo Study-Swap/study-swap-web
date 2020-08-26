@@ -130,7 +130,13 @@ export default function Post(props: any) {
       <CardActions style={{ justifyContent: "center" }}>
         <UserHasLiked />
         <Button
-          startIcon={<ChatBubbleIcon />}
+          startIcon={
+            props.commentsShown ? (
+              <ChatBubbleIcon />
+            ) : (
+              <ChatBubbleOutlineOutlinedIcon />
+            )
+          }
           className={classes.button}
           size="small"
           onClick={props.onClick}
