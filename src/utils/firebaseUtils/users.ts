@@ -4,7 +4,7 @@ import firebase from "../../constants/Firebase";
 
 // Constants import
 import { collections } from "../../constants/FirebaseStrings";
-import { userModel } from "../../constants/Models";
+import { userModel, userUsageModel } from "../../constants/Models";
 
 const userDB = firebase.firestore().collection(collections.users);
 
@@ -208,6 +208,31 @@ function editUser(user: userModel): void {
   });
 }
 
+function addUsagePoint(userId: string): void {
+  const date = new Date();
+  firebase
+    .firestore()
+    .collection(collections.userUsage)
+    .where("date", "==", date.toDateString())
+    .get()
+    .then((model: firebaseApp.firestore.DocumentData): void => {
+      if (model.empty) {
+        firebase
+          .firestore()
+          .collection(collections.userUsage)
+          .add({ date: date.toDateString, users: [userId] });
+      } else {
+        firebase
+          .firestore()
+          .collection(collections.userUsage)
+          .doc(model.docs[0].id)
+          .update({
+            users: firebaseApp.firestore.FieldValue.arrayUnion(userId),
+          });
+      }
+    });
+}
+
 export {
   addUser,
   loginUser,
@@ -218,4 +243,5 @@ export {
   addUsersByEmail,
   editUserSchedule,
   editUser,
+  addUsagePoint,
 };

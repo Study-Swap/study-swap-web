@@ -52,6 +52,7 @@ import {
   addUsersByEmail,
   editUserSchedule,
   editUser,
+  addUsagePoint,
 } from "./users";
 
 /********** EXPORT **********/
@@ -93,4 +94,5 @@ export {
   editUserSchedule,
   editUser,
   editClass,
+  addUsagePoint,
 };

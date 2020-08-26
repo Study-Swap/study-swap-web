@@ -114,7 +114,7 @@ export interface recentActivityModel {
   type: recentActivityTypes;
 }
 
-interface userUsageModel {
+export interface userUsageModel {
   date: string;
   users: string[]; // array of user Ids, gets marked whenever a user does something on the app
 }
