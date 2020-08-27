@@ -18,16 +18,6 @@ export default function HelpReqd() {
   return (
     <Container component="main" maxWidth="xs" className={classes.container}>
       <div>Thanks for letting us know! We'll fix your problem in 24 hours.</div>
-      <Grid item>
-        <Link href="/login" variant="body2">
-          Already have an account? Sign in
-        </Link>
-      </Grid>
-      <Grid item>
-        <Link href="/signup" variant="body2">
-          New to Study Swap? Sign up
-        </Link>
-      </Grid>
     </Container>
   );
 }
