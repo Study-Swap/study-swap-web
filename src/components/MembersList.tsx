@@ -37,7 +37,7 @@ export default function MembersList(props: any) {
   const classes = useStyles();
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <Typography
         variant="subtitle2"
         style={{ fontSize: 12, fontWeight: "bold", color: "textSecondary" }}
@@ -45,7 +45,11 @@ export default function MembersList(props: any) {
         {" "}
         MEMBERS LIST
       </Typography>
-      <List dense={true} disablePadding={true}>
+      <List
+        style={{ backgroundColor: "red" }}
+        dense={true}
+        disablePadding={true}
+      >
         {props.currentMembers.map((member: nameAndId, index: number) => (
           <ListItem key={index}>
             <div
@@ -53,7 +57,7 @@ export default function MembersList(props: any) {
                 width: "100%",
                 display: "flex",
                 justifyContent: "space-between",
-                alignContent: "center",
+                alignItems: "center",
               }}
             >
               <Avatar
@@ -69,7 +73,11 @@ export default function MembersList(props: any) {
                 {member.memberName}
               </Typography>
 
-              <IconButton edge="end" aria-label="delete">
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => props.onDelete(member)}
+              >
                 <DeleteIcon />
               </IconButton>
             </div>

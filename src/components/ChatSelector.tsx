@@ -45,9 +45,9 @@ const useStyles = makeStyles((theme) => ({
   message: {
     display: "inline-block",
     fontSize: 14,
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    width: "20%",
+    //overflow: "hidden",
+    //textOverflow: "ellipsis",
+    //width: "20%",
   },
 }));
 
@@ -111,7 +111,7 @@ export default function ChatSelect({
                 variant="body2"
                 className={classes.message}
                 color="textSecondary"
-                noWrap={true}
+                //noWrap={true}
               >
                 {firstMessage.messageText}
               </Typography>

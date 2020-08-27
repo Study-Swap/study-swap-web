@@ -31,7 +31,7 @@ const options: nameAndId[] = [
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "400px",
+    height: "360px",
     width: "500px",
   },
   inputChatName: {
@@ -54,18 +54,18 @@ export default function NewChat(props: any) {
   const classes = useStyles();
   const [chatName, setChatName] = React.useState("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
-  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
+  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>(options);
   //const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   useEffect(() => {
-    getUsersForChatCreation()
+    /*getUsersForChatCreation()
       .then((res: any) => {
         setCurrentOptions(res);
         console.log(res);
       })
       .catch((err: any) => {
         console.log(err);
-      });
+      });*/
   }, []);
 
   return (
@@ -123,10 +123,25 @@ export default function NewChat(props: any) {
               />
             </Grid>
 
-            <Divider orientation="vertical" flexItem />
+            {/*<Divider orientation="vertical" flexItem />*/}
 
-            <Grid item xs={3} className={classes.middleSection}>
-              <MembersList currentMembers={currentMembers} />
+            <Grid item xs={4} className={classes.middleSection}>
+              <MembersList
+                currentMembers={currentMembers}
+                onDelete={(toDelete: nameAndId) => {
+                  let toRemove = 0;
+                  currentMembers.filter((member, index) => {
+                    if (member.memberId == toDelete.memberId) {
+                      toRemove = index;
+                    }
+                  });
+                  setCurrentMembers([
+                    ...currentMembers.slice(0, toRemove),
+                    ...currentMembers.slice(toRemove + 1),
+                  ]);
+                  setCurrentOptions([...currentOptions, toDelete]);
+                }}
+              />
             </Grid>
           </Grid>
 
@@ -134,7 +149,11 @@ export default function NewChat(props: any) {
 
           <Grid container item justifyContent="flex-end" spacing={1}>
             <Grid item>
-              <Button size="small" variant="contained">
+              <Button
+                size="small"
+                variant="contained"
+                onClick={() => props.closeModal()}
+              >
                 Cancel
               </Button>
             </Grid>
@@ -144,6 +163,7 @@ export default function NewChat(props: any) {
                 size="small"
                 variant="contained"
                 color="secondary"
+                disabled={chatName == "" || currentMembers.length == 0}
                 onClick={() => {
                   let memberNames: string[] = [];
                   let memberIds: string[] = [];

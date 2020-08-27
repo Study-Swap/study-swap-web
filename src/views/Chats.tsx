@@ -87,9 +87,16 @@ export default function Chats() {
   const classes = useStyles();
   const [currentChatId, setCurrentChatId] = useState<string>("");
   const [currentChatName, setCurrentChatName] = useState<string>("");
-  const onClick = ({ id, chatName }: any) => {
-    setCurrentChatId(id);
-    setCurrentChatName(chatName);
+  const [currentChat, setCurrentChat] = useState<chatsModel>({
+    id: "",
+    chatName: "",
+    memberNames: [],
+    members: [],
+    messages: [],
+  });
+
+  const onClick = (chat: chatsModel) => {
+    setCurrentChat(chat);
   };
 
   useEffect(() => {
@@ -143,7 +150,7 @@ export default function Chats() {
             {" "}
             {/*right side of view*/}
             <Grid item container className={classes.topbarRight}>
-              <ChatsToolbar2 chatName={currentChatName} />
+              <ChatsToolbar2 currentChat={currentChat} />
             </Grid>
             <Divider />
             <Grid // all the messages rendered in this at Grid items in MessageBox
@@ -154,7 +161,7 @@ export default function Chats() {
               alignContent="flex-start"
               spacing={0}
             >
-              <MessageBox chatId={currentChatId} />
+              <MessageBox chatId={currentChat.id} />
             </Grid>
             <Divider />
             <Grid item style={{ height: 40, backgroundColor: "#f0f0f0" }}>

@@ -17,13 +17,10 @@ import MembersList from "./MembersList";
 import SearchBox from "./SearchBox";
 import { CardContent } from "@material-ui/core";
 
-const options = [
-  "Chintan Modi",
-  "Ashish Mahuli",
-  "Akul Vijayvargiya",
-  "Varun Madan",
-];
-let currentMembers = ["Rahul Khatti", "John B", "Sarah Wilkins"];
+interface nameAndId {
+  memberName: string;
+  memberId: string;
+}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,10 +39,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EditChat(props: any) {
+  const options: nameAndId[] = [
+    { memberName: "Ashish Mahuli", memberId: "7k1MF9w490XOeFH5ygGY" },
+    { memberName: "Chintan Modi", memberId: "6loalAzoo6UpCo00zFucLfexm8t1" },
+  ];
+
   const [newSelection, setSelection] = useState<string | null>("");
   const classes = useStyles();
-  const [chatName, setChatName] = React.useState(props.chatName);
+  const [chatName, setChatName] = React.useState(props.currentChat.chatName);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
+  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([
+    ...options,
+  ]);
+
+  interface nameAndId {
+    memberName: string;
+    memberId: string;
+  }
+
+  useEffect(() => {
+    /*getUsersForChatCreation()
+    .then((res: any) => {
+      setCurrentOptions(res);
+      console.log(res);
+    })
+    .catch((err: any) => {
+      console.log(err);
+    });*/
+  }, []);
 
   return (
     <Card className={classes.root}>
@@ -78,13 +100,48 @@ export default function EditChat(props: any) {
           <Divider />
 
           <Grid item xs={12} style={{ minHeight: "160px" }}>
-            <SearchBox options={options} dropDownHeight="90px" />
+            <SearchBox
+              options={options}
+              dropDownHeight="90px"
+              onChange={(user: nameAndId) => {
+                setCurrentMembers([...currentMembers, user]);
+                //const tempOptions = currentOptions.slice();
+                let toRemove = 0;
+                currentOptions.filter((member, index) => {
+                  if (member.memberId == user.memberId) {
+                    toRemove = index;
+                  }
+                });
+                //console.log(toRemove);
+                setCurrentOptions([
+                  ...currentOptions.slice(0, toRemove),
+                  ...currentOptions.slice(toRemove + 1),
+                ]);
+                //delete tempOptions[toRemove];
+                //setCurrentOptions([...tempOptions]);
+              }}
+            />
           </Grid>
 
           <Divider />
 
           <Grid item xs={12} style={{ minHeight: "160px" }}>
-            <MembersList currentMembers={currentMembers} />
+            <MembersList
+              currentMembers={currentMembers}
+              onDelete={(toDelete: nameAndId) => {
+                let toRemove = 0;
+                currentMembers.filter((member, index) => {
+                  if (member.memberId == toDelete.memberId) {
+                    toRemove = index;
+                  }
+                });
+                setCurrentMembers([
+                  ...currentMembers.slice(0, toRemove),
+                  ...currentMembers.slice(toRemove + 1),
+                ]);
+                setCurrentOptions([...currentOptions, toDelete]);
+              }}
+            />
           </Grid>
 
           <Divider />
