@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import clsx from "clsx";
 import history from "../utils/historyUtils";
 import { UserContext } from "../constants/UserContext";
@@ -19,6 +19,7 @@ import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Avatar from "@material-ui/core/Avatar";
 import {
   LineChart,
@@ -42,13 +43,47 @@ import {
   BubbleChart as PostIcon,
 } from "@material-ui/icons";
 
+import {
+  getClassRoster,
+  getClasses,
+  getGraphData,
+} from "../utils/firebaseUtils";
+import { createRecentActivity } from "../utils/recentActivityUtils";
+
 export default function AdminDashboard() {
   // eslint-disable-next-line
   const { user } = useContext(UserContext);
   const classes = useStyles();
   const theme = useTheme();
 
-  const [hasRoster, setHasRoster] = useState(false);
+  const [hasRoster, setHasRoster] = useState<boolean | null>(false);
+  const [roster, setRoster] = useState<any[]>([]);
+  const [recentActivity, setRecentActivity] = useState<any[]>([]);
+
+  const [rosterLoading, setRosterLoading] = useState<boolean>(true);
+  const [recentLoading, setRecentLoading] = useState<boolean>(true);
+
+  const [graphData, setGraphData] = useState<any[]>([]);
+
+  useEffect(() => {
+    getClasses(["1"]).then((res) => {
+      setHasRoster(res[0].hasRoster);
+    });
+    createRecentActivity(5).then((ret) => {
+      setRecentActivity(ret);
+      setRecentLoading(false);
+    });
+    getGraphData().then((data) => setGraphData(data));
+  });
+
+  useEffect(() => {
+    if (hasRoster) {
+      getClassRoster("1").then((classRoster) => {
+        setRoster(classRoster);
+        setRosterLoading(false);
+      });
+    }
+  }, [hasRoster]);
 
   return (
     <Container component="main" maxWidth="md">
@@ -57,7 +92,9 @@ export default function AdminDashboard() {
         <Grid item xs={12} sm={12} md={7}>
           <DashboardItemTitle>Class Roster</DashboardItemTitle>
           <Paper className={clsx(classes.paper, classes.topRow)}>
-            {hasRoster ? (
+            {rosterLoading ? (
+              <CircularProgress style={{ marginTop: 65 }} />
+            ) : hasRoster ? (
               <Table size="small" stickyHeader>
                 <TableHead>
                   <TableRow>
@@ -66,7 +103,7 @@ export default function AdminDashboard() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {dummyClassList.map((row, index) => (
+                  {roster.map((row, index) => (
                     <TableRow key={index}>
                       <TableCell>{row.name}</TableCell>
                       <TableCell>{row.email}</TableCell>
@@ -82,35 +119,39 @@ export default function AdminDashboard() {
         <Grid item xs={12} sm={12} md={5}>
           <DashboardItemTitle>Recent Activity</DashboardItemTitle>
           <Paper className={clsx(classes.paper, classes.topRow)}>
-            <List disablePadding={true}>
-              {dummyRecentActivity.map((activity) => {
-                const { id, subject, data, type } = activity;
-                return (
-                  <React.Fragment key={id}>
-                    {" "}
-                    <ListItem
-                      alignItems="flex-start"
-                      className={classes.message}
-                    >
-                      <ListItemAvatar>
-                        {type === recentActivityTypes.TRENDING_POST ? (
-                          <PostIcon />
-                        ) : type === recentActivityTypes.TRENDING_COMMENT ? (
-                          <CommentIcon />
-                        ) : (
-                          <WarningIcon color="error" />
-                        )}
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={subject}
-                        secondary={<React.Fragment>{data}</React.Fragment>}
-                      />
-                    </ListItem>
-                    <Divider variant="fullWidth" component="li" />{" "}
-                  </React.Fragment>
-                );
-              })}
-            </List>
+            {recentLoading ? (
+              <CircularProgress style={{ marginTop: 65 }} />
+            ) : (
+              <List disablePadding={true}>
+                {recentActivity.map((activity) => {
+                  const { id, subject, data, type } = activity;
+                  return (
+                    <React.Fragment key={id}>
+                      {" "}
+                      <ListItem
+                        alignItems="flex-start"
+                        className={classes.message}
+                      >
+                        <ListItemAvatar>
+                          {type === recentActivityTypes.TRENDING_POST ? (
+                            <PostIcon />
+                          ) : type === recentActivityTypes.TRENDING_COMMENT ? (
+                            <CommentIcon />
+                          ) : (
+                            <WarningIcon color="error" />
+                          )}
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={subject}
+                          secondary={<React.Fragment>{data}</React.Fragment>}
+                        />
+                      </ListItem>
+                      <Divider variant="fullWidth" component="li" />{" "}
+                    </React.Fragment>
+                  );
+                })}
+              </List>
+            )}
           </Paper>
         </Grid>
         <Grid item xs={12} sm={12} md={5}>
@@ -158,7 +199,7 @@ export default function AdminDashboard() {
           >
             <ResponsiveContainer>
               <LineChart
-                data={dummyChartData}
+                data={graphData}
                 margin={{
                   top: 20,
                   right: 10,

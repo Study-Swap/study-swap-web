@@ -1,61 +1,57 @@
 import React from "react";
+import firebase from "../constants/Firebase";
 import CSVReader from "react-csv-reader";
+import XLSX from "xlsx";
+var functions = firebase.functions();
+var sendEmails = functions.httpsCallable("sendEmails");
 
 // eslint-disable-next-line
 import { addUsersByEmail } from "../utils/firebaseUtils";
-
-const papaparseOptions = {
-  header: true,
-  dynamicTyping: true,
-  skipEmptyLines: true,
-  transformHeader: (header: any) => header.toLowerCase().replace(/\W/g, "_"),
-};
 
 interface CSVImportProps {
   classId: string;
   setHasRoster?: Function;
 }
 
-export default function CSVImport({ classId, setHasRoster }: CSVImportProps) {
+export default function CSVImport({ classId, setHasRoster }: any) {
   return (
-    <CSVReader
-      cssClass="csv-reader-input"
-      label="No imported class data. Select CSV of Class Emails list"
-      onFileLoaded={(data, fileInfo) => {
-        if (data.length > 0) {
-          let emailKey: string = "";
-          let emailList: Array<string> = [];
-          const keys = Object.keys(data[0]);
-          if (keys.length > 1) {
-            // if there are multiple columns
-            for (const key of keys) {
-              if (
-                typeof data[0][key] === "string" &&
-                data[0][key].includes("@")
-              ) {
-                emailKey = key;
-                break; // just take first instance
-              }
-            }
-          } else {
-            emailKey = keys[0];
-          }
-          data.forEach((csvRow: any) => {
-            emailList.push(csvRow[emailKey]);
+    <input
+      type="file"
+      id="xlsx import"
+      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      onChange={(e: any) => {
+        e.preventDefault();
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        let names: string[][] = [],
+          uniquenames: string[] = [];
+        reader.onload = (event) => {
+          var data = event?.target?.result;
+          if (!data) return;
+          let readedData = XLSX.read(data, { type: "binary" });
+          const wsname = readedData.SheetNames[0];
+          const ws = readedData.Sheets[wsname];
+          const dataParse: any[][] = XLSX.utils.sheet_to_json(ws, {
+            header: 1,
           });
-          // TODO Change this to accept state
-          if (setHasRoster) setHasRoster(true);
-          console.log(emailList);
-          // Keep commented out till BE connects with FE
-          //addUsersByEmail(classId, emailList);
-        }
+          dataParse.slice(1).forEach((item: any[]) => {
+            if (item[2]) uniquenames.push(`${item[2].toLowerCase()}@umich.edu`);
+            if (item[3]) {
+              // Name is formatted as `lastName,firstName Middle`
+              const slice = item[3].split(",");
+              const firstName = slice[1].split(" ")[0];
+              const lastName = slice[0];
+              names.push([firstName, lastName]);
+            }
+          });
+          console.log(uniquenames);
+          console.log(names);
+          addUsersByEmail("1", uniquenames, names).then(() => {
+            setHasRoster(true);
+          });
+        };
+        reader.readAsBinaryString(file);
       }}
-      onError={(error) => {
-        console.log(error);
-      }}
-      parserOptions={papaparseOptions}
-      inputId="csv-input"
-      inputStyle={{ color: "red" }}
     />
   );
 }

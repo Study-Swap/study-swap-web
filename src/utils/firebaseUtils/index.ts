@@ -52,7 +52,11 @@ import {
   addUsersByEmail,
   editUserSchedule,
   editUser,
+  addUsagePoint,
+  getClassRoster,
 } from "./users";
+
+import { getGraphData } from "./userUsage";
 
 /********** EXPORT **********/
 export {
@@ -93,4 +97,7 @@ export {
   editUserSchedule,
   editUser,
   editClass,
+  addUsagePoint,
+  getClassRoster,
+  getGraphData,
 };
