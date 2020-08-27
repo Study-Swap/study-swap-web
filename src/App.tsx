@@ -14,7 +14,7 @@ import { UserContext } from "./constants/UserContext";
 
 import history from "./utils/historyUtils";
 import firebase from "./constants/Firebase";
-import { getUser } from "./utils/firebaseUtils";
+import { getUser, addUsagePoint } from "./utils/firebaseUtils";
 
 function App() {
   const classes = useStyles();
@@ -42,6 +42,7 @@ function App() {
           setUser(res);
           console.log(res);
         });
+        addUsagePoint(authUser.uid);
       }
     });
 

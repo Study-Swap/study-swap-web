@@ -56,6 +56,8 @@ import {
   getClassRoster,
 } from "./users";
 
+import { getGraphData } from "./userUsage";
+
 /********** EXPORT **********/
 export {
   getPosts,
@@ -97,4 +99,5 @@ export {
   editClass,
   addUsagePoint,
   getClassRoster,
+  getGraphData,
 };

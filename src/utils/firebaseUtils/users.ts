@@ -7,6 +7,7 @@ import { collections } from "../../constants/FirebaseStrings";
 import { userModel, userUsageModel } from "../../constants/Models";
 
 const userDB = firebase.firestore().collection(collections.users);
+const usageDB = firebase.firestore().collection(collections.userUsage);
 
 var actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
@@ -235,25 +236,16 @@ function getClassRoster(classId: string): Promise<any> {
 
 function addUsagePoint(userId: string): void {
   const date = new Date();
-  firebase
-    .firestore()
-    .collection(collections.userUsage)
+  usageDB
     .where("date", "==", date.toDateString())
     .get()
     .then((model: firebaseApp.firestore.DocumentData): void => {
       if (model.empty) {
-        firebase
-          .firestore()
-          .collection(collections.userUsage)
-          .add({ date: date.toDateString, users: [userId] });
+        usageDB.add({ date: date.toDateString, users: [userId] });
       } else {
-        firebase
-          .firestore()
-          .collection(collections.userUsage)
-          .doc(model.docs[0].id)
-          .update({
-            users: firebaseApp.firestore.FieldValue.arrayUnion(userId),
-          });
+        usageDB.doc(model.docs[0].id).update({
+          users: firebaseApp.firestore.FieldValue.arrayUnion(userId),
+        });
       }
     });
 }

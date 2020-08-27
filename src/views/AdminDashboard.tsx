@@ -43,7 +43,11 @@ import {
   BubbleChart as PostIcon,
 } from "@material-ui/icons";
 
-import { getClassRoster, getClasses } from "../utils/firebaseUtils";
+import {
+  getClassRoster,
+  getClasses,
+  getGraphData,
+} from "../utils/firebaseUtils";
 import { createRecentActivity } from "../utils/recentActivityUtils";
 
 export default function AdminDashboard() {
@@ -59,6 +63,8 @@ export default function AdminDashboard() {
   const [rosterLoading, setRosterLoading] = useState<boolean>(true);
   const [recentLoading, setRecentLoading] = useState<boolean>(true);
 
+  const [graphData, setGraphData] = useState<any[]>([]);
+
   useEffect(() => {
     getClasses(["1"]).then((res) => {
       setHasRoster(res[0].hasRoster);
@@ -67,6 +73,7 @@ export default function AdminDashboard() {
       setRecentActivity(ret);
       setRecentLoading(false);
     });
+    getGraphData().then((data) => setGraphData(data));
   });
 
   useEffect(() => {
@@ -192,7 +199,7 @@ export default function AdminDashboard() {
           >
             <ResponsiveContainer>
               <LineChart
-                data={dummyChartData}
+                data={graphData}
                 margin={{
                   top: 20,
                   right: 10,
