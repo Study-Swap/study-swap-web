@@ -227,8 +227,12 @@ function getClassRoster(classId: string): Promise<any> {
     .then((snapshot) => {
       const classRoster: any[] = [];
       snapshot.forEach((user) => {
-        const { firstName, lastName, email } = user.data();
-        classRoster.push({ name: `${firstName} ${lastName}`, email });
+        const { firstName, lastName, email, profilePicture } = user.data();
+        classRoster.push({
+          name: `${firstName} ${lastName}`,
+          email,
+          profilePicture: profilePicture ? profilePicture : "",
+        });
       });
       return classRoster;
     });

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Router, Switch, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -61,10 +62,11 @@ function App() {
               <UserContext.Provider value={value}>
                 <Switch>
                   {routes.map((element: any) => (
-                    <Route
+                    <PrivateRoute
                       path={element.path}
                       component={element.component}
                       key={element.path}
+                      userId={user.id}
                     />
                   ))}
                 </Switch>

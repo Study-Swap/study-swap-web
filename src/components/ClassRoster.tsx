@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -8,6 +8,8 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
+
+import { getClassRoster } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles({
   rosterItemPaper: {
@@ -53,8 +55,11 @@ const initArray = (size: number, value: any): Array<any> => {
 export default function ClassRoster() {
   const classes = useStyles();
   const [open, setOpen] = useState<boolean>(false);
+  const [classRoster, setClassRoster] = useState<any[]>([]);
 
-  const numStudents = initArray(100, 0);
+  useEffect(() => {
+    getClassRoster("1").then((roster) => setClassRoster(roster));
+  });
 
   return (
     <Paper
@@ -72,19 +77,23 @@ export default function ClassRoster() {
         }}
         className={classes.mainDiv}
       >
-        {numStudents.map((index) => {
+        {classRoster.map((item, index) => {
           return (
             <Paper
               key={index}
               elevation={1}
               className={classes.rosterItemPaper}
             >
-              <Avatar style={{ height: 50, width: 50 }} alt="Prof Pic" />
+              <Avatar
+                style={{ height: 50, width: 50 }}
+                alt="Prof Pic"
+                src={item.profilePicture}
+              />
               <div style={{ marginLeft: 20 }}>
                 <Link style={{ color: "black", fontSize: 16 }}>
-                  Student Name
+                  {item.name}
                 </Link>
-                <Typography>Grade</Typography>
+                <Typography>{item.email.split("@")[0]}</Typography>
               </div>
             </Paper>
           );

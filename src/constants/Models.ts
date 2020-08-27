@@ -41,6 +41,7 @@ export interface postModel {
   // post specific
   postText: string;
   postUserName: string;
+  postUserProfilePic: string;
   postClassName: string;
   postCategory: string;
   timestamp?: any;
@@ -58,6 +59,7 @@ export interface commentModel {
 
   // comment specific
   commenterName: string;
+  commenterProfilePic: string;
   timestamp?: any;
   commentText: string;
   likedBy: string[];
@@ -99,6 +101,7 @@ export interface messageModel {
   messageText: string;
   senderId: string;
   senderName: string;
+  senderProfilePic: string;
   timestamp?: string;
   attachPicture?: string; // will be firebase uri
 }
