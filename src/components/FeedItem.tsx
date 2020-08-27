@@ -71,8 +71,6 @@ export default function FeedItem(props: any) {
   const classes = useStyles();
 
   function newCommentClick() {
-    //adds commentModel object to dummyData
-
     addComment({
       //id: "104",
       // foreign key relations

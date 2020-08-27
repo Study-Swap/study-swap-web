@@ -26,7 +26,17 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ClassLinkSelect() {
+interface ClassLinkSelectProps {
+  canvasLink: string;
+  emailLink: string;
+  classWebsiteLink: string;
+}
+
+export default function ClassLinkSelect({
+  canvasLink,
+  emailLink,
+  classWebsiteLink,
+}: ClassLinkSelectProps) {
   const classes = useStyles();
   const [selection, setSelection] = useState<string>("");
 
@@ -38,6 +48,9 @@ export default function ClassLinkSelect() {
           className={classes.image}
           onMouseEnter={() => setSelection("Go To Class Website")}
           onMouseLeave={() => setSelection("")}
+          onClick={() => {
+            console.log(classWebsiteLink);
+          }}
         >
           <img
             src={require("../constants/Class_Logos/Website.png")}
@@ -49,6 +62,9 @@ export default function ClassLinkSelect() {
           className={classes.image}
           onMouseEnter={() => setSelection("Email Instructor")}
           onMouseLeave={() => setSelection("")}
+          onClick={() => {
+            console.log(emailLink);
+          }}
         >
           <img
             src={require("../constants/Class_Logos/Gmail_logo.png")}
@@ -60,6 +76,9 @@ export default function ClassLinkSelect() {
           className={classes.image}
           onMouseEnter={() => setSelection("Go To Canvas Page")}
           onMouseLeave={() => setSelection("")}
+          onClick={() => {
+            console.log(canvasLink);
+          }}
         >
           <img
             src={require("../constants/Class_Logos/Canvas_logo.png")}

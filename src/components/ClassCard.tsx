@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
@@ -10,12 +10,21 @@ import ClassLinkSelect from "./ClassLinkSelect";
 import CheckEnrolled from "./CheckEnrolled";
 import ClassEditModal from "./ClassEditModal";
 
+import { getClasses } from "../utils/firebaseUtils";
+
 const useStyles = makeStyles((theme) => ({
-  mainPaper: { width: 870, height: 200, padding: 20 },
+  mainPaper: {
+    width: 870,
+    height: 200,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 20,
+  },
   mainDiv: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    height: "100%",
   },
   rightSide: {
     display: "flex",
@@ -38,6 +47,25 @@ export default function ClassCard() {
   const [iaNames, setIANames] = useState<string>(
     "Name 1, Name 2, Name 3, Name 4, Name 5,"
   );
+  const [canvasLink, setCanvasLink] = useState<string>("www.canvas.com");
+  const [emailLink, setEmailLink] = useState<string>("www.gmail.com");
+  const [classWebsiteLink, setClassWebsiteLink] = useState<string>(
+    "www.google.com"
+  );
+
+  useEffect(() => {
+    getClasses(["1"]).then((classList) => {
+      setClassTitle(classList[0].classTitle);
+      setClassTime(classList[0].classTime);
+      setClassSection(classList[0].classSection);
+      setProfName(classList[0].profName);
+      setGSIName(classList[0].gsiName);
+      setIANames(classList[0].iaNames);
+      setCanvasLink(classList[0].canvasLink);
+      setEmailLink(classList[0].emailLink);
+      setClassWebsiteLink(classList[0].classWebsiteLink);
+    });
+  }, []);
 
   return (
     <Card>
@@ -54,7 +82,11 @@ export default function ClassCard() {
             />
             <div className={classes.rightSide}>
               <CheckEnrolled setEditing={setEditing} />
-              <ClassLinkSelect />
+              <ClassLinkSelect
+                canvasLink={canvasLink}
+                emailLink={emailLink}
+                classWebsiteLink={classWebsiteLink}
+              />
             </div>
             <ClassEditModal
               editing={editing}
@@ -71,6 +103,12 @@ export default function ClassCard() {
               setGSIName={setGSIName}
               iaNames={iaNames}
               setIANames={setIANames}
+              canvasLink={canvasLink}
+              setCanvasLink={setCanvasLink}
+              emailLink={emailLink}
+              setEmailLink={setEmailLink}
+              classWebsiteLink={classWebsiteLink}
+              setClassWebsiteLink={setClassWebsiteLink}
             />
           </div>
         </Paper>

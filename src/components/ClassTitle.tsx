@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
@@ -33,7 +33,7 @@ export default function ClassTitle({
   const classes = useStyles();
 
   return (
-    <div>
+    <div style={{ maxWidth: 500 }}>
       {/* Left Side */}
       <div className={classes.titleSection}>
         <Avatar
@@ -56,7 +56,6 @@ export default function ClassTitle({
       <Typography>
         <strong>Instructional Aids:</strong> {iaNames}
       </Typography>
-      <Typography>Name 6, etc.</Typography>
     </div>
   );
 }

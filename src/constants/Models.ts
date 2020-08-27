@@ -12,14 +12,23 @@ export interface userModel {
   classNames: Array<string>;
   chats: Array<string>;
   signedUp?: boolean;
+  schedule?: string[];
   profilePicture?: string; // will be firebase uri
 }
 
 export interface classModel {
   id?: string;
-  className: string;
-  classDescription: string;
+  classTitle: string;
+  classTime: string;
+  classSection: string;
+  profName: string;
+  gsiName: string;
+  iaNames: string;
+  canvasLink: string;
+  emailLink: string;
+  classWebsiteLink: string;
   classPicture?: string; // will be firebase uri
+  hasRoster?: boolean;
 }
 
 export interface postModel {
@@ -37,6 +46,7 @@ export interface postModel {
   timestamp?: any;
   edited: boolean;
   attachPicture?: string; // will be firebase uri
+  likedBy: string[];
 }
 
 export interface commentModel {
@@ -50,6 +60,7 @@ export interface commentModel {
   commenterName: string;
   timestamp?: any;
   commentText: string;
+  likedBy: string[];
 }
 
 export interface notificationModel {
@@ -102,4 +113,9 @@ export interface recentActivityModel {
   subject: string;
   data: string;
   type: recentActivityTypes;
+}
+
+export interface userUsageModel {
+  date: string;
+  users: string[]; // array of user Ids, gets marked whenever a user does something on the app
 }
