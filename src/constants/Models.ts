@@ -98,3 +98,9 @@ export interface recentActivityModel {
   data: string;
   type: recentActivityTypes;
 }
+
+export interface helpModel {
+  name: string;
+  email: string;
+  description: string;
+}

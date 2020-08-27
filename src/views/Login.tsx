@@ -47,12 +47,11 @@ export default function Login() {
         >
           <Alert severity="error">{errorMessage}</Alert>
         </Snackbar>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
+        <img
+          src={require("../constants/Class_Logos/Company.png")}
+          alt="Website Logo"
+          style={{ height: 98, padding: 3, width: 348 }}
+        />
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"

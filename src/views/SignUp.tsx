@@ -104,12 +104,11 @@ export default function SignUp() {
         <Alert severity="success">Email Sent!</Alert>
       </Snackbar>
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
+        <img
+          src={require("../constants/Class_Logos/Company.png")}
+          alt="Website Logo"
+          style={{ height: 98, padding: 3, width: 348 }}
+        />
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
