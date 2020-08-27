@@ -48,47 +48,53 @@ export default function Feed(props: any) {
     }
     return toShow;
   }
-
   return (
     <Grid
       container
       direction="column"
       justifyContent="center"
       alignItems="center"
-      spacing={6}
+      spacing={4}
       //className={classes.root}
       style={{ overflow: "auto" }}
     >
       <Grid item>
         <NewPost
           onClick={(post: postModel) => {
-            addPost(post.userId, post.classId, post).then(
-              (resultingId: any) => {
-                post.id = resultingId;
-              }
-            );
-            setPostState([post, ...postState]);
+            addPost(post.userId, post.classId, post).then((result: any) => {
+              setPostState([
+                { id: result.id, timestamp: result.timestamp, ...post },
+                ...postState,
+              ]);
+            });
           }}
         />
       </Grid>
       {postState
         .filter((post) => isInToShow(post))
-        .map((thisPost, index) => (
-          <Grid item key={thisPost.id} style={{ width: "500px" }}>
-            <FeedItem
-              id={thisPost.id}
-              postUserName={thisPost.postUserName}
-              postClassName={thisPost.postClassName}
-              postText={thisPost.postText}
-              timestamp={thisPost.timestamp}
-              postCategory={thisPost.postCategory}
-              edited={thisPost.edited}
-              userId={thisPost.userId}
-              classId={thisPost.classId}
-              likedBy={[]}
-            />
-          </Grid>
-        ))}
+        .map((thisPost, index) => {
+          var isLiked;
+          thisPost.likedBy.indexOf("1111") !== -1
+            ? (isLiked = true)
+            : (isLiked = false);
+          return (
+            <Grid item key={thisPost.id} style={{ width: "500px" }}>
+              <FeedItem
+                id={thisPost.id}
+                postUserName={thisPost.postUserName}
+                postClassName={thisPost.postClassName}
+                postText={thisPost.postText}
+                timestamp={thisPost.timestamp}
+                postCategory={thisPost.postCategory}
+                edited={thisPost.edited}
+                userId={thisPost.userId}
+                classId={thisPost.classId}
+                likedBy={thisPost.likedBy}
+                isLiked={isLiked}
+              />
+            </Grid>
+          );
+        })}
     </Grid>
   );
 }
