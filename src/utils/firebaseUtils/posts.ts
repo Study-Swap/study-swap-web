@@ -122,7 +122,8 @@ function addPost(
       ...post,
     })
     .then((addedPost: any) => {
-      return addedPost.id;
+      const date = new Date();
+      return { id: addedPost.id, timestamp: date.toDateString() };
     })
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
@@ -170,4 +171,31 @@ function editPost(postId: string, newText: string): void {
     });
 }
 
-export { getPosts, getUserPosts, getFeed, addPost, removePost, editPost };
+function addLike(postId: string, userID: string): void {
+  postsDB
+    .doc(postId)
+    .update({ likedBy: firebaseApp.firestore.FieldValue.arrayUnion(userID) })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
+
+function removeLike(postId: string, userID: string): void {
+  postsDB
+    .doc(postId)
+    .update({ likedBy: firebaseApp.firestore.FieldValue.arrayRemove(userID) })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
+
+export {
+  getPosts,
+  getUserPosts,
+  getFeed,
+  addPost,
+  removePost,
+  editPost,
+  addLike,
+  removeLike,
+};

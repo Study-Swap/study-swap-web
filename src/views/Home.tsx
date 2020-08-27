@@ -34,7 +34,7 @@ const useStyles = makeStyles({
     right: "100px",
     top: "150px",
 
-    height: "350px",
+    height: "380px",
     width: "250px",
   },
 
@@ -68,13 +68,14 @@ export default function Home() {
     HW: true,
     Project: true,
     Exam: true,
+    Social: true,
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilter({ ...filter, [event.target.name]: event.target.checked });
   };
 
-  const { Announcement, HW, Project, Exam } = filter;
+  const { Announcement, HW, Project, Exam, Social } = filter;
 
   return (
     <Container component="main" maxWidth="md" className={classes.root}>
@@ -178,6 +179,27 @@ export default function Home() {
                     }
                     className={classes.formLabel}
                   />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checkedIcon={<CircleCheckedFilled />}
+                        icon={<CircleUnchecked />}
+                        checked={Social}
+                        onChange={handleChange}
+                        name="Social"
+                      />
+                    }
+                    label={
+                      <Typography
+                        className={classes.labelText}
+                        variant="subtitle2"
+                        color="textPrimary"
+                      >
+                        Social
+                      </Typography>
+                    }
+                    className={classes.formLabel}
+                  />
                 </FormGroup>
               </FormControl>
             </Grid>
@@ -198,6 +220,7 @@ export default function Home() {
                       HW: true,
                       Project: true,
                       Exam: true,
+                      Social: true,
                     });
                   }}
                 >
@@ -218,6 +241,7 @@ export default function Home() {
                       HW: false,
                       Project: false,
                       Exam: false,
+                      Social: false,
                     });
                   }}
                 >

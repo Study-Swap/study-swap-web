@@ -11,7 +11,7 @@ export let postData: postModel[] = [
     edited: false,
     userId: "0000",
     classId: "1111",
-    likedBy: [],
+    likedBy: ["0000", "1111", "2222"],
   },
   {
     postUserName: "Akul Vijay",
@@ -22,7 +22,7 @@ export let postData: postModel[] = [
     postCategory: "Exam",
     userId: "0000",
     classId: "1111",
-    likedBy: [],
+    likedBy: ["0000", "1111", "2222"]
   },
 ];
 

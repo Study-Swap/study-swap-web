@@ -45,14 +45,22 @@ function getComments(postId: string): Promise<any> {
   @type     POST -> Comments
   @desc     add new comment
   */
-function addComment(comment: commentModel): void {
-  commentsDB
+function addComment(comment: commentModel): Promise<any> {
+  return commentsDB
     .add({
       timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
       ...comment,
     })
-    .catch((err: any): void => {
+    .then((ref: firebaseApp.firestore.DocumentData): any => {
+      const date = new Date();
+      return {
+        id: ref.id,
+        timestamp: date.toDateString(),
+      };
+    })
+    .catch((err: any): any => {
       console.error(err); // will be changed to redirect to error screen
+      return "error";
     });
 }
 
@@ -82,4 +90,29 @@ function editComment(commentId: string, newText: string): void {
     });
 }
 
-export { getComments, addComment, deleteComment, editComment };
+function addCommentLike(commentId: string, userId: string): void {
+  commentsDB
+    .doc(commentId)
+    .update({ likedBy: firebaseApp.firestore.FieldValue.arrayUnion(userId) })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
+
+function removeCommentLike(commentId: string, userId: string): void {
+  commentsDB
+    .doc(commentId)
+    .update({ likedBy: firebaseApp.firestore.FieldValue.arrayRemove(userId) })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
+
+export {
+  getComments,
+  addComment,
+  deleteComment,
+  editComment,
+  addCommentLike,
+  removeCommentLike,
+};
