@@ -33,7 +33,7 @@ interface RouteType {
 }
 export const routes: Array<RouteType> = [
   { path: "/help", component: Help },
-  { path: "/requestedHelp", component: HelpReqd },
+  { path: "/requested-help", component: HelpReqd },
   { path: "/login", component: Login },
   { path: "/chats", component: Chats },
   { path: "/profile", component: Profile },

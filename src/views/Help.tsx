@@ -81,7 +81,6 @@ export default function Help() {
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
-                name="Name"
                 variant="outlined"
                 fullWidth
                 id="Name"
@@ -96,7 +95,6 @@ export default function Help() {
                 fullWidth
                 id="email"
                 label="Email Address"
-                name="email"
                 autoComplete="email"
                 onChange={handleEmail}
               />
@@ -105,7 +103,6 @@ export default function Help() {
               <TextField
                 variant="outlined"
                 fullWidth
-                name="Description"
                 label="Description"
                 id="Description"
                 multiline={true}
@@ -116,7 +113,6 @@ export default function Help() {
             </Grid>
           </Grid>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
@@ -126,7 +122,9 @@ export default function Help() {
                 name,
                 email,
                 description,
-              }).then(history.push("/requestedHelp"));
+              }).then(() => {
+                history.push("/requested-help");
+              });
             }}
           >
             Submit Help Request
