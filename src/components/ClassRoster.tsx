@@ -44,14 +44,6 @@ const useStyles = makeStyles({
   },
 });
 
-const initArray = (size: number, value: any): Array<any> => {
-  var array: Array<any> = new Array(size);
-  for (var i = 0; i < size; i++) {
-    array[i] = value;
-  }
-  return array;
-};
-
 export default function ClassRoster() {
   const classes = useStyles();
   const [open, setOpen] = useState<boolean>(false);

@@ -81,6 +81,7 @@ export default function FeedItem(props: any) {
       //timestamp: "tuesday..",
       commentText: newCommentInput,
       likedBy: [],
+      commenterProfilePic: user.profilePicture ? user.profilePicture : "",
     }).then((ret) => {
       setCommentState([
         ...commentState,
@@ -94,6 +95,7 @@ export default function FeedItem(props: any) {
           timestamp: ret.timestamp,
           commentText: newCommentInput,
           likedBy: [],
+          commenterProfilePic: user.profilePicture ? user.profilePicture : "",
         },
       ]);
       setNewCommentInput("");

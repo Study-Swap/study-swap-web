@@ -93,8 +93,6 @@ export default function Post(props: any) {
     }
   }
   return (
-    //<Card className={classes.root}>
-
     <React.Fragment>
       <CardContent>
         <Grid container justifyContent="space-between">

@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../constants/UserContext";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import InputBase from "@material-ui/core/InputBase";
@@ -55,6 +57,9 @@ interface newPostProps {
 }
 
 export default function NewPost({ onClick }: newPostProps) {
+  // Context
+  const { user, setUser } = useContext(UserContext);
+
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const [len, setLen] = React.useState(0);
@@ -122,16 +127,17 @@ export default function NewPost({ onClick }: newPostProps) {
             onClick({
               //id?: string;
               // foreign key relations
-              userId: "temp",
+              userId: user.id,
               classId: "1",
               // post specific
               postText: value,
-              postUserName: "Ashish Mahuli",
+              postUserName: `${user.firstName} ${user.lastName}`,
               postCategory: options[selectedIndex],
               postClassName: "ENGR 100",
               //timestamp?: any;
               edited: false,
               likedBy: [],
+              postUserProfilePic: user.profilePicture,
             });
             setValue("");
             setLen(0);

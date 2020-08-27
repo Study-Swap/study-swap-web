@@ -13,19 +13,7 @@ import { postModel } from "../constants/Models";
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
 
-const useStyles = makeStyles({
-  root: {
-    flex: 1,
-  },
-
-  control: {
-    padding: 2,
-  },
-});
-
 export default function Feed(props: any) {
-  console.log(props.filter);
-  const classes = useStyles();
   // eslint-disable-next-line
   const [postState, setPostState] = useState<any[]>([]);
 
