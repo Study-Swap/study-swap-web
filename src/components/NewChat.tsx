@@ -17,6 +17,7 @@ import SearchBox from "./SearchBox";
 import { CardContent } from "@material-ui/core";
 import Popper from "@material-ui/core/Popper";
 import { addChats } from "../utils/firebaseUtils";
+import { getUsersForChatCreation } from "../utils/firebaseUtils/users";
 
 interface nameAndId {
   memberName: string;
@@ -30,7 +31,7 @@ const options: nameAndId[] = [
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "400px",
+    height: "360px",
     width: "500px",
   },
   inputChatName: {
@@ -53,7 +54,19 @@ export default function NewChat(props: any) {
   const classes = useStyles();
   const [chatName, setChatName] = React.useState("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
+  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>(options);
   //const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  useEffect(() => {
+    /*getUsersForChatCreation()
+      .then((res: any) => {
+        setCurrentOptions(res);
+        console.log(res);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });*/
+  }, []);
 
   return (
     <Card className={classes.root}>
@@ -88,18 +101,47 @@ export default function NewChat(props: any) {
           <Grid container item spacing={2}>
             <Grid item xs={8} className={classes.middleSection}>
               <SearchBox
-                options={options}
+                options={currentOptions}
                 dropDownHeight="150px"
-                onChange={(user: nameAndId) =>
-                  setCurrentMembers([...currentMembers, user])
-                }
+                onChange={(user: nameAndId) => {
+                  setCurrentMembers([...currentMembers, user]);
+                  //const tempOptions = currentOptions.slice();
+                  let toRemove = 0;
+                  currentOptions.filter((member, index) => {
+                    if (member.memberId == user.memberId) {
+                      toRemove = index;
+                    }
+                  });
+                  //console.log(toRemove);
+                  setCurrentOptions([
+                    ...currentOptions.slice(0, toRemove),
+                    ...currentOptions.slice(toRemove + 1),
+                  ]);
+                  //delete tempOptions[toRemove];
+                  //setCurrentOptions([...tempOptions]);
+                }}
               />
             </Grid>
 
-            <Divider orientation="vertical" flexItem />
+            {/*<Divider orientation="vertical" flexItem />*/}
 
-            <Grid item xs={3} className={classes.middleSection}>
-              <MembersList currentMembers={currentMembers} />
+            <Grid item xs={4} className={classes.middleSection}>
+              <MembersList
+                currentMembers={currentMembers}
+                onDelete={(toDelete: nameAndId) => {
+                  let toRemove = 0;
+                  currentMembers.filter((member, index) => {
+                    if (member.memberId == toDelete.memberId) {
+                      toRemove = index;
+                    }
+                  });
+                  setCurrentMembers([
+                    ...currentMembers.slice(0, toRemove),
+                    ...currentMembers.slice(toRemove + 1),
+                  ]);
+                  setCurrentOptions([...currentOptions, toDelete]);
+                }}
+              />
             </Grid>
           </Grid>
 
@@ -107,7 +149,11 @@ export default function NewChat(props: any) {
 
           <Grid container item justifyContent="flex-end" spacing={1}>
             <Grid item>
-              <Button size="small" variant="contained">
+              <Button
+                size="small"
+                variant="contained"
+                onClick={() => props.closeModal()}
+              >
                 Cancel
               </Button>
             </Grid>
@@ -117,6 +163,7 @@ export default function NewChat(props: any) {
                 size="small"
                 variant="contained"
                 color="secondary"
+                disabled={chatName == "" || currentMembers.length == 0}
                 onClick={() => {
                   let memberNames: string[] = [];
                   let memberIds: string[] = [];

@@ -55,7 +55,7 @@ export default function ChatsToolbar2(props: any) {
     <React.Fragment>
       <Grid item>
         <Typography className={classes.name}>
-          {"To: " + props.chatName}
+          {"To: " + props.currentChat.chatName}
         </Typography>
       </Grid>
 
@@ -66,7 +66,7 @@ export default function ChatsToolbar2(props: any) {
         <Popper id={id} open={open} anchorEl={anchorEl} placement="bottom-end">
           <div>
             {" "}
-            <EditChat />
+            <EditChat currentChat={props.currentChat} />
           </div>
         </Popper>
       </Grid>

@@ -14,7 +14,11 @@ import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel, messageModel } from "../constants/Models";
 import { dummyChatsData } from "../DummyData/chats";
-import { getChats, addMessages } from "../utils/firebaseUtils";
+import {
+  getChats,
+  addMessages,
+  watchChats,
+} from "../utils/firebaseUtils/chats";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
@@ -31,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   rootChat: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    height: 360,
+    height: 355,
     overflow: "auto",
   },
 
@@ -69,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 
   list: {
     height: "100%",
+    width: "100%",
     overflow: "auto",
   },
 }));
@@ -82,19 +87,24 @@ export default function Chats() {
   const classes = useStyles();
   const [currentChatId, setCurrentChatId] = useState<string>("");
   const [currentChatName, setCurrentChatName] = useState<string>("");
-  const onClick = ({ id, chatName }: any) => {
-    setCurrentChatId(id);
-    setCurrentChatName(chatName);
+  const [currentChat, setCurrentChat] = useState<chatsModel>({
+    id: "",
+    chatName: "",
+    memberNames: [],
+    members: [],
+    messages: [],
+  });
+
+  const onClick = (chat: chatsModel) => {
+    setCurrentChat(chat);
   };
 
   useEffect(() => {
-    getChats(tempUserId) // userId is hardcoded for now
-      .then((res) => {
-        console.log(res);
-        setMyChats(res);
-        console.log("loading chats");
-      })
-      .catch((err) => console.error(err));
+    //tempUserId
+    const unsubscribe = watchChats(tempUserId, setMyChats); // userId is hardcoded for now
+
+    return () => unsubscribe();
+    //.catch((err) => console.error(err));
   }, []);
 
   return (
@@ -118,7 +128,7 @@ export default function Chats() {
               </Grid>
             </Grid>
             <Divider />
-            <Grid item style={{ height: 400 }}>
+            <Grid item style={{ height: 375 }}>
               {" "}
               {/*Grid item to hold <List> of <chatSelect> listItems*/}
               <List className={classes.list}>
@@ -130,6 +140,9 @@ export default function Chats() {
                       memberNames={thisChatSelector.memberNames}
                       messages={thisChatSelector.messages}
                       onClick={onClick}
+                      lastMessageTimestamp={
+                        thisChatSelector.lastMessageTimestamp
+                      }
                     />
                   </React.Fragment>
                 ))}
@@ -140,7 +153,7 @@ export default function Chats() {
             {" "}
             {/*right side of view*/}
             <Grid item container className={classes.topbarRight}>
-              <ChatsToolbar2 chatName={currentChatName} />
+              <ChatsToolbar2 currentChat={currentChat} />
             </Grid>
             <Divider />
             <Grid // all the messages rendered in this at Grid items in MessageBox
@@ -151,7 +164,7 @@ export default function Chats() {
               alignContent="flex-start"
               spacing={0}
             >
-              <MessageBox chatId={currentChatId} />
+              <MessageBox chatId={currentChat.id} />
             </Grid>
             <Divider />
             <Grid item style={{ height: 40, backgroundColor: "#f0f0f0" }}>

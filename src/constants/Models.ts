@@ -87,6 +87,7 @@ export interface chatsModel {
   memberNames: Array<string>; //array of names of members
   // chats specific
   messages: Array<string>; // array of messageIds
+  lastMessageTimestamp?: string;
 }
 
 export interface messageModel {

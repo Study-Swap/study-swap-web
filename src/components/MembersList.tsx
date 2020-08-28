@@ -37,25 +37,49 @@ export default function MembersList(props: any) {
   const classes = useStyles();
 
   return (
-    <List dense={true} disablePadding={true}>
-      {props.currentMembers.map((member: nameAndId, index: number) => (
-        <ListItem key={index}>
-          <ListItemAvatar>
-            <Avatar
-              className={classes.media}
-              alt="Prof Pic"
-              src={require("./apoorv.png")}
-            ></Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={member.memberName} />
+    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+      <Typography
+        variant="subtitle2"
+        style={{ fontSize: 12, fontWeight: "bold", color: "textSecondary" }}
+      >
+        {" "}
+        MEMBERS LIST
+      </Typography>
+      <List style={{}} dense={true} disablePadding={true}>
+        {props.currentMembers.map((member: nameAndId, index: number) => (
+          <ListItem key={index}>
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Avatar
+                className={classes.media}
+                alt="Prof Pic"
+                src={require("./apoorv.png")}
+              ></Avatar>
 
-          <ListItemSecondaryAction>
-            <IconButton edge="end" aria-label="delete">
-              <DeleteIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-      ))}
-    </List>
+              <Typography
+                variant="subtitle2"
+                style={{ fontSize: 12, fontWeight: "bold" }}
+              >
+                {member.memberName}
+              </Typography>
+
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => props.onDelete(member)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </div>
+          </ListItem>
+        ))}
+      </List>
+    </div>
   );
 }
