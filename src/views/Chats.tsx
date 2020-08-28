@@ -78,15 +78,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const tempUserId = "7k1MF9w490XOeFH5ygGY";
+//const tempUserId = "7k1MF9w490XOeFH5ygGY";
 
 export default function Chats() {
+  // Context
+  const { user, setUser } = useContext(UserContext);
   //get the ChatSelect working with the .map() function.
   const [myChats, setMyChats] = useState<chatsModel[]>([]);
-  const [myMessage, setMyMessage] = useState<messageModel[]>([]);
+  //const [myMessage, setMyMessage] = useState<messageModel[]>([]);
   const classes = useStyles();
   const [currentChatId, setCurrentChatId] = useState<string>("");
-  const [currentChatName, setCurrentChatName] = useState<string>("");
+  //const [currentChatName, setCurrentChatName] = useState<string>("");
   const [currentChat, setCurrentChat] = useState<chatsModel>({
     id: "",
     chatName: "",
@@ -101,7 +103,7 @@ export default function Chats() {
 
   useEffect(() => {
     //tempUserId
-    const unsubscribe = watchChats(tempUserId, setMyChats); // userId is hardcoded for now
+    const unsubscribe = watchChats(user.id, setMyChats); // userId is hardcoded for now
 
     return () => unsubscribe();
     //.catch((err) => console.error(err));
