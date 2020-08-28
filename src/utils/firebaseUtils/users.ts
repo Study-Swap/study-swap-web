@@ -243,8 +243,9 @@ function getUsersForChatCreation(/*user:userModel*/): Promise<any> {
     })
     .catch((err: any) => {
       console.log(err);
-  });}
-    
+    });
+}
+
 function getClassRoster(classId: string): Promise<any> {
   return userDB
     .where("classes", "array-contains", classId)

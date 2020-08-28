@@ -37,7 +37,6 @@ export interface postModel {
   // foreign key relations
   userId: string; // points to post-er
   classId: string; // points to class post belongs to
-  likedBy: Array<string>;
   // post specific
   postText: string;
   postUserName: string;
@@ -55,7 +54,6 @@ export interface commentModel {
   // foreign key relations
   userId: string;
   postId: string;
-  likedBy: Array<string>;
   // comment specific
   commenterName: string;
   timestamp?: any;
