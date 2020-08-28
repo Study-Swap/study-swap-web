@@ -1,12 +1,16 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import Card from "@material-ui/core/Card";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import SendIcon from "@material-ui/icons/Send";
+import Avatar from "@material-ui/core/Avatar";
+import CardContent from "@material-ui/core/CardContent";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 import { addPost } from "../utils/firebaseUtils";
 
@@ -14,9 +18,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: "2px 4px",
     display: "flex",
+
     flexDirection: "column",
     maxHeight: 200,
-    width: 450,
+    width: 486,
   },
   input: {
     marginLeft: theme.spacing(2),
@@ -36,7 +41,14 @@ const useStyles = makeStyles((theme) => ({
   lengthLimit: { marginBottom: 8, fontSize: 15, marginRight: 5 },
 }));
 
-const options = ["Choose class", "EECS 183", "BIO 172", "ENGR 100"];
+const options = [
+  "Choose Category",
+  "Announcement",
+  "HW",
+  "Exam",
+  "Project",
+  "Social",
+];
 
 interface newPostProps {
   onClick: Function;
@@ -115,12 +127,15 @@ export default function NewPost({ onClick }: newPostProps) {
               // post specific
               postText: value,
               postUserName: "Ashish Mahuli",
-              postClassName: options[selectedIndex],
+              postCategory: options[selectedIndex],
+              postClassName: "ENGR 100",
               //timestamp?: any;
               edited: false,
+              likedBy: [],
             });
             setValue("");
             setLen(0);
+            setSelectedIndex(0);
           }}
         >
           <SendIcon />

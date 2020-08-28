@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
   iconButton: {
     padding: 10,
   },
+  picInput: {
+    display: "none",
+  },
 }));
 
 interface writeMessageProps {
@@ -42,6 +45,7 @@ export default function WriteMessage({
   const classes = useStyles();
 
   const [value, setValue] = React.useState("");
+
   const handleChange = (event: any) => {
     setValue(event.target.value);
   };

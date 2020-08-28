@@ -4,9 +4,10 @@ import firebase from "../../constants/Firebase";
 
 // Constants import
 import { collections } from "../../constants/FirebaseStrings";
-import { userModel } from "../../constants/Models";
+import { userModel, userUsageModel } from "../../constants/Models";
 
 const userDB = firebase.firestore().collection(collections.users);
+const usageDB = firebase.firestore().collection(collections.userUsage);
 
 var actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
@@ -69,6 +70,7 @@ async function addUser(
                   classes_,
                   chats,
                   signedUp: true,
+                  schedule: [],
                 })
                 .then(() => {
                   // To make sure they validate email
@@ -81,12 +83,14 @@ async function addUser(
                 .set({
                   firstName,
                   lastName,
-                  //grade,
+                  grade: "Junior",
                   email,
-                  //bio,
+                  bio: "",
                   classes,
                   chats,
                   signedUp: true,
+                  schedule: [],
+                  classNames: ["EECS 281", "EECS 376"],
                 })
                 .then(() => {
                   // To make sure they validate email
@@ -167,29 +171,83 @@ function logoutUser(setUser: Function): Promise<string> {
         email: "",
         classes: [""],
         chats: [""],
+        schedule: [],
       });
       return "Logged Out";
     });
 }
 
-function addUsersByEmail(classId: string, emailList: Array<string>): any {
-  emailList.forEach((email: string) => {
-    userDB
-      .where("email", "==", email)
-      .get()
-      .then((res) => {
-        if (res.empty) {
-          // If empty make a blank user
-          userDB
-            .doc(email)
-            .set({ email: email, classes: [classId], signedUp: false });
-        } else {
-          userDB.doc(res.docs[0].id).update({
-            classes: firebaseApp.firestore.FieldValue.arrayUnion(classId),
-          });
-        }
-      });
+function addUsersByEmail(
+  classId: string,
+  emailList: Array<string>,
+  fullNames: string[][]
+): Promise<any> {
+  return Promise.all(
+    emailList.map((email: string, index: number) => {
+      return userDB
+        .where("email", "==", email)
+        .get()
+        .then((res) => {
+          if (res.empty) {
+            // If empty make a blank user
+            userDB.doc(email).set({
+              email: email,
+              classes: [classId],
+              signedUp: false,
+              firstName: fullNames[index][0],
+              lastName: fullNames[index][1],
+            });
+          } else {
+            userDB.doc(res.docs[0].id).update({
+              classes: firebaseApp.firestore.FieldValue.arrayUnion(classId),
+            });
+          }
+          return "success";
+        });
+    })
+  );
+}
+
+function editUserSchedule(timeStrings: string[], userId: string): void {
+  userDB.doc(userId).update({
+    schedule: timeStrings,
   });
+}
+
+function editUser(user: userModel): void {
+  userDB.doc(user.id).update({
+    ...user,
+  });
+}
+
+function getClassRoster(classId: string): Promise<any> {
+  return userDB
+    .where("classes", "array-contains", classId)
+    .get()
+    .then((snapshot) => {
+      const classRoster: any[] = [];
+      snapshot.forEach((user) => {
+        const { firstName, lastName, email } = user.data();
+        classRoster.push({ name: `${firstName} ${lastName}`, email });
+      });
+      return classRoster;
+    });
+}
+
+function addUsagePoint(userId: string): void {
+  const date = new Date();
+  usageDB
+    .where("date", "==", date.toDateString())
+    .get()
+    .then((model: firebaseApp.firestore.DocumentData): void => {
+      if (model.empty) {
+        usageDB.add({ date: date.toDateString, users: [userId] });
+      } else {
+        usageDB.doc(model.docs[0].id).update({
+          users: firebaseApp.firestore.FieldValue.arrayUnion(userId),
+        });
+      }
+    });
 }
 
 export {
@@ -200,4 +258,8 @@ export {
   sendPasswordResetEmail,
   logoutUser,
   addUsersByEmail,
+  editUserSchedule,
+  editUser,
+  addUsagePoint,
+  getClassRoster,
 };

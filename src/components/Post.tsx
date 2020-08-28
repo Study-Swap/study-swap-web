@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
@@ -9,8 +9,12 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
+import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import ShareIcon from "@material-ui/icons/Share";
+import { render } from "@testing-library/react";
+import { addLike, removeLike } from "../utils/firebaseUtils/posts";
 
 const useStyles = makeStyles({
   root: {
@@ -36,34 +40,84 @@ const useStyles = makeStyles({
   buttonDivider: {
     marginLeft: "10px",
   },
+  tag: {
+    fontSize: 11,
+    fontWeight: "bold",
+    backgroundColor: "#E3E3E3",
+    borderRadius: "40px",
+    padding: "2px 6px 2px 6px", //top right bottom left
+  },
 });
 
 export default function Post(props: any) {
   const classes = useStyles();
+  const [likeState, setLikeState] = React.useState(props.isLiked);
+  const [lengthState, setLengthState] = React.useState(props.likedBy.length);
+  //hard coded userId for now
 
+  function hitLike() {
+    setLikeState(true);
+    addLike(props.id, "1111");
+    setLengthState(lengthState + 1);
+  }
+
+  function hitUnlike() {
+    setLikeState(false);
+    removeLike(props.id, "1111");
+    setLengthState(lengthState - 1);
+  }
+
+  function UserHasLiked(props: any) {
+    if (likeState) {
+      return (
+        <Button
+          startIcon={<ThumbUpIcon />}
+          className={classes.button}
+          size="small"
+          onClick={hitUnlike}
+        >
+          Unlike {lengthState}
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          startIcon={<ThumbUpAltOutlinedIcon />}
+          className={classes.button}
+          size="small"
+          onClick={hitLike}
+        >
+          Like {lengthState}
+        </Button>
+      );
+    }
+  }
   return (
     //<Card className={classes.root}>
 
     <React.Fragment>
       <CardContent>
-        <Grid container>
-          <Grid item xs={2}>
+        <Grid container justifyContent="space-between">
+          <Grid item style={{ display: "flex" }}>
             <Avatar
               className={classes.media}
               alt="Prof Pic"
               src={require("./apoorv.png")}
             />
-          </Grid>
 
-          <Grid item xs={9}>
-            <div>
+            <div style={{ display: "block", marginLeft: "8px" }}>
               <Typography className={classes.title} gutterBottom>
-                {props.postUserName} in {props.postClassName}
+                {props.postUserName}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
                 {props.timestamp}
               </Typography>
             </div>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle2" className={classes.tag}>
+              {props.postCategory}
+            </Typography>
           </Grid>
         </Grid>
 
@@ -74,15 +128,15 @@ export default function Post(props: any) {
 
       <Divider className={classes.buttonDivider} />
       <CardActions style={{ justifyContent: "center" }}>
+        <UserHasLiked />
         <Button
-          startIcon={<ThumbUpIcon />}
-          className={classes.button}
-          size="small"
-        >
-          Like
-        </Button>
-        <Button
-          startIcon={<ChatBubbleIcon />}
+          startIcon={
+            props.commentsShown ? (
+              <ChatBubbleIcon />
+            ) : (
+              <ChatBubbleOutlineOutlinedIcon />
+            )
+          }
           className={classes.button}
           size="small"
           onClick={props.onClick}

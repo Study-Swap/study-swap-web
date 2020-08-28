@@ -11,13 +11,24 @@ export interface userModel {
   classes: Array<string>;
   classNames: Array<string>;
   chats: Array<string>;
-  signedUp: boolean;
+  signedUp?: boolean;
+  schedule?: string[];
+  profilePicture?: string; // will be firebase uri
 }
 
 export interface classModel {
   id?: string;
-  className: string;
-  classDescription: string;
+  classTitle: string;
+  classTime: string;
+  classSection: string;
+  profName: string;
+  gsiName: string;
+  iaNames: string;
+  canvasLink: string;
+  emailLink: string;
+  classWebsiteLink: string;
+  classPicture?: string; // will be firebase uri
+  hasRoster?: boolean;
 }
 
 export interface postModel {
@@ -26,13 +37,16 @@ export interface postModel {
   // foreign key relations
   userId: string; // points to post-er
   classId: string; // points to class post belongs to
-
+  likedBy: Array<string>;
   // post specific
   postText: string;
   postUserName: string;
   postClassName: string;
+  postCategory: string;
   timestamp?: any;
   edited: boolean;
+  attachPicture?: string; // will be firebase uri
+  likedBy: string[];
 }
 
 export interface commentModel {
@@ -41,11 +55,12 @@ export interface commentModel {
   // foreign key relations
   userId: string;
   postId: string;
-
+  likedBy: Array<string>;
   // comment specific
   commenterName: string;
   timestamp?: any;
   commentText: string;
+  likedBy: string[];
 }
 
 export interface notificationModel {
@@ -85,6 +100,7 @@ export interface messageModel {
   senderId: string;
   senderName: string;
   timestamp?: string;
+  attachPicture?: string; // will be firebase uri
 }
 
 export interface recentActivityModel {
@@ -103,4 +119,9 @@ export interface helpModel {
   name: string;
   email: string;
   description: string;
+}
+
+export interface userUsageModel {
+  date: string;
+  users: string[]; // array of user Ids, gets marked whenever a user does something on the app
 }
