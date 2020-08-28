@@ -7,7 +7,8 @@ import InputBase from "@material-ui/core/InputBase";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
-
+import HelpIcon from "@material-ui/icons/Help";
+import history from "../utils/historyUtils";
 import NotificationDropDown from "./NotificationDropDown";
 
 import {
@@ -63,19 +64,14 @@ const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
         >
           {title}
         </Typography>
-        <div className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            inputProps={{ "aria-label": "search" }}
-          />
-        </div>
+        <IconButton
+          onClick={() => {
+            history.push("/help");
+          }}
+          color="inherit"
+        >
+          <HelpIcon />
+        </IconButton>
         <NotificationDropDown
           open={open}
           setOpen={setOpen}
