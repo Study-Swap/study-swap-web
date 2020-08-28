@@ -17,6 +17,8 @@ import SignUp from "./SignUp";
 import NotLoggedIn from "./NotLoggedIn";
 import PasswordReset from "./PasswordReset";
 import AdminDashboard from "./AdminDashboard";
+import Help from "./Help";
+import HelpReqd from "./HelpReqd";
 
 // Array of arrays in format "Name", ComponentIcon, "/route"
 export const menuList = [
@@ -42,4 +44,6 @@ export const routes: Array<RouteType> = [
   { path: "/signup", component: SignUp },
   { path: "/not-logged-in", component: NotLoggedIn },
   { path: "/reset-password", component: PasswordReset },
+  { path: "/help", component: Help },
+  { path: "/requested-help", component: HelpReqd },
 ];

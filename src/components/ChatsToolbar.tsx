@@ -69,7 +69,7 @@ export default function ChatToolbar() {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <NewChat />
+        <NewChat closeModal={handleClose} />
       </Modal>
     </React.Fragment>
   );
