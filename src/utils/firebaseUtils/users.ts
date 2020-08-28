@@ -223,6 +223,7 @@ function editUser(user: userModel): void {
 interface nameAndId {
   memberName: string;
   memberId: string;
+  profilePicture: string;
 }
 
 //ENGR100 hardcoded for now, will take in a userModel once we set that up
@@ -237,6 +238,7 @@ function getUsersForChatCreation(/*user:userModel*/): Promise<any> {
         toReturn.push({
           memberName: user.data().firstName + " " + user.data().lastName,
           memberId: user.id,
+          profilePicture: user.data().profilePicture,
         });
       });
       return toReturn;

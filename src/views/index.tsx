@@ -35,11 +35,11 @@ export const privateRoutes: Array<RouteType> = [
   { path: "/chats", component: Chats },
   { path: "/profile", component: Profile },
   { path: "/classes", component: Class },
-  { path: "/dashboard", component: AdminDashboard },
   { path: "/home", component: Home },
 ];
 
 export const routes: Array<RouteType> = [
+  { path: "/dashboard", component: AdminDashboard },
   { path: "/login", component: Login },
   { path: "/signup", component: SignUp },
   { path: "/not-logged-in", component: NotLoggedIn },

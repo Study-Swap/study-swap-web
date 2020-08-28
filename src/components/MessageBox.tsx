@@ -58,13 +58,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MessageBox(props: any) {
+  // Context
+  const { user, setUser } = useContext(UserContext);
+
   const classes = useStyles();
 
   const [messageArray, setMessageArray] = useState<messageModel[]>([]);
-  const tempUserId = "7k1MF9w490XOeFH5ygGY";
+  //const tempUserId = "7k1MF9w490XOeFH5ygGY";
 
   function isUser(senderID: string) {
-    if (tempUserId === senderID) {
+    if (user.id === senderID) {
       return true;
     } else return false;
   }
@@ -99,7 +102,7 @@ export default function MessageBox(props: any) {
   useEffect(() => {
     console.log(props.chatId + "messages is loading");
     //ask chintan how to get watchMessages working and async properly
-    const unsubscribe = watchMessages(props.chatId, setMessageArray); // userId is hardcoded for now
+    const unsubscribe = watchMessages(user.id, setMessageArray); // userId is hardcoded for now
 
     return () => unsubscribe();
     //.catch((err) => console.error(err));
@@ -124,6 +127,7 @@ export default function MessageBox(props: any) {
           messageText,
           timestamp,
         } = thisMessage;
+        console.log(thisMessage);
 
         return (
           <React.Fragment key={id}>

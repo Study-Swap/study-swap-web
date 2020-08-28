@@ -22,12 +22,13 @@ import { getUsersForChatCreation } from "../utils/firebaseUtils/users";
 interface nameAndId {
   memberName: string;
   memberId: string;
+  profilePicture: string;
 }
 
-const options: nameAndId[] = [
-  { memberName: "Ashish Mahuli", memberId: "7k1MF9w490XOeFH5ygGY" },
-  { memberName: "Chintan Modi", memberId: "6loalAzoo6UpCo00zFucLfexm8t1" },
-];
+//const options: nameAndId[] = [
+//  { memberName: "Ashish Mahuli", memberId: "7k1MF9w490XOeFH5ygGY" },
+//  { memberName: "Chintan Modi", memberId: "6loalAzoo6UpCo00zFucLfexm8t1" },
+//];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,18 +55,18 @@ export default function NewChat(props: any) {
   const classes = useStyles();
   const [chatName, setChatName] = React.useState("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
-  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>(options);
+  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
   //const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   useEffect(() => {
-    /*getUsersForChatCreation()
+    getUsersForChatCreation()
       .then((res: any) => {
         setCurrentOptions(res);
         console.log(res);
       })
       .catch((err: any) => {
         console.log(err);
-      });*/
+      });
   }, []);
 
   return (

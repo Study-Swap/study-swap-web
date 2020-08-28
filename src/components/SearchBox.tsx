@@ -76,7 +76,7 @@ export default function SearchBox(props: any) {
             <Avatar
               className={classes.media}
               alt="Prof Pic"
-              src={require("./apoorv.png")}
+              src={props.profilePicture}
             />
           </Grid>
 

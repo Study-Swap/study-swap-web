@@ -59,7 +59,7 @@ export default function MembersList(props: any) {
               <Avatar
                 className={classes.media}
                 alt="Prof Pic"
-                src={require("./apoorv.png")}
+                src={props.profilePicture}
               ></Avatar>
 
               <Typography

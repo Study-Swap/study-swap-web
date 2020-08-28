@@ -20,7 +20,7 @@ function getGraphData(): Promise<graphDataType[]> {
       const graphData: graphDataType[] = [];
       snapshot.forEach((doc): void => {
         const { date, users } = doc.data();
-        if (date && users) graphData.push({ date, usage: users.length });
+        if (date && users) graphData.unshift({ date, usage: users.length });
       });
       return graphData;
     });
