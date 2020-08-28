@@ -32,7 +32,6 @@ export default function SchedulerEditing({
       <IconButton
         onClick={() => {
           if (editing) {
-            console.log(arrayToTimes(timeSlots));
             editUserSchedule(arrayToTimes(timeSlots), user.id); // HARDCODED ID - TODO CHANGE ID
             setUser({ ...user, schedule: arrayToTimes(timeSlots) });
           }

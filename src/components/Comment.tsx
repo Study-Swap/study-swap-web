@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../constants/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
@@ -48,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Comment(props: any) {
+  // Context
+  const { user, setUser } = useContext(UserContext);
+
   const classes = useStyles();
   const [likeState, setLikeState] = React.useState(props.commentLiked);
   const [lengthState, setLengthState] = React.useState(props.likedBy.length);
@@ -56,14 +60,14 @@ export default function Comment(props: any) {
   function plusLike() {
     props.onLike(props.index, likeState);
     setLikeState(true);
-    addCommentLike(props.id, "1111");
+    addCommentLike(props.id, user.id);
     setLengthState(lengthState + 1);
   }
 
   function minusLike() {
     props.onLike(props.index, likeState);
     setLikeState(false);
-    removeCommentLike(props.id, "1111");
+    removeCommentLike(props.id, user.id);
     setLengthState(lengthState - 1);
   }
 
@@ -98,8 +102,8 @@ export default function Comment(props: any) {
       <Grid item xs={1}>
         <Avatar
           className={classes.media}
-          alt="Prof Pic"
-          src={require("./apoorv.png")}
+          alt={props.commenterName}
+          src={props.profilePic}
         />
       </Grid>
 

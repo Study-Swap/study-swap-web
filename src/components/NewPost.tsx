@@ -137,7 +137,9 @@ export default function NewPost({ onClick }: newPostProps) {
               //timestamp?: any;
               edited: false,
               likedBy: [],
-              postUserProfilePic: user.profilePicture,
+              postUserProfilePic: user.profilePicture
+                ? user.profilePicture
+                : "",
             });
             setValue("");
             setLen(0);

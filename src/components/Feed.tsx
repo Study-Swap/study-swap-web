@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 // eslint-disable-next-line
 import { UserContext } from "../constants/UserContext";
 import Container from "@material-ui/core/Container";
@@ -16,6 +16,9 @@ import history from "../utils/historyUtils";
 export default function Feed(props: any) {
   // eslint-disable-next-line
   const [postState, setPostState] = useState<any[]>([]);
+
+  // Context
+  const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
     console.log(postState);
@@ -62,7 +65,7 @@ export default function Feed(props: any) {
         .filter((post) => isInToShow(post))
         .map((thisPost, index) => {
           var isLiked;
-          thisPost.likedBy.indexOf("1111") !== -1
+          thisPost.likedBy.indexOf(user.id) !== -1
             ? (isLiked = true)
             : (isLiked = false);
           return (
@@ -79,6 +82,7 @@ export default function Feed(props: any) {
                 classId={thisPost.classId}
                 likedBy={thisPost.likedBy}
                 isLiked={isLiked}
+                profilePic={thisPost.postUserProfilePic}
               />
             </Grid>
           );

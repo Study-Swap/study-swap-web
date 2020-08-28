@@ -39,6 +39,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 12 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -48,6 +49,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "11",
     senderName: "Akul",
     timestamp: "June 13 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -57,6 +59,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 14 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -66,6 +69,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 14 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -75,6 +79,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 12 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -84,6 +89,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "11",
     senderName: "Akul",
     timestamp: "June 13 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -93,6 +99,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 14 2019",
+    senderProfilePic: "",
   },
   {
     id: "1",
@@ -101,6 +108,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 12 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -110,6 +118,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "11",
     senderName: "Akul",
     timestamp: "June 13 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -119,6 +128,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 14 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -128,6 +138,7 @@ export const dummyMessagesData1: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 14 2019",
+    senderProfilePic: "",
   },
 ];
 
@@ -139,6 +150,7 @@ export const dummyMessagesData2: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 12 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -148,6 +160,7 @@ export const dummyMessagesData2: Array<messageModel> = [
     senderId: "11",
     senderName: "Akul",
     timestamp: "June 14 2019",
+    senderProfilePic: "",
   },
 
   {
@@ -157,5 +170,6 @@ export const dummyMessagesData2: Array<messageModel> = [
     senderId: "12",
     senderName: "Ashish",
     timestamp: "June 16 2019",
+    senderProfilePic: "",
   },
 ];

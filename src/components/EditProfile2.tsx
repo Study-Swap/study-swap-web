@@ -95,7 +95,7 @@ export default function EditProfile({
         <label htmlFor="change-image">
           <Avatar
             className={classes.media}
-            alt="Prof Pic"
+            alt={fullName}
             src={imageAsString}
           />
         </label>

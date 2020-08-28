@@ -78,7 +78,7 @@ export default function ClassRoster() {
             >
               <Avatar
                 style={{ height: 50, width: 50 }}
-                alt="Prof Pic"
+                alt={item.name}
                 src={item.profilePicture}
               />
               <div style={{ marginLeft: 20 }}>

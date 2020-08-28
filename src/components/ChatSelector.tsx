@@ -64,6 +64,7 @@ export default function ChatSelect({
       "This is me testing a longer message for rendering in cutting off the message",
     senderId: "",
     senderName: "Chintan Modi",
+    senderProfilePic: "", // TODO: MAKE WORK
   });
 
   useEffect(() => {

@@ -29,6 +29,7 @@ function watchMessages(chatId: string, setMessageArray: Function): any {
             messageText: data.messageText,
             senderId: data.senderId,
             senderName: data.senderName,
+            senderProfilePic: data.senderProfilePic,
             timestamp: data.timestamp
               ? data.timestamp.toDate().toDateString()
               : new Date().toDateString(),

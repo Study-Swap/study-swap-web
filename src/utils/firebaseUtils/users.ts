@@ -245,7 +245,7 @@ function addUsagePoint(userId: string): void {
     .get()
     .then((model: firebaseApp.firestore.DocumentData): void => {
       if (model.empty) {
-        usageDB.add({ date: date.toDateString, users: [userId] });
+        usageDB.add({ date: date.toDateString(), users: [userId] });
       } else {
         usageDB.doc(model.docs[0].id).update({
           users: firebaseApp.firestore.FieldValue.arrayUnion(userId),
