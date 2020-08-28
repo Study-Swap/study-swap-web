@@ -12,6 +12,7 @@ export let postData: postModel[] = [
     userId: "0000",
     classId: "1111",
     likedBy: ["0000", "1111", "2222"],
+    postUserProfilePic: "",
   },
   {
     postUserName: "Akul Vijay",
@@ -22,7 +23,8 @@ export let postData: postModel[] = [
     postCategory: "Exam",
     userId: "0000",
     classId: "1111",
-    likedBy: ["0000", "1111", "2222"]
+    likedBy: ["0000", "1111", "2222"],
+    postUserProfilePic: "",
   },
 ];
 
@@ -37,6 +39,7 @@ export let commentData: commentModel[] = [
     timestamp: "tuesday..",
     commentText: "This is my first comment!",
     likedBy: [],
+    commenterProfilePic: "",
   },
   {
     id: "104",
@@ -49,6 +52,7 @@ export let commentData: commentModel[] = [
     commentText:
       "This is my first comment! This is a commentText with more text to see how it renders when it is much longer than the first one",
     likedBy: [],
+    commenterProfilePic: "",
   },
   {
     id: "104",
@@ -60,6 +64,7 @@ export let commentData: commentModel[] = [
     timestamp: "tuesday..",
     commentText: "This is my first comment!",
     likedBy: [],
+    commenterProfilePic: "",
   },
   {
     id: "104",
@@ -72,5 +77,6 @@ export let commentData: commentModel[] = [
     commentText:
       "This is my first comment! This is a commentText with more text to see how it renders when it is much longer than the first one",
     likedBy: [],
+    commenterProfilePic: "",
   },
 ];

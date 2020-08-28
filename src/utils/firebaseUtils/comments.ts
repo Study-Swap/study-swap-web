@@ -31,6 +31,7 @@ function getComments(postId: string): Promise<any> {
             commentText: data.commentText,
             timestamp: data.timestamp.toDate().toDateString(),
             likedBy: data.likedBy,
+            commenterProfilePic: data.commenterProfilePic,
           });
         });
         return comments;

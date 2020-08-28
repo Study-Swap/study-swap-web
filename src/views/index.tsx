@@ -31,16 +31,19 @@ interface RouteType {
   path: string;
   component: any;
 }
-export const routes: Array<RouteType> = [
-  { path: "/help", component: Help },
-  { path: "/requested-help", component: HelpReqd },
-  { path: "/login", component: Login },
+export const privateRoutes: Array<RouteType> = [
   { path: "/chats", component: Chats },
   { path: "/profile", component: Profile },
   { path: "/classes", component: Class },
-  { path: "/signup", component: SignUp },
   { path: "/dashboard", component: AdminDashboard },
+  { path: "/home", component: Home },
+];
+
+export const routes: Array<RouteType> = [
+  { path: "/login", component: Login },
+  { path: "/signup", component: SignUp },
   { path: "/not-logged-in", component: NotLoggedIn },
   { path: "/reset-password", component: PasswordReset },
-  { path: "/home", component: Home },
+  { path: "/help", component: Help },
+  { path: "/requested-help", component: HelpReqd },
 ];

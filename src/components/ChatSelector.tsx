@@ -67,6 +67,7 @@ export default function ChatSelect({
     messageText: "",
     senderId: "",
     senderName: "Chintan Modi",
+    senderProfilePic: "", // TODO: MAKE WORK
   });
 
   useEffect(() => {

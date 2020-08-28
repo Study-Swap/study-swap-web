@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Router, Switch, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,7 +8,7 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 
 import { theme } from "./constants/theme";
-import { menuList, routes } from "./views";
+import { menuList, routes, privateRoutes } from "./views";
 import { Copyright } from "./components/Copyright";
 import AppLayout from "./components/AppLayout";
 import { UserContext } from "./constants/UserContext";
@@ -65,6 +66,15 @@ function App() {
                       path={element.path}
                       component={element.component}
                       key={element.path}
+                      userId={user.id}
+                    />
+                  ))}
+                  {privateRoutes.map((element: any) => (
+                    <PrivateRoute
+                      path={element.path}
+                      component={element.component}
+                      key={element.path}
+                      userId={user.id}
                     />
                   ))}
                 </Switch>

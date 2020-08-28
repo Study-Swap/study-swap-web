@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../constants/UserContext";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
@@ -32,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function NewComment(props: any) {
+  // Context
+  const { user, setUser } = useContext(UserContext);
   const classes = useStyles();
 
   return (
@@ -39,8 +43,8 @@ export default function NewComment(props: any) {
       <Grid item xs={1}>
         <Avatar
           className={classes.media}
-          alt="Prof Pic"
-          src={require("./apoorv.png")}
+          alt={`${user.firstName}`}
+          src={user.profilePicture}
         />
       </Grid>
 

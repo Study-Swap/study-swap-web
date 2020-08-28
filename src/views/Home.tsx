@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-// eslint-disable-next-line
+import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
+
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -61,9 +61,12 @@ const useStyles = makeStyles({
 });
 
 export default function Home() {
+  // Context
+  const { user, setUser } = useContext(UserContext);
+
   const classes = useStyles();
   // eslint-disable-next-line
-  const [filter, setFilter] = React.useState({
+  const [filter, setFilter] = useState({
     Announcement: true,
     HW: true,
     Project: true,

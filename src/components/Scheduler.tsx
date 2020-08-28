@@ -137,7 +137,6 @@ export default function Scheduler({ timeStrings }: SchedulerProps) {
 
   useEffect(() => {
     // On initial load the timeSlot vars do not initialize correctly sometimes
-    console.log("editing times");
     setTimeSlots(
       timesToArray(timeStrings).map((row) => {
         return row.slice();

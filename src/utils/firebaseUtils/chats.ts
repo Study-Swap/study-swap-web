@@ -29,6 +29,7 @@ function watchMessages(chatId: string, setMessageArray: Function): any {
             messageText: data.messageText,
             senderId: data.senderId,
             senderName: data.senderName,
+            senderProfilePic: data.senderProfilePic,
             timestamp: data.timestamp
               ? data.timestamp.toDate().toDateString()
               : new Date().toDateString(),
@@ -118,11 +119,9 @@ function addMessages(message: messageModel): void {
       console.error(err); // will be changed to redirect to error screen
     });
 
-  chatsDB
-    .doc(message.chatId)
-    .update({
-      lastMessageTimestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
-    });
+  chatsDB.doc(message.chatId).update({
+    lastMessageTimestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+  });
 }
 
 /*

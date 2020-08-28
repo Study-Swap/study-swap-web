@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../constants/UserContext";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
@@ -13,7 +15,6 @@ import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import ShareIcon from "@material-ui/icons/Share";
-import { render } from "@testing-library/react";
 import { addLike, removeLike } from "../utils/firebaseUtils/posts";
 
 const useStyles = makeStyles({
@@ -50,20 +51,22 @@ const useStyles = makeStyles({
 });
 
 export default function Post(props: any) {
+  // Context
+  const { user, setUser } = useContext(UserContext);
+
   const classes = useStyles();
   const [likeState, setLikeState] = React.useState(props.isLiked);
   const [lengthState, setLengthState] = React.useState(props.likedBy.length);
-  //hard coded userId for now
 
   function hitLike() {
     setLikeState(true);
-    addLike(props.id, "1111");
+    addLike(props.id, user.id);
     setLengthState(lengthState + 1);
   }
 
   function hitUnlike() {
     setLikeState(false);
-    removeLike(props.id, "1111");
+    removeLike(props.id, user.id);
     setLengthState(lengthState - 1);
   }
 
@@ -93,16 +96,14 @@ export default function Post(props: any) {
     }
   }
   return (
-    //<Card className={classes.root}>
-
     <React.Fragment>
       <CardContent>
         <Grid container justifyContent="space-between">
           <Grid item style={{ display: "flex" }}>
             <Avatar
               className={classes.media}
-              alt="Prof Pic"
-              src={require("./apoorv.png")}
+              alt={props.postUserName}
+              src={props.profilePic}
             />
 
             <div style={{ display: "block", marginLeft: "8px" }}>
@@ -154,6 +155,5 @@ export default function Post(props: any) {
       </CardActions>
       <Divider className={classes.buttonDivider} />
     </React.Fragment>
-    // </Card>
   );
 }

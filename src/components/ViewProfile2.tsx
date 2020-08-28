@@ -87,7 +87,7 @@ export default function ViewProfile({
               <Grid item xs={3}>
                 <Avatar
                   className={classes.media}
-                  alt="Prof Pic"
+                  alt={`${firstName} ${lastName}`}
                   src={profilePicture}
                 />
               </Grid>
