@@ -38,20 +38,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EditChat(props: any) {
-  const options: nameAndId[] = [
-    { memberName: "Ashish Mahuli", memberId: "7k1MF9w490XOeFH5ygGY" },
-    { memberName: "Chintan Modi", memberId: "6loalAzoo6UpCo00zFucLfexm8t1" },
-  ];
+const options: nameAndId[] = [
+  { memberName: "Ashish Mahuli", memberId: "7k1MF9w490XOeFH5ygGY" },
+  { memberName: "Chintan Modi", memberId: "6loalAzoo6UpCo00zFucLfexm8t1" },
+];
 
+export default function EditChat(props: any) {
   const [newSelection, setSelection] = useState<string | null>("");
   const classes = useStyles();
   const [chatName, setChatName] = React.useState(props.currentChat.chatName);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
-  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([
-    ...options,
-  ]);
+  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>(options);
 
   interface nameAndId {
     memberName: string;
@@ -101,7 +99,7 @@ export default function EditChat(props: any) {
 
           <Grid item xs={12} style={{ minHeight: "160px" }}>
             <SearchBox
-              options={options}
+              options={currentOptions}
               dropDownHeight="90px"
               onChange={(user: nameAndId) => {
                 setCurrentMembers([...currentMembers, user]);

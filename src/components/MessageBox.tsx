@@ -19,13 +19,13 @@ const useStyles = makeStyles((theme) => ({
   textMessageLeft: {
     borderRadius: "10px",
     minwidth: "10px",
-    maxWidth: "300px",
+    maxWidth: "250px",
     marginLeft: "5px",
   },
   textMessageRight: {
     borderRadius: "10px",
     minwidth: "10px",
-    maxWidth: "300px",
+    maxWidth: "250px",
   },
 
   textOnly: {
@@ -69,6 +69,33 @@ export default function MessageBox(props: any) {
     } else return false;
   }
 
+  let lastTimestamp: string | undefined = "";
+  function checkTimestamp(timestamp: string | undefined) {
+    if (timestamp == lastTimestamp) {
+      return false;
+    } else {
+      lastTimestamp = timestamp;
+      return true;
+    }
+  }
+  let lastName: string = "";
+  function checkName(senderName: string) {
+    if (senderName == lastName) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function updateName(senderName: string) {
+    if (senderName == lastName) {
+      return false;
+    } else {
+      lastName = senderName;
+      return true;
+    }
+  }
+
   useEffect(() => {
     console.log(props.chatId + "messages is loading");
     //ask chintan how to get watchMessages working and async properly
@@ -81,9 +108,36 @@ export default function MessageBox(props: any) {
   return (
     <React.Fragment>
       {messageArray.map((thisMessage, index) => {
-        const { id, senderId, messageText, timestamp } = thisMessage;
+        const {
+          id,
+          senderId,
+          senderName,
+          messageText,
+          timestamp,
+        } = thisMessage;
+
         return (
           <React.Fragment key={id}>
+            {checkTimestamp(timestamp) ? (
+              <Grid
+                container
+                item
+                sm={12}
+                justifyContent="center"
+                style={{ padding: "12px 0px 12px 0px" }}
+              >
+                <Grid item>
+                  <Typography
+                    color="textSecondary"
+                    style={{ fontSize: 12, fontWeight: "bold" }}
+                  >
+                    {timestamp}
+                  </Typography>
+                </Grid>
+              </Grid>
+            ) : (
+              <div></div>
+            )}
             {!isUser(senderId) ? (
               <Grid
                 container
@@ -97,10 +151,24 @@ export default function MessageBox(props: any) {
                     alt="Remy Sharp"
                     src="/static/images/avatar/1.jpg"
                     className={classes.media}
+                    style={{
+                      marginTop: checkName(senderName) ? "20px" : "0px",
+                    }}
                   />
                 </Grid>
 
                 <Grid item>
+                  {updateName(senderName) ? (
+                    <Typography
+                      color="textSecondary"
+                      style={{ fontSize: 12, paddingLeft: "10px" }}
+                    >
+                      {senderName}
+                    </Typography>
+                  ) : (
+                    <div></div>
+                  )}
+
                   <div
                     className={classes.textMessageLeft}
                     style={{ backgroundColor: "#e5e5ea" }}
@@ -119,6 +187,7 @@ export default function MessageBox(props: any) {
                 justifyContent="flex-end"
                 className={classes.messageContainer}
               >
+                {updateName(senderName)}
                 <Grid item>
                   <div
                     className={classes.textMessageRight}

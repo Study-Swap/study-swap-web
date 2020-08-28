@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   rootChat: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    height: 360,
+    height: 355,
     overflow: "auto",
   },
 
@@ -128,7 +128,7 @@ export default function Chats() {
               </Grid>
             </Grid>
             <Divider />
-            <Grid item style={{ height: 400 }}>
+            <Grid item style={{ height: 375 }}>
               {" "}
               {/*Grid item to hold <List> of <chatSelect> listItems*/}
               <List className={classes.list}>
@@ -140,6 +140,9 @@ export default function Chats() {
                       memberNames={thisChatSelector.memberNames}
                       messages={thisChatSelector.messages}
                       onClick={onClick}
+                      lastMessageTimestamp={
+                        thisChatSelector.lastMessageTimestamp
+                      }
                     />
                   </React.Fragment>
                 ))}

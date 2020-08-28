@@ -58,6 +58,7 @@ export default function ChatSelect({
   memberNames,
   messages,
   onClick,
+  lastMessageTimestamp,
 }: any) {
   const classes = useStyles();
 
@@ -70,7 +71,7 @@ export default function ChatSelect({
 
   useEffect(() => {
     if (messages.length > 0) {
-      getMessage(messages[0]) // classId is hardcoded for now
+      getMessage(messages[messages.length - 1]) // classId is hardcoded for now
         .then((res) => {
           setFirstMessage(res);
           console.log(res);
@@ -78,6 +79,14 @@ export default function ChatSelect({
         .catch((err) => console.error(err));
     }
   }, []);
+
+  function shortenMessage(message: string) {
+    if (message.length > 60) {
+      return message.slice(0, 59) + " ...";
+    } else {
+      return message;
+    }
+  }
 
   return (
     <React.Fragment>
@@ -92,17 +101,33 @@ export default function ChatSelect({
 
         <ListItemText
           primary={
-            <React.Fragment>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Typography
                 component="span"
                 variant="body2"
                 className={classes.chatTitle}
                 color="textPrimary"
-                //noWrap={true}
+                style={{
+                  width: "70%",
+                  fontSize: 14,
+                  marginRight: "5px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+                noWrap={true}
               >
                 {chatName}
               </Typography>
-            </React.Fragment>
+              <Typography
+                component="span"
+                variant="subtitle2"
+                color="textSecondary"
+                style={{ width: "30%", fontSize: 12 }}
+                //noWrap={true}
+              >
+                {lastMessageTimestamp}
+              </Typography>
+            </div>
           }
           secondary={
             <React.Fragment>
@@ -113,7 +138,7 @@ export default function ChatSelect({
                 color="textSecondary"
                 //noWrap={true}
               >
-                {firstMessage.messageText}
+                {shortenMessage(firstMessage.messageText)}
               </Typography>
             </React.Fragment>
           }

@@ -41,35 +41,55 @@ function watchMessages(chatId: string, setMessageArray: Function): any {
     });
 }
 
+function configureDate(timestamp: any) {
+  var currentTime = new Date();
+
+  console.log(
+    currentTime.toDateString() + " ---" + timestamp.toDate().toDateString()
+  );
+  if (currentTime.toDateString() === timestamp.toDate().toDateString()) {
+    return timestamp
+      .toDate()
+      .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  } else {
+    console.log(timestamp.toDate().toDateString());
+    return timestamp
+      .toDate()
+      .toLocaleString("default", { month: "short", day: "2-digit" });
+  }
+}
 /*
   @type     GET -> Messages
   @desc     watch all messages that belong to a chat -> return on change
 */
 function watchChats(userId: string, setChatArray: Function): any {
   //TODO Fix any return....
-  return (
-    chatsDB
-      .where("members", "array-contains", userId)
-      //.orderBy("timestamp", "desc")
-      .onSnapshot((querySnapshot: any): void => {
-        const chats: Array<chatsModel> = [];
-        querySnapshot.forEach(
-          async (chat: any): Promise<void> => {
-            const data = await chat.data();
-            chats.unshift({
-              id: chat.id,
-              chatName: data.chatName,
-              memberNames: data.memberNames,
-              members: data.members,
-              messages: data.messages,
-            });
-          }
-        );
-        setTimeout(() => {
-          setChatArray(chats);
-        }, 0);
-      })
-  );
+  return chatsDB
+    .where("members", "array-contains", userId)
+    .orderBy("lastMessageTimestamp", "asc")
+    .onSnapshot((querySnapshot: any): void => {
+      const chats: Array<chatsModel> = [];
+      querySnapshot.forEach(
+        async (chat: any): Promise<void> => {
+          const data = await chat.data();
+          chats.unshift({
+            id: chat.id,
+            chatName: data.chatName,
+            memberNames: data.memberNames,
+            members: data.members,
+            messages: data.messages,
+            lastMessageTimestamp: data.lastMessageTimestamp
+              ? configureDate(data.lastMessageTimestamp)
+              : configureDate(
+                  firebaseApp.firestore.FieldValue.serverTimestamp()
+                ),
+          });
+        }
+      );
+      setTimeout(() => {
+        setChatArray(chats);
+      }, 0);
+    });
 }
 
 /*
@@ -96,6 +116,12 @@ function addMessages(message: messageModel): void {
     })
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
+    });
+
+  chatsDB
+    .doc(message.chatId)
+    .update({
+      lastMessageTimestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
     });
 }
 
@@ -132,7 +158,8 @@ function getChats(userId: string): Promise<any> {
   @type     POST -> Chats
   @desc     add new chat
 */
-function addChats(newChat: chatsModel): any {
+function addChats(newChat: any): any {
+  //takes in a chats model
   //TODO Fix any return....
   // Make new chat
   chatsDB
@@ -141,12 +168,13 @@ function addChats(newChat: chatsModel): any {
       members: newChat.members,
       memberNames: newChat.memberNames,
       messages: [],
+      lastMessageTimestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
     })
     .then((chat: any): void => {
       //console.log(chat.id);
 
       // Then add chat to users chat list
-      newChat.members.forEach((memberId) => {
+      newChat.members.forEach((memberId: string) => {
         usersDB
           .doc(memberId)
           .update({

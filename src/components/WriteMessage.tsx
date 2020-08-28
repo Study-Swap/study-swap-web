@@ -104,7 +104,7 @@ export default function WriteMessage({
           });
           setValue("");
         }}
-        disabled={value === ""}
+        disabled={value === "" || chatId == ""}
       >
         <SendIcon />
       </IconButton>

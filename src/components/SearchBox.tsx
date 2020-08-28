@@ -33,7 +33,7 @@ export default function SearchBox(props: any) {
   const { options } = props;
 
   useEffect(() => {
-    console.log(options);
+    //console.log(options);
   }, [options]);
 
   return (
@@ -42,7 +42,7 @@ export default function SearchBox(props: any) {
       inputValue={inputValue}
       onChange={(event: any, newValue: nameAndId | null) => {
         if (newValue != null) {
-          console.log(newValue);
+          //console.log(newValue);
           props.onChange(newValue);
           setValue(null);
           setInputValue("");

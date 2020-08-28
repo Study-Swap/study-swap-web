@@ -45,11 +45,7 @@ export default function MembersList(props: any) {
         {" "}
         MEMBERS LIST
       </Typography>
-      <List
-        style={{ backgroundColor: "red" }}
-        dense={true}
-        disablePadding={true}
-      >
+      <List style={{}} dense={true} disablePadding={true}>
         {props.currentMembers.map((member: nameAndId, index: number) => (
           <ListItem key={index}>
             <div
