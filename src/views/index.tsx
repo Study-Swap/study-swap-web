@@ -17,6 +17,8 @@ import SignUp from "./SignUp";
 import NotLoggedIn from "./NotLoggedIn";
 import PasswordReset from "./PasswordReset";
 import AdminDashboard from "./AdminDashboard";
+import Help from "./Help";
+import HelpReqd from "./HelpReqd";
 
 // Array of arrays in format "Name", ComponentIcon, "/route"
 export const menuList = [
@@ -30,6 +32,8 @@ interface RouteType {
   component: any;
 }
 export const routes: Array<RouteType> = [
+  { path: "/help", component: Help },
+  { path: "/requested-help", component: HelpReqd },
   { path: "/login", component: Login },
   { path: "/chats", component: Chats },
   { path: "/profile", component: Profile },

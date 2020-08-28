@@ -35,13 +35,11 @@ const NotificationDropDown = ({
       .then((res) => {
         setNotificationData(res);
         setNumNotifs(res.length);
-        console.log("notifications loaded");
       })
       .catch((err) => console.error(err));
   }, []);
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {
-    console.log("clicked away");
     if (
       anchorRef.current &&
       anchorRef.current.contains(event.target as HTMLElement)

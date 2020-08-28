@@ -6,6 +6,8 @@ const collections = {
   comments: "comments",
   messages: "messages",
   chats: "chats",
+  helpReqs: "helpReqs",
+  userUsage: "userUsage",
 };
 
 export { collections };

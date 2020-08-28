@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Class() {
+export default function Class(props: any) {
   const classes = useStyles();
   const [postState] = useState(postData);
 
@@ -33,21 +33,29 @@ export default function Class() {
         <br />
         <div style={{ display: "flex", flexDirection: "row" }}>
           <div style={{ width: 470, marginRight: 10 }}>
-            {postState.map((thisPost, index) => (
-              <React.Fragment key={index}>
-                <FeedItem
-                  postCategory={thisPost.postCategory}
-                  postUserName={thisPost.postUserName}
-                  postClassName={thisPost.postClassName}
-                  postText={thisPost.postText}
-                  timestamp={thisPost.timestamp}
-                  edited={thisPost.edited}
-                  userId={thisPost.userId}
-                  classId={thisPost.classId}
-                />
-                <br />
-              </React.Fragment>
-            ))}
+            {postState.map((thisPost, index) => {
+              var isLiked;
+              thisPost.likedBy.indexOf(props.userId) !== -1
+                ? (isLiked = true)
+                : (isLiked = false);
+              return (
+                <React.Fragment key={index}>
+                  <FeedItem
+                    postCategory={thisPost.postCategory}
+                    postUserName={thisPost.postUserName}
+                    postClassName={thisPost.postClassName}
+                    postText={thisPost.postText}
+                    timestamp={thisPost.timestamp}
+                    edited={thisPost.edited}
+                    userId={thisPost.userId}
+                    classId={thisPost.classId}
+                    likedBy={thisPost.likedBy}
+                    isLiked={isLiked}
+                  />
+                  <br />
+                </React.Fragment>
+              );
+            })}
           </div>
           <div style={{ width: 380, marginLeft: 10 }}>
             <ClassRoster />

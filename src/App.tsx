@@ -14,7 +14,7 @@ import { UserContext } from "./constants/UserContext";
 
 import history from "./utils/historyUtils";
 import firebase from "./constants/Firebase";
-import { getUser } from "./utils/firebaseUtils";
+import { getUser, addUsagePoint } from "./utils/firebaseUtils";
 
 function App() {
   const classes = useStyles();
@@ -25,6 +25,10 @@ function App() {
     email: "",
     classes: [""],
     chats: [""],
+    schedule: [""],
+    bio: "",
+    grade: "",
+    classNames: [""],
   });
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
@@ -38,6 +42,7 @@ function App() {
           setUser(res);
           console.log(res);
         });
+        addUsagePoint(authUser.uid);
       }
     });
 
@@ -78,6 +83,7 @@ function App() {
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    backgroundColor: "#D7D7D7",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,

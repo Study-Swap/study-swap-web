@@ -34,7 +34,12 @@ const useStyles = makeStyles({
   },
 });
 
-export default function FeedItem(props: postModel) {
+function remove(array: string[], value: string): string[] {
+  const index = array.indexOf(value);
+  return [...array.slice(0, index), ...array.slice(index + 1)];
+}
+
+export default function FeedItem(props: any) {
   const [commentState, setCommentState] = useState<commentModel[]>([]);
   //stores comment dummydata, replace with backend function
 
@@ -66,22 +71,6 @@ export default function FeedItem(props: postModel) {
   const classes = useStyles();
 
   function newCommentClick() {
-    //adds commentModel object to dummyData
-    setCommentState([
-      ...commentState,
-      {
-        //id: "104",
-        // foreign key relations
-        userId: "amahuli",
-        postId: String(props.id),
-        // comment specific
-        commenterName: "Chintan Modi",
-        timestamp: "ADD FIREBASE TIMESTAMP HERE",
-        commentText: newCommentInput,
-      },
-    ]);
-    setNewCommentInput("");
-
     addComment({
       //id: "104",
       // foreign key relations
@@ -91,12 +80,30 @@ export default function FeedItem(props: postModel) {
       commenterName: "Chintan Modi",
       //timestamp: "tuesday..",
       commentText: newCommentInput,
+      likedBy: [],
+    }).then((ret) => {
+      setCommentState([
+        ...commentState,
+        {
+          id: ret.id,
+          // foreign key relations
+          userId: "amahuli",
+          postId: String(props.id),
+          // comment specific
+          commenterName: "Chintan Modi",
+          timestamp: ret.timestamp,
+          commentText: newCommentInput,
+          likedBy: [],
+        },
+      ]);
+      setNewCommentInput("");
     });
   }
 
   return (
     <Card className={classes.root}>
       <Post
+        id={props.id}
         postUserName={props.postUserName}
         postClassName={props.postClassName}
         postCategory={props.postCategory}
@@ -105,24 +112,52 @@ export default function FeedItem(props: postModel) {
         edited={props.edited}
         userId={props.userId}
         classId={props.classId}
+        likedBy={props.likedBy}
+        isLiked={props.isLiked}
         onClick={toggleCommentClick}
+        commentsShown={commentsShown}
       />
 
       {commentState.length > 0 ? (
         commentsShown ? (
           <CardContent className={classes.commentContainer}>
-            {commentState.map((thisComment, index) => (
-              <Grid item key={index} xs={12}>
-                <Comment
-                  id={thisComment.id}
-                  userId={thisComment.userId}
-                  postId={thisComment.postId}
-                  commenterName={thisComment.commenterName}
-                  timestamp={thisComment.timestamp}
-                  commentText={thisComment.commentText}
-                />
-              </Grid>
-            ))}
+            {commentState.map((thisComment, index) => {
+              var commentLiked;
+              thisComment.likedBy.indexOf("1111") !== -1
+                ? (commentLiked = true)
+                : (commentLiked = false);
+              return (
+                <Grid item key={index} xs={12}>
+                  <Comment
+                    id={thisComment.id}
+                    userId={thisComment.userId}
+                    postId={thisComment.postId}
+                    commenterName={thisComment.commenterName}
+                    timestamp={thisComment.timestamp}
+                    commentText={thisComment.commentText}
+                    likedBy={thisComment.likedBy}
+                    commentLiked={commentLiked}
+                    index={index}
+                    onLike={(index: number, likedState: boolean) => {
+                      var arrayLikes = commentState[index].likedBy;
+                      if (likedState) {
+                        arrayLikes = remove(arrayLikes, "1111");
+                      } else {
+                        arrayLikes.push("1111");
+                      }
+                      setCommentState([
+                        ...commentState.slice(0, index),
+                        {
+                          ...commentState[index],
+                          likedBy: [...arrayLikes],
+                        },
+                        ...commentState.slice(index + 1),
+                      ]);
+                    }}
+                  />
+                </Grid>
+              );
+            })}
           </CardContent>
         ) : (
           <CardContent className={classes.commentContainer}>
@@ -134,6 +169,27 @@ export default function FeedItem(props: postModel) {
                 commenterName={commentState[0].commenterName}
                 timestamp={commentState[0].timestamp}
                 commentText={commentState[0].commentText}
+                likedBy={commentState[0].likedBy}
+                commentLiked={
+                  commentState[0].likedBy.indexOf("1111") !== -1 ? true : false
+                }
+                index={0}
+                onLike={(index: number, likedState: boolean) => {
+                  var arrayLikes = commentState[index].likedBy;
+                  if (likedState) {
+                    arrayLikes = remove(arrayLikes, "1111");
+                  } else {
+                    arrayLikes.push("1111");
+                  }
+                  setCommentState([
+                    ...commentState.slice(0, index),
+                    {
+                      ...commentState[index],
+                      likedBy: [...arrayLikes],
+                    },
+                    ...commentState.slice(index + 1),
+                  ]);
+                }}
               />
             </Grid>
           </CardContent>

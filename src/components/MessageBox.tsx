@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { UserContext } from "../constants/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
@@ -105,6 +105,15 @@ export default function MessageBox(props: any) {
     //.catch((err) => console.error(err));
   }, [props.chatId]);
 
+  const lastMessage = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    console.log(lastMessage.current);
+    if (lastMessage.current !== null) {
+      lastMessage.current.scrollIntoView(false);
+    }
+  }, [messageArray]);
+
   return (
     <React.Fragment>
       {messageArray.map((thisMessage, index) => {
@@ -206,6 +215,7 @@ export default function MessageBox(props: any) {
           </React.Fragment>
         );
       })}
+      <Grid item ref={lastMessage}></Grid>
     </React.Fragment>
   );
 }

@@ -14,6 +14,7 @@ import {
   addClasses,
   removeClasses,
   createClass,
+  editClass,
 } from "./classes";
 
 import {
@@ -49,7 +50,13 @@ import {
   sendPasswordResetEmail,
   logoutUser,
   addUsersByEmail,
+  editUserSchedule,
+  editUser,
+  addUsagePoint,
+  getClassRoster,
 } from "./users";
+
+import { getGraphData } from "./userUsage";
 
 /********** EXPORT **********/
 export {
@@ -87,4 +94,10 @@ export {
   sendLikeComment,
   sendNewChat,
   sendAdminAccess,
+  editUserSchedule,
+  editUser,
+  editClass,
+  addUsagePoint,
+  getClassRoster,
+  getGraphData,
 };

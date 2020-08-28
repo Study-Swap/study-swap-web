@@ -1,4 +1,4 @@
-import firebase from "../../constants/Firebase";
+import firebase from "../constants/Firebase";
 const storage = firebase.storage();
 
 /*
@@ -39,7 +39,7 @@ Inside React Code:
 
 */
 
-const getImageBase64String = (
+export const getImageBase64String = (
   image: File,
   setBase64String: React.Dispatch<React.SetStateAction<string>>
 ) => {
@@ -51,14 +51,14 @@ const getImageBase64String = (
   reader.readAsDataURL(image);
 };
 
-const setImageFile = (
+export const setImageFile = (
   image: File,
   setImageAsFile: React.Dispatch<React.SetStateAction<File>>
 ) => {
   setImageAsFile(image);
 };
 
-const firebaseUploadImageFile = (
+export const firebaseUploadImageFile = (
   fileName: string,
   imageFile: File,
   setImageAsUrl: React.Dispatch<React.SetStateAction<string>>
@@ -82,7 +82,7 @@ Non Example functions
 ***************************************************
 */
 
-enum folderEnums {
+export enum folderEnums {
   PROFILE_FOLDER,
   POST_FOLDER,
   CHAT_FOLDER,
@@ -91,7 +91,7 @@ enum folderEnums {
 
 const folders = ["profileImages", "postImages", "chatImages", "classImages"];
 
-function uploadImage(
+export function uploadImage(
   type: folderEnums, // Must be one of the enums
   fileName: string,
   image: File // get from e.target.files[0];
@@ -99,7 +99,7 @@ function uploadImage(
   storage.ref(`/images/${folders[type]}/${fileName}`).put(image);
 }
 
-function getImageURI(
+export function getImageURI(
   type: folderEnums, // Must be one of the enums
   fileName: string
 ): Promise<string> {
@@ -112,21 +112,24 @@ function getImageURI(
     });
 }
 
-function makeProfilePicName(firstName: string, lastName: string): string {
+export function makeProfilePicName(
+  firstName: string,
+  lastName: string
+): string {
   return `${firstName}_${lastName}_Profile_Picture`;
 }
 
-function makeClassPicName(className: string): string {
+export function makeClassPicName(className: string): string {
   return `${className}_Class_Picture`;
 }
 
-function makeChatPostPicName(userId: string): string {
+export function makeChatPostPicName(userId: string): string {
   return `${userId}__${Math.random() * 10000000}`;
 }
 
 // Will upload an image and then return the uri
 // (used in chat and profile to add the uri to the model)
-function uploadAndString(
+export function uploadAndString(
   type: folderEnums, // Must be one of the enums
   fileName: string,
   image: File // get from e.target.files[0];
