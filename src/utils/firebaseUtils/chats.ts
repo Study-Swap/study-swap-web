@@ -14,11 +14,13 @@ const usersDB = firebase.firestore().collection(collections.users);
   @desc     watch all messages that belong to a chat -> return on change
 */
 function watchMessages(chatId: string, setMessageArray: Function): any {
+  console.log("watching messages");
   //TODO Fix any return....
   return messagesDB
     .where("chatId", "==", chatId)
     .orderBy("timestamp", "desc")
     .onSnapshot((querySnapshot: any): void => {
+      console.log("in messages snapshot");
       const messages: Array<messageModel> = [];
       querySnapshot.forEach(
         async (message: any): Promise<void> => {
@@ -42,21 +44,28 @@ function watchMessages(chatId: string, setMessageArray: Function): any {
     });
 }
 
-function configureDate(timestamp: any) {
+function configureDate(timestamp?: any) {
   var currentTime = new Date();
 
-  console.log(
-    currentTime.toDateString() + " ---" + timestamp.toDate().toDateString()
-  );
-  if (currentTime.toDateString() === timestamp.toDate().toDateString()) {
-    return timestamp
-      .toDate()
-      .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  if (timestamp) {
+    console.log(
+      currentTime.toDateString() + " ---" + timestamp.toDate().toDateString()
+    );
+    if (currentTime.toDateString() === timestamp.toDate().toDateString()) {
+      return timestamp
+        .toDate()
+        .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    } else {
+      console.log(timestamp.toDate().toDateString());
+      return timestamp
+        .toDate()
+        .toLocaleString("default", { month: "short", day: "2-digit" });
+    }
   } else {
-    console.log(timestamp.toDate().toDateString());
-    return timestamp
-      .toDate()
-      .toLocaleString("default", { month: "short", day: "2-digit" });
+    return currentTime.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   }
 }
 /*
@@ -64,11 +73,13 @@ function configureDate(timestamp: any) {
   @desc     watch all messages that belong to a chat -> return on change
 */
 function watchChats(userId: string, setChatArray: Function): any {
+  console.log("watching chats");
   //TODO Fix any return....
   return chatsDB
     .where("members", "array-contains", userId)
     .orderBy("lastMessageTimestamp", "asc")
     .onSnapshot((querySnapshot: any): void => {
+      console.log("in chats snapshot");
       const chats: Array<chatsModel> = [];
       querySnapshot.forEach(
         async (chat: any): Promise<void> => {
@@ -81,9 +92,7 @@ function watchChats(userId: string, setChatArray: Function): any {
             messages: data.messages,
             lastMessageTimestamp: data.lastMessageTimestamp
               ? configureDate(data.lastMessageTimestamp)
-              : configureDate(
-                  firebaseApp.firestore.FieldValue.serverTimestamp()
-                ),
+              : configureDate(),
           });
         }
       );
@@ -260,12 +269,13 @@ function getMessage(messageId: string): Promise<any> {
     .doc(messageId)
     .get()
     .then((res: any) => {
+      const data = res.data();
       return {
         id: messageId,
-        timestamp: res.data().timestamp,
-        messageText: res.data().messageText,
-        senderId: res.data().senderId,
-        senderName: res.data().senderName,
+        timestamp: data.timestamp,
+        messageText: data.messageText,
+        senderId: data.senderId,
+        senderName: data.senderName,
       };
     })
     .catch((err) => {

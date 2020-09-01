@@ -16,6 +16,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 interface nameAndId {
   memberName: string;
   memberId: string;
+  profilePicture: string;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -58,8 +59,8 @@ export default function MembersList(props: any) {
             >
               <Avatar
                 className={classes.media}
-                alt="Prof Pic"
-                src={props.profilePicture}
+                alt={member.memberName}
+                src={member.profilePicture}
               ></Avatar>
 
               <Typography

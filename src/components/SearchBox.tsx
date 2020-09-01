@@ -32,10 +32,6 @@ export default function SearchBox(props: any) {
 
   const { options } = props;
 
-  useEffect(() => {
-    //console.log(options);
-  }, [options]);
-
   return (
     <Autocomplete
       value={value}

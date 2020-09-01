@@ -4,8 +4,6 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import FeedItem from "../components/FeedItem";
-import { postData } from "../DummyData/home";
-
 import { getPosts } from "../utils/firebaseUtils";
 
 import ClassCard from "../components/ClassCard";

@@ -64,6 +64,7 @@ interface TrendingProps {
   timestamp: string;
   read: boolean;
   id: string;
+  profilePicture: string;
 }
 
 const TrendingPostNotification = ({
@@ -72,6 +73,7 @@ const TrendingPostNotification = ({
   timestamp,
   read,
   id,
+  profilePicture,
 }: TrendingProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -99,7 +101,7 @@ const TrendingPostNotification = ({
               <img
                 className={classes.img}
                 alt="profile pic"
-                src={require("../DummyData/Headshot.png")}
+                src={profilePicture}
               />
             </div>
           </Grid>
@@ -178,6 +180,7 @@ interface LikeCommentProps {
   timestamp: string;
   read: boolean;
   id: string;
+  profilePicture: string;
 }
 
 const LikeCommentNotification = ({
@@ -186,6 +189,7 @@ const LikeCommentNotification = ({
   timestamp,
   read,
   id,
+  profilePicture,
 }: LikeCommentProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -215,7 +219,7 @@ const LikeCommentNotification = ({
               <img
                 className={classes.img}
                 alt="profile pic"
-                src={require("../DummyData/Headshot.png")}
+                src={profilePicture}
               />
             </div>
           </Grid>
@@ -293,6 +297,7 @@ interface NewChatProps {
   timestamp: string;
   read: boolean;
   id: string;
+  profilePicture: string;
 }
 
 const NewChatNotification = ({
@@ -301,6 +306,7 @@ const NewChatNotification = ({
   timestamp,
   read,
   id,
+  profilePicture,
 }: NewChatProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -330,7 +336,7 @@ const NewChatNotification = ({
               <img
                 className={classes.img}
                 alt="profile pic"
-                src={require("../DummyData/Headshot.png")}
+                src={profilePicture}
               />
             </div>
           </Grid>
@@ -423,6 +429,7 @@ interface AdminAccessProps {
   timestamp: string;
   read: boolean;
   id: string;
+  profilePicture?: string;
 }
 
 const AdminAccessNotification = ({
@@ -431,6 +438,7 @@ const AdminAccessNotification = ({
   timestamp,
   read,
   id,
+  profilePicture,
 }: AdminAccessProps) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -537,7 +545,14 @@ export default function NotificationItem({
   type,
   item,
 }: NotificationItemProps) {
-  const { senderName, notificationText, timestamp, read, id } = item;
+  const {
+    senderName,
+    notificationText,
+    timestamp,
+    read,
+    id,
+    profilePicture,
+  } = item;
   switch (type) {
     case notificationTypes.TRENDING_POST:
       return (
@@ -547,6 +562,7 @@ export default function NotificationItem({
           timestamp={timestamp}
           read={read}
           id={id}
+          profilePicture={profilePicture}
         />
       );
     case notificationTypes.LIKE_COMMENT:
@@ -557,6 +573,7 @@ export default function NotificationItem({
           timestamp={timestamp}
           read={read}
           id={id}
+          profilePicture={profilePicture}
         />
       );
     case notificationTypes.NEW_CHAT:
@@ -567,6 +584,7 @@ export default function NotificationItem({
           timestamp={timestamp}
           read={read}
           id={id}
+          profilePicture={profilePicture}
         />
       );
     case notificationTypes.ADMIN_ACCESS:
@@ -577,6 +595,7 @@ export default function NotificationItem({
           timestamp={timestamp}
           read={read}
           id={id}
+          profilePicture={profilePicture}
         />
       );
     default:

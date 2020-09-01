@@ -61,15 +61,22 @@ interface notificationDataType {
   userId: string;
   senderName: string;
   notificationText: string;
+  profilePicture: string;
 }
 
 // Different types asre verbose, but make it easier to know what you are sending and when
 function sendTrending(notificationData: notificationDataType) {
-  const { userId, senderName, notificationText } = notificationData;
+  const {
+    userId,
+    senderName,
+    notificationText,
+    profilePicture,
+  } = notificationData;
   sendNotification({
     userId,
     senderName,
     notificationText,
+    profilePicture,
     kind: notificationTypes.TRENDING_POST,
   }).then(() => {
     console.log("notification sent");
@@ -77,11 +84,17 @@ function sendTrending(notificationData: notificationDataType) {
 }
 
 function sendLikeComment(notificationData: notificationDataType) {
-  const { userId, senderName, notificationText } = notificationData;
+  const {
+    userId,
+    senderName,
+    notificationText,
+    profilePicture,
+  } = notificationData;
   sendNotification({
     userId,
     senderName,
     notificationText,
+    profilePicture,
     kind: notificationTypes.LIKE_COMMENT,
   }).then(() => {
     console.log("notification sent");
@@ -89,11 +102,17 @@ function sendLikeComment(notificationData: notificationDataType) {
 }
 
 function sendNewChat(notificationData: notificationDataType) {
-  const { userId, senderName, notificationText } = notificationData;
+  const {
+    profilePicture,
+    userId,
+    senderName,
+    notificationText,
+  } = notificationData;
   sendNotification({
     userId,
     senderName,
     notificationText,
+    profilePicture,
     kind: notificationTypes.NEW_CHAT,
   }).then(() => {
     console.log("notification sent");
@@ -101,11 +120,17 @@ function sendNewChat(notificationData: notificationDataType) {
 }
 
 function sendAdminAccess(notificationData: notificationDataType) {
-  const { userId, senderName, notificationText } = notificationData;
+  const {
+    profilePicture,
+    userId,
+    senderName,
+    notificationText,
+  } = notificationData;
   sendNotification({
     userId,
     senderName,
     notificationText,
+    profilePicture,
     kind: notificationTypes.ADMIN_ACCESS,
   }).then(() => {
     console.log("notification sent");

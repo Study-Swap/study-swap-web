@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../constants/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -35,13 +36,15 @@ const useStyles = makeStyles((theme) => ({
 
 interface writeMessageProps {
   submitMessage: Function;
-  chatId: string;
+  chatId: string | undefined;
 }
 
 export default function WriteMessage({
   submitMessage,
   chatId,
 }: writeMessageProps) {
+  // Context
+  const { user, setUser } = useContext(UserContext);
   const classes = useStyles();
 
   const [value, setValue] = React.useState("");
@@ -99,8 +102,8 @@ export default function WriteMessage({
             chatId: chatId,
             messageText: value,
             //senderId: "7k1MF9w490XOeFH5ygGY",
-            senderId: "1",
-            senderName: "Chintan",
+            senderId: user.id,
+            senderName: `${user.firstName} ${user.lastName}`,
           });
           setValue("");
         }}

@@ -10,7 +10,6 @@ import { watchMessages } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";
-import { dummyMessagesData1, dummyMessagesData2 } from "../DummyData/chats";
 import { messageModel } from "../constants/Models";
 import CardContent from "@material-ui/core/CardContent";
 import { theme } from "../constants/theme";
@@ -102,7 +101,7 @@ export default function MessageBox(props: any) {
   useEffect(() => {
     console.log(props.chatId + "messages is loading");
     //ask chintan how to get watchMessages working and async properly
-    const unsubscribe = watchMessages(user.id, setMessageArray); // userId is hardcoded for now
+    const unsubscribe = watchMessages(props.chatId, setMessageArray); // userId is hardcoded for now
 
     return () => unsubscribe();
     //.catch((err) => console.error(err));

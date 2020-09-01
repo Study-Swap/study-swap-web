@@ -23,7 +23,6 @@ import MessageBox from "../components/MessageBox";
 import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel } from "../constants/Models";
-import { dummyChatsData } from "../DummyData/chats";
 
 // eslint-disable-next-line
 import history from "../utils/historyUtils";

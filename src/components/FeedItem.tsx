@@ -13,7 +13,6 @@ import CardContent from "@material-ui/core/CardContent";
 import NewComment from "../components/NewComment";
 import { postModel } from "../constants/Models";
 import { commentModel } from "../constants/Models";
-import { commentData } from "../DummyData/home";
 import { getComments, addComment } from "../utils/firebaseUtils";
 
 // eslint-disable-next-line

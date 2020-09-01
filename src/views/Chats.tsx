@@ -13,7 +13,6 @@ import ChatsToolbar2 from "../components/ChatsToolbar2";
 import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel, messageModel } from "../constants/Models";
-import { dummyChatsData } from "../DummyData/chats";
 import {
   getChats,
   addMessages,
@@ -87,7 +86,6 @@ export default function Chats() {
   const [myChats, setMyChats] = useState<chatsModel[]>([]);
   //const [myMessage, setMyMessage] = useState<messageModel[]>([]);
   const classes = useStyles();
-  const [currentChatId, setCurrentChatId] = useState<string>("");
   //const [currentChatName, setCurrentChatName] = useState<string>("");
   const [currentChat, setCurrentChat] = useState<chatsModel>({
     id: "",
@@ -171,7 +169,7 @@ export default function Chats() {
             <Divider />
             <Grid item style={{ height: 40, backgroundColor: "#f0f0f0" }}>
               <WriteMessage
-                chatId={currentChatId}
+                chatId={currentChat.id}
                 submitMessage={(message: messageModel) => {
                   //setMyMessage([message, ...myMessage]);
                   addMessages(message);

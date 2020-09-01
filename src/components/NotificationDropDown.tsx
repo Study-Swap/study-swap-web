@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../constants/UserContext";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
@@ -24,6 +25,9 @@ const NotificationDropDown = ({
   anchorRef,
   setNumNotifs,
 }: NotificationDropDownProps) => {
+  // Context
+  const { user, setUser } = useContext(UserContext);
+
   const classes = useStyles();
   const [notificationData, setNotificationData] = useState<notificationModel[]>(
     []
@@ -31,7 +35,7 @@ const NotificationDropDown = ({
   const { innerWidth, innerHeight } = useWindowDimensions();
 
   useEffect(() => {
-    getNotifications("12") // userId is hardcoded for now
+    getNotifications(user.id) // userId is hardcoded for now
       .then((res) => {
         setNotificationData(res);
         setNumNotifs(res.length);
@@ -76,33 +80,39 @@ const NotificationDropDown = ({
                 <Typography variant="h5" className={classes.header}>
                   Notifications
                 </Typography>
-                {notificationData.map((nullNotif) => {
-                  const {
-                    id,
-                    // eslint-disable-next-line
-                    userId,
-                    // eslint-disable-next-line
-                    senderId,
-                    senderName,
-                    notificationText,
-                    timestamp,
-                    read,
-                    kind,
-                  } = nullNotif;
-                  return (
-                    <NotificationItem
-                      key={id}
-                      type={kind}
-                      item={{
-                        senderName,
-                        notificationText,
-                        timestamp,
-                        read,
-                        id,
-                      }}
-                    />
-                  );
-                })}
+                {notificationData.length === 0 ? (
+                  <Typography variant="body2" className={classes.header}>
+                    You Have no Notifications
+                  </Typography>
+                ) : (
+                  notificationData.map((nullNotif) => {
+                    const {
+                      id,
+                      // eslint-disable-next-line
+                      userId,
+                      // eslint-disable-next-line
+                      senderId,
+                      senderName,
+                      notificationText,
+                      timestamp,
+                      read,
+                      kind,
+                    } = nullNotif;
+                    return (
+                      <NotificationItem
+                        key={id}
+                        type={kind}
+                        item={{
+                          senderName,
+                          notificationText,
+                          timestamp,
+                          read,
+                          id,
+                        }}
+                      />
+                    );
+                  })
+                )}
               </>
             </Paper>
           </ClickAwayListener>

@@ -230,7 +230,7 @@ interface nameAndId {
 function getUsersForChatCreation(/*user:userModel*/): Promise<any> {
   return userDB
     .where("classes", "array-contains", "1")
-    .orderBy("firstName")
+    .orderBy("firstName", "desc")
     .get()
     .then((users: any) => {
       const toReturn: Array<nameAndId> = [];
