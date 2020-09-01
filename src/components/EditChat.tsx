@@ -1,26 +1,20 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Popper from "@material-ui/core/Popper";
+import CardContent from "@material-ui/core/CardContent";
 
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
 import MembersList from "./MembersList";
 import SearchBox from "./SearchBox";
-import { CardContent } from "@material-ui/core";
 
-interface nameAndId {
-  memberName: string;
-  memberId: string;
-}
+import { getUsersForChatCreation } from "../utils/firebaseUtils/users";
+import { chatsModel } from "../constants/Models";
+
+import { nameAndId } from "../constants/types/rosterTypes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,33 +32,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const options: nameAndId[] = [
-  { memberName: "Ashish Mahuli", memberId: "7k1MF9w490XOeFH5ygGY" },
-  { memberName: "Chintan Modi", memberId: "6loalAzoo6UpCo00zFucLfexm8t1" },
-];
+interface EditChatProps {
+  currentChat: chatsModel;
+}
 
-export default function EditChat(props: any) {
-  const [newSelection, setSelection] = useState<string | null>("");
+export default function EditChat({ currentChat }: EditChatProps) {
   const classes = useStyles();
-  const [chatName, setChatName] = React.useState(props.currentChat.chatName);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [chatName, setChatName] = useState(currentChat.chatName);
+  const [newSelection, setSelection] = useState<string | null>("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
-  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>(options);
-
-  interface nameAndId {
-    memberName: string;
-    memberId: string;
-  }
+  const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
-    /*getUsersForChatCreation()
-    .then((res: any) => {
-      setCurrentOptions(res);
-      console.log(res);
-    })
-    .catch((err: any) => {
-      console.log(err);
-    });*/
+    getUsersForChatCreation()
+      .then((res: any) => {
+        setCurrentOptions(res);
+        console.log(res);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   }, []);
 
   return (
@@ -89,7 +77,7 @@ export default function EditChat(props: any) {
               placeholder="Name your group"
               inputProps={{ "aria-label": "post to feed" }}
               value={chatName}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setChatName(event.target.value);
               }}
             />
@@ -103,20 +91,16 @@ export default function EditChat(props: any) {
               dropDownHeight="90px"
               onChange={(user: nameAndId) => {
                 setCurrentMembers([...currentMembers, user]);
-                //const tempOptions = currentOptions.slice();
                 let toRemove = 0;
                 currentOptions.filter((member, index) => {
                   if (member.memberId == user.memberId) {
                     toRemove = index;
                   }
                 });
-                //console.log(toRemove);
                 setCurrentOptions([
                   ...currentOptions.slice(0, toRemove),
                   ...currentOptions.slice(toRemove + 1),
                 ]);
-                //delete tempOptions[toRemove];
-                //setCurrentOptions([...tempOptions]);
               }}
             />
           </Grid>

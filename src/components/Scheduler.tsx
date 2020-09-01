@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
@@ -8,9 +8,6 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/Edit";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 
 import SchedulerEditing from "./SchedulerEditing";
 
@@ -226,7 +223,7 @@ export default function Scheduler({ timeStrings }: SchedulerProps) {
   };
 
   const handleChange = (panel: string) => (
-    event: React.ChangeEvent<{}>,
+    event: ChangeEvent<{}>,
     isExpanded: boolean
   ) => {
     setExpanded(isExpanded ? panel : false);

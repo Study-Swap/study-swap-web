@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -56,15 +56,15 @@ export default function Help() {
       });
   }
 
-  const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleName = (event: ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value);
   };
 
-  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
 
-  const handleReq = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleReq = (event: ChangeEvent<HTMLInputElement>) => {
     setDescription(event.target.value);
   };
 

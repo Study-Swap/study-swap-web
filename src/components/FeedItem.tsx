@@ -1,22 +1,17 @@
-//TODO: When you comment it should unhide comments, when you click enter
-//it should send comments
-
-// eslint-disable-next-line
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, ChangeEvent } from "react";
 import { UserContext } from "../constants/UserContext";
+
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
+import CardContent from "@material-ui/core/CardContent";
+
 import Post from "../components/Post";
 import Comment from "../components/Comment";
-import CardContent from "@material-ui/core/CardContent";
 import NewComment from "../components/NewComment";
-import { postModel } from "../constants/Models";
+
 import { commentModel } from "../constants/Models";
 import { getComments, addComment } from "../utils/firebaseUtils";
-
-// eslint-disable-next-line
-import history from "../utils/historyUtils";
 
 const useStyles = makeStyles({
   root: {
@@ -38,12 +33,46 @@ function remove(array: string[], value: string): string[] {
   return [...array.slice(0, index), ...array.slice(index + 1)];
 }
 
-export default function FeedItem(props: any) {
+interface FeedItemProps {
+  id: string | undefined;
+  postUserName: string;
+  postClassName?: string; // Do not need currently since only engr 100
+  postCategory: string;
+  postText: string;
+  timestamp: string;
+  edited: boolean;
+  classId: string;
+  likedBy: string[];
+  isLiked: boolean;
+  profilePic: string;
+}
+
+export default function FeedItem({
+  id,
+  postUserName,
+  postClassName,
+  postCategory,
+  postText,
+  timestamp,
+  edited,
+  classId,
+  likedBy,
+  isLiked,
+  profilePic,
+}: FeedItemProps) {
+  // Context
+  const { user } = useContext(UserContext);
+
+  const classes = useStyles();
+
   const [commentState, setCommentState] = useState<commentModel[]>([]);
-  //stores comment dummydata, replace with backend function
+  //stores status of new comment input field
+  const [newCommentInput, setNewCommentInput] = useState("");
+  //stores whether or not comments shown
+  const [commentsShown, setCommentsShown] = useState(false);
 
   useEffect(() => {
-    let postId = String(props.id);
+    let postId = String(id);
     getComments(postId) // classId is hardcoded for now
       .then((res) => {
         setCommentState(res);
@@ -51,30 +80,20 @@ export default function FeedItem(props: any) {
       .catch((err) => console.error(err));
   }, []);
 
-  const [newCommentInput, setNewCommentInput] = React.useState("");
-  //stores status of new comment input field
-
-  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCommentChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNewCommentInput(event.target.value);
   }; //updates stored value of new comment input field
-
-  const [commentsShown, setCommentsShown] = React.useState(false);
-  //stores whether or not comments shown
 
   function toggleCommentClick() {
     setCommentsShown(!commentsShown);
   } //toggles between shown and not shown
-
-  // eslint-disable-next-line
-  const { user } = useContext(UserContext);
-  const classes = useStyles();
 
   function newCommentClick() {
     addComment({
       //id: "104",
       // foreign key relations
       userId: user.id,
-      postId: String(props.id),
+      postId: String(id),
       // comment specific
       commenterName: `${user.firstName} ${user.lastName}`,
       //timestamp: "tuesday..",
@@ -88,7 +107,7 @@ export default function FeedItem(props: any) {
           id: ret.id,
           // foreign key relations
           userId: user.id,
-          postId: String(props.id),
+          postId: String(id),
           // comment specific
           commenterName: `${user.firstName} ${user.lastName}`,
           timestamp: ret.timestamp,
@@ -104,20 +123,19 @@ export default function FeedItem(props: any) {
   return (
     <Card className={classes.root}>
       <Post
-        id={props.id}
-        postUserName={props.postUserName}
-        postClassName={props.postClassName}
-        postCategory={props.postCategory}
-        postText={props.postText}
-        timestamp={props.timestamp}
-        edited={props.edited}
-        userId={props.userId}
-        classId={props.classId}
-        likedBy={props.likedBy}
-        isLiked={props.isLiked}
+        id={id}
+        postUserName={postUserName}
+        postClassName={postClassName}
+        postCategory={postCategory}
+        postText={postText}
+        timestamp={timestamp}
+        edited={edited}
+        classId={classId}
+        likedBy={likedBy}
+        isLiked={isLiked}
         onClick={toggleCommentClick}
         commentsShown={commentsShown}
-        profilePic={props.profilePic}
+        profilePic={profilePic}
       />
 
       {commentState.length > 0 ? (
@@ -132,8 +150,6 @@ export default function FeedItem(props: any) {
                 <Grid item key={index} xs={12}>
                   <Comment
                     id={thisComment.id}
-                    userId={thisComment.userId}
-                    postId={thisComment.postId}
                     profilePic={thisComment.commenterProfilePic}
                     commenterName={thisComment.commenterName}
                     timestamp={thisComment.timestamp}
@@ -167,8 +183,6 @@ export default function FeedItem(props: any) {
             <Grid item xs={12}>
               <Comment
                 id={commentState[0].id}
-                userId={commentState[0].userId}
-                postId={commentState[0].postId}
                 commenterName={commentState[0].commenterName}
                 profilePic={commentState[0].commenterProfilePic}
                 timestamp={commentState[0].timestamp}

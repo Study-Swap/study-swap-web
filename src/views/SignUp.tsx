@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, MouseEvent } from "react";
+
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -44,33 +45,31 @@ export default function SignUp() {
     setEmailError(!emailValid(email));
   };
 
-  const handleFirstName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFirstName = (event: ChangeEvent<HTMLInputElement>) => {
     setFirstName(event.target.value);
   };
 
-  const handleLastName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLastName = (event: ChangeEvent<HTMLInputElement>) => {
     setLastName(event.target.value);
   };
 
-  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
-  const handlePasswordIcon = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePasswordIcon = (event: MouseEvent<HTMLButtonElement>) => {
     setShowPassword(!showPassword);
   };
 
-  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePassword = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
-  const handleConfirm = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleConfirm = (event: ChangeEvent<HTMLInputElement>) => {
     setConfirm(event.target.value);
     if (event.target.value !== password) {
       // bc setState is slow for some reason

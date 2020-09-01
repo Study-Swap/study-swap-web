@@ -5,6 +5,7 @@ import firebase from "../../constants/Firebase";
 // Constants import
 import { collections } from "../../constants/FirebaseStrings";
 import { userModel, userUsageModel } from "../../constants/Models";
+import { nameAndId } from "../../constants/types/rosterTypes";
 
 const userDB = firebase.firestore().collection(collections.users);
 const usageDB = firebase.firestore().collection(collections.userUsage);
@@ -220,12 +221,6 @@ function editUser(user: userModel): void {
   });
 }
 
-interface nameAndId {
-  memberName: string;
-  memberId: string;
-  profilePicture: string;
-}
-
 //ENGR100 hardcoded for now, will take in a userModel once we set that up
 function getUsersForChatCreation(/*user:userModel*/): Promise<any> {
   return userDB
@@ -235,10 +230,12 @@ function getUsersForChatCreation(/*user:userModel*/): Promise<any> {
     .then((users: any) => {
       const toReturn: Array<nameAndId> = [];
       users.forEach((user: any) => {
+        const data = user.data();
+        console.log(data);
         toReturn.push({
-          memberName: user.data().firstName + " " + user.data().lastName,
+          memberName: data.firstName + " " + data.lastName,
           memberId: user.id,
-          profilePicture: user.data().profilePicture,
+          profilePicture: data.profilePicture,
         });
       });
       return toReturn;

@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, Dispatch, SetStateAction } from "react";
 interface initState {
   user: {
     id: string;
@@ -13,8 +13,8 @@ interface initState {
     classNames: Array<string>;
     profilePicture?: string;
   };
-  setUser: React.Dispatch<
-    React.SetStateAction<{
+  setUser: Dispatch<
+    SetStateAction<{
       id: string;
       firstName: string;
       lastName: string;

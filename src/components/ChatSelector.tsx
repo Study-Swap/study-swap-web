@@ -1,20 +1,16 @@
 // eslint-disable-next-line
-import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../constants/UserContext";
-import Container from "@material-ui/core/Container";
+import React, { useState, useEffect } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
+
 import { getMessage } from "../utils/firebaseUtils/chats";
 import { messageModel } from "../constants/Models";
-
-// eslint-disable-next-line
-import history from "../utils/historyUtils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,14 +41,21 @@ const useStyles = makeStyles((theme) => ({
   message: {
     display: "inline-block",
     fontSize: 14,
-    //overflow: "hidden",
-    //textOverflow: "ellipsis",
-    //width: "20%",
   },
 }));
 
+interface CHatSelectProps {
+  picture: string;
+  id: string;
+  chatName: string;
+  memberNames?: string[];
+  messages: any[];
+  onClick: Function;
+  lastMessageTimestamp: any;
+}
+
 export default function ChatSelect({
-  key,
+  picture,
   id,
   chatName,
   memberNames,
@@ -66,7 +69,7 @@ export default function ChatSelect({
     chatId: "",
     messageText: "",
     senderId: "",
-    senderName: "Chintan Modi",
+    senderName: "",
     senderProfilePic: "", // TODO: MAKE WORK
   });
 
@@ -75,7 +78,6 @@ export default function ChatSelect({
       getMessage(messages[messages.length - 1]) // classId is hardcoded for now
         .then((res) => {
           setFirstMessage(res);
-          console.log(res);
         })
         .catch((err) => console.error(err));
     }
@@ -90,14 +92,14 @@ export default function ChatSelect({
   }
 
   return (
-    <React.Fragment>
+    <>
       <ListItem
         alignItems="flex-start"
         className={classes.hover}
         onClick={() => onClick({ id, chatName })}
       >
         <ListItemAvatar>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+          <Avatar alt="Chat Picture" src={picture} />
         </ListItemAvatar>
 
         <ListItemText
@@ -131,7 +133,7 @@ export default function ChatSelect({
             </div>
           }
           secondary={
-            <React.Fragment>
+            <>
               <Typography
                 component="span"
                 variant="body2"
@@ -141,11 +143,11 @@ export default function ChatSelect({
               >
                 {shortenMessage(firstMessage.messageText)}
               </Typography>
-            </React.Fragment>
+            </>
           }
         />
       </ListItem>
       <Divider variant="fullWidth" component="li" />
-    </React.Fragment>
+    </>
   );
 }

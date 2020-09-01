@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
+
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
 import IconButton from "@material-ui/core/IconButton";
 import ImageIcon from "@material-ui/icons/Image";
@@ -47,13 +46,13 @@ export default function WriteMessage({
   const { user, setUser } = useContext(UserContext);
   const classes = useStyles();
 
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = useState("");
 
   const handleChange = (event: any) => {
     setValue(event.target.value);
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -98,10 +97,8 @@ export default function WriteMessage({
         aria-label="send"
         onClick={() => {
           submitMessage({
-            //hard coded to test if new message sent
             chatId: chatId,
             messageText: value,
-            //senderId: "7k1MF9w490XOeFH5ygGY",
             senderId: user.id,
             senderName: `${user.firstName} ${user.lastName}`,
           });

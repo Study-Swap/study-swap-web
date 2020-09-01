@@ -1,10 +1,12 @@
 // eslint-disable-next-line
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, Fragment } from "react";
 import { UserContext } from "../constants/UserContext";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
 
 import ChatSelect from "../components/ChatSelector";
 import MessageBox from "../components/MessageBox";
@@ -13,17 +15,7 @@ import ChatsToolbar2 from "../components/ChatsToolbar2";
 import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel, messageModel } from "../constants/Models";
-import {
-  getChats,
-  addMessages,
-  watchChats,
-} from "../utils/firebaseUtils/chats";
-
-// eslint-disable-next-line
-import history from "../utils/historyUtils";
-import { Autorenew } from "@material-ui/icons";
-import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
+import { addMessages, watchChats } from "../utils/firebaseUtils/chats";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,12 +51,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-
-    //might switch to:
-    //position: fixed;
-    //top: 50%;
-    //left: 50%;
-    //transform: translate(-50%, -50%);
   },
   leftSide: {
     backgroundColor: "#dedcdf",
@@ -77,16 +63,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-//const tempUserId = "7k1MF9w490XOeFH5ygGY";
-
 export default function Chats() {
   // Context
   const { user, setUser } = useContext(UserContext);
-  //get the ChatSelect working with the .map() function.
   const [myChats, setMyChats] = useState<chatsModel[]>([]);
-  //const [myMessage, setMyMessage] = useState<messageModel[]>([]);
   const classes = useStyles();
-  //const [currentChatName, setCurrentChatName] = useState<string>("");
   const [currentChat, setCurrentChat] = useState<chatsModel>({
     id: "",
     chatName: "",
@@ -100,11 +81,9 @@ export default function Chats() {
   };
 
   useEffect(() => {
-    //tempUserId
     const unsubscribe = watchChats(user.id, setMyChats); // userId is hardcoded for now
 
     return () => unsubscribe();
-    //.catch((err) => console.error(err));
   }, []);
 
   return (
@@ -132,8 +111,8 @@ export default function Chats() {
               {" "}
               {/*Grid item to hold <List> of <chatSelect> listItems*/}
               <List className={classes.list}>
-                {myChats.map((thisChatSelector, index) => (
-                  <React.Fragment key={thisChatSelector.id}>
+                {myChats.map((thisChatSelector) => (
+                  <Fragment key={thisChatSelector.id}>
                     <ChatSelect
                       id={thisChatSelector.id}
                       chatName={thisChatSelector.chatName}
@@ -143,8 +122,9 @@ export default function Chats() {
                       lastMessageTimestamp={
                         thisChatSelector.lastMessageTimestamp
                       }
+                      picture={thisChatSelector.chatPicture}
                     />
-                  </React.Fragment>
+                  </Fragment>
                 ))}
               </List>
             </Grid>
@@ -164,14 +144,13 @@ export default function Chats() {
               alignContent="flex-start"
               spacing={0}
             >
-              <MessageBox chatId={currentChat.id} />
+              <MessageBox chatId={currentChat.id ? currentChat.id : ""} />
             </Grid>
             <Divider />
             <Grid item style={{ height: 40, backgroundColor: "#f0f0f0" }}>
               <WriteMessage
                 chatId={currentChat.id}
                 submitMessage={(message: messageModel) => {
-                  //setMyMessage([message, ...myMessage]);
                   addMessages(message);
                 }}
               />

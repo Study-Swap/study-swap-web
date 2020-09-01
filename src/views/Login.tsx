@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, ChangeEvent } from "react";
 import { UserContext } from "../constants/UserContext";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -26,11 +26,11 @@ export default function Login() {
 
   const { setUser } = useContext(UserContext);
 
-  const handleEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleEmail = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
 
-  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePassword = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 

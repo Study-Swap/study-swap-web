@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
@@ -25,17 +25,17 @@ interface AppToolbarProps {
 }
 
 const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
-  const [open, setOpen] = React.useState(false);
-  const [numNotifs, setNumNotifs] = React.useState<number>(0);
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+  const [numNotifs, setNumNotifs] = useState<number>(0);
+  const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
+  const prevOpen = useRef(open);
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current!.focus();
     }

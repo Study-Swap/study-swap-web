@@ -1,16 +1,13 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import classes from "*.module.css";
 
-interface nameAndId {
-  memberName: string;
-  memberId: string;
-}
+import { nameAndId } from "../constants/types/rosterTypes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,36 +22,44 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBox(props: any) {
-  const classes = useStyles();
-  const [value, setValue] = React.useState<nameAndId | null>(null);
-  const [inputValue, setInputValue] = React.useState<string>("");
+interface SearchBoxProps {
+  onChange: Function;
+  options: any[];
+  dropDownHeight: string;
+}
 
-  const { options } = props;
+export default function SearchBox({
+  onChange,
+  options,
+  dropDownHeight,
+}: SearchBoxProps) {
+  const classes = useStyles();
+
+  const [value, setValue] = useState<nameAndId | null>(null);
+  const [inputValue, setInputValue] = useState<string>("");
 
   return (
     <Autocomplete
       value={value}
       inputValue={inputValue}
-      onChange={(event: any, newValue: nameAndId | null) => {
+      onChange={(_, newValue: nameAndId | null) => {
         if (newValue != null) {
-          //console.log(newValue);
-          props.onChange(newValue);
+          onChange(newValue);
           setValue(null);
           setInputValue("");
         }
       }}
-      onInputChange={(event, newInputValue) => {
+      onInputChange={(_, newInputValue) => {
         setInputValue(newInputValue);
       }}
       className={classes.root}
-      options={props.options}
+      options={options}
       getOptionLabel={(option: nameAndId) => option.memberName}
       fullWidth={true}
       ListboxProps={{
         style: {
           fontSize: 14,
-          maxHeight: props.dropDownHeight,
+          maxHeight: dropDownHeight,
           overflow: "true",
         },
       }}
@@ -72,7 +77,7 @@ export default function SearchBox(props: any) {
             <Avatar
               className={classes.media}
               alt="Prof Pic"
-              src={props.profilePicture}
+              src={option.profilePicture}
             />
           </Grid>
 

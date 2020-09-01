@@ -88,6 +88,7 @@ export interface chatsModel {
   // chats specific
   messages: Array<string>; // array of messageIds
   lastMessageTimestamp?: string;
+  chatPicture?: string;
 }
 
 export interface messageModel {

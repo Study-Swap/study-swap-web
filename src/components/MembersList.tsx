@@ -1,23 +1,14 @@
-import React, { useContext, useState, useEffect } from "react";
+import React from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import ListItemText from "@material-ui/core/ListItemText";
 
-interface nameAndId {
-  memberName: string;
-  memberId: string;
-  profilePicture: string;
-}
+import { nameAndId } from "../constants/types/rosterTypes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,7 +25,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MembersList(props: any) {
+interface MembersListProps {
+  currentMembers: any[];
+  onDelete: Function;
+}
+
+export default function MembersList({ currentMembers, onDelete }: any) {
   const classes = useStyles();
 
   return (
@@ -47,7 +43,7 @@ export default function MembersList(props: any) {
         MEMBERS LIST
       </Typography>
       <List style={{}} dense={true} disablePadding={true}>
-        {props.currentMembers.map((member: nameAndId, index: number) => (
+        {currentMembers.map((member: nameAndId, index: number) => (
           <ListItem key={index}>
             <div
               style={{
@@ -73,7 +69,7 @@ export default function MembersList(props: any) {
               <IconButton
                 edge="end"
                 aria-label="delete"
-                onClick={() => props.onDelete(member)}
+                onClick={() => onDelete(member)}
               >
                 <DeleteIcon />
               </IconButton>

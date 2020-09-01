@@ -33,7 +33,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewComment(props: any) {
+interface NewCommentProps {
+  value: string;
+  onChange: Function;
+  onClick: Function;
+}
+
+export default function NewComment({ value, onChange, onClick }: any) {
   // Context
   const { user, setUser } = useContext(UserContext);
   const classes = useStyles();
@@ -55,8 +61,8 @@ export default function NewComment(props: any) {
           inputProps={{ "aria-label": "post to feed" }}
           multiline={true}
           rowsMax={7}
-          value={props.value}
-          onChange={props.onChange}
+          value={value}
+          onChange={onChange}
         />
       </Grid>
       <Grid item xs={1}>
@@ -64,7 +70,7 @@ export default function NewComment(props: any) {
           type="submit"
           className={classes.iconButton}
           aria-label="Comment"
-          onClick={props.onClick}
+          onClick={onClick}
         >
           <SendIcon />
         </IconButton>

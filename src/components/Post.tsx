@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -15,6 +14,7 @@ import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import ShareIcon from "@material-ui/icons/Share";
+
 import { addLike, removeLike } from "../utils/firebaseUtils/posts";
 
 const useStyles = makeStyles({
@@ -50,27 +50,57 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Post(props: any) {
+interface PostProps {
+  isLiked: boolean;
+  likedBy: string[];
+  id: string | undefined;
+  postUserName: string;
+  profilePic: string;
+  timestamp: string;
+  postCategory: string;
+  postText: string;
+  commentsShown: boolean;
+  onClick: Function;
+  postClassName?: string;
+  classId?: string;
+  edited?: boolean;
+}
+
+export default function Post({
+  isLiked,
+  likedBy,
+  id,
+  postUserName,
+  profilePic,
+  timestamp,
+  postCategory,
+  postText,
+  commentsShown,
+  onClick,
+  postClassName,
+  edited,
+  classId,
+}: PostProps) {
   // Context
   const { user, setUser } = useContext(UserContext);
 
   const classes = useStyles();
-  const [likeState, setLikeState] = React.useState(props.isLiked);
-  const [lengthState, setLengthState] = React.useState(props.likedBy.length);
+  const [likeState, setLikeState] = useState(isLiked);
+  const [lengthState, setLengthState] = useState(likedBy.length);
 
   function hitLike() {
     setLikeState(true);
-    addLike(props.id, user.id);
+    if (id) addLike(id, user.id);
     setLengthState(lengthState + 1);
   }
 
   function hitUnlike() {
     setLikeState(false);
-    removeLike(props.id, user.id);
+    if (id) removeLike(id, user.id);
     setLengthState(lengthState - 1);
   }
 
-  function UserHasLiked(props: any) {
+  const UserHasLiked = () => {
     if (likeState) {
       return (
         <Button
@@ -79,7 +109,7 @@ export default function Post(props: any) {
           size="small"
           onClick={hitUnlike}
         >
-          Unlike {lengthState}
+          Unlike {lengthState !== 0 ? lengthState : ""}
         </Button>
       );
     } else {
@@ -90,40 +120,40 @@ export default function Post(props: any) {
           size="small"
           onClick={hitLike}
         >
-          Like {lengthState}
+          Like {lengthState !== 0 ? lengthState : ""}
         </Button>
       );
     }
-  }
+  };
   return (
-    <React.Fragment>
+    <>
       <CardContent>
         <Grid container justifyContent="space-between">
           <Grid item style={{ display: "flex" }}>
             <Avatar
               className={classes.media}
-              alt={props.postUserName}
-              src={props.profilePic}
+              alt={postUserName}
+              src={profilePic}
             />
 
             <div style={{ display: "block", marginLeft: "8px" }}>
               <Typography className={classes.title} gutterBottom>
-                {props.postUserName}
+                {postUserName}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">
-                {props.timestamp}
+                {timestamp}
               </Typography>
             </div>
           </Grid>
           <Grid item>
             <Typography variant="subtitle2" className={classes.tag}>
-              {props.postCategory}
+              {postCategory}
             </Typography>
           </Grid>
         </Grid>
 
         <Typography variant="body2" component="p">
-          {props.postText}
+          {postText}
         </Typography>
       </CardContent>
 
@@ -132,7 +162,7 @@ export default function Post(props: any) {
         <UserHasLiked />
         <Button
           startIcon={
-            props.commentsShown ? (
+            commentsShown ? (
               <ChatBubbleIcon />
             ) : (
               <ChatBubbleOutlineOutlinedIcon />
@@ -140,7 +170,7 @@ export default function Post(props: any) {
           }
           className={classes.button}
           size="small"
-          onClick={props.onClick}
+          onClick={() => onClick}
         >
           Toggle
         </Button>
@@ -154,6 +184,6 @@ export default function Post(props: any) {
         </Button>
       </CardActions>
       <Divider className={classes.buttonDivider} />
-    </React.Fragment>
+    </>
   );
 }

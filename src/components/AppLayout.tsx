@@ -24,7 +24,7 @@ export default function AppLayout({ menuList }: AppLayoutProps) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <AppToolbar
         classes={classes}
         title={"Study Swap"}
@@ -36,7 +36,7 @@ export default function AppLayout({ menuList }: AppLayoutProps) {
         open={drawer}
         toggleDrawer={toggleDrawer}
       />
-    </React.Fragment>
+    </>
   );
 }
 

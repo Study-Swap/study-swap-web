@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-import React from "react";
+import React, { useState, MouseEvent } from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Paper";
@@ -68,9 +68,9 @@ export default function ViewProfile({
   profilePicture,
 }: ViewProfileProps) {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -152,7 +152,7 @@ export default function ViewProfile({
             <br />
             {classNames.map((name: string, index: number) => {
               return (
-                <Grid item>
+                <Grid item key={index}>
                   <div
                     style={{
                       display: "flex",
