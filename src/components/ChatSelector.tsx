@@ -81,7 +81,7 @@ export default function ChatSelect({
         })
         .catch((err) => console.error(err));
     }
-  }, []);
+  }, [messages]);
 
   function shortenMessage(message: string) {
     if (message.length > 60) {

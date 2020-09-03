@@ -3,6 +3,7 @@ import firebase from "../../constants/Firebase";
 
 import { collections } from "../../constants/FirebaseStrings";
 import { chatsModel, messageModel } from "../../constants/Models";
+import { nameAndId } from "../../constants/types/rosterTypes";
 
 // Makes code cleaner
 const messagesDB = firebase.firestore().collection(collections.messages);
@@ -283,6 +284,32 @@ function getMessage(messageId: string): Promise<any> {
     });
 }
 
+//ENGR100 hardcoded for now, will take in a userModel once we set that up
+function getCurrentChatMembers(chatId: any, userId: string): Promise<any> {
+  console.log("getting current members " + chatId);
+  return usersDB
+    .where("chats", "array-contains", chatId)
+    .orderBy("firstName", "desc")
+    .get()
+    .then((users: any) => {
+      const toReturn: Array<nameAndId> = [];
+      users.forEach((user: any) => {
+        const data = user.data();
+        if (user.id != userId) {
+          toReturn.push({
+            memberName: data.firstName + " " + data.lastName,
+            memberId: user.id,
+            profilePicture: data.profilePicture ? data.profilePicture : "",
+          });
+        }
+      });
+      return toReturn;
+    })
+    .catch((err: any) => {
+      console.log(err);
+    });
+}
+
 export {
   watchMessages,
   addMessages,
@@ -292,4 +319,5 @@ export {
   leaveChat,
   getMessage,
   watchChats,
+  getCurrentChatMembers,
 };
