@@ -187,9 +187,9 @@ export default function Post({
           }
           className={classes.button}
           size="small"
-          onClick={() => onClick}
+          onClick={() => onClick()}
         >
-          Comments {numberComments}
+          Comments {numberComments !== 0 ? numberComments : ""}
         </Button>
         <Button
           startIcon={<ShareIcon />}

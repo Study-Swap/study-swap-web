@@ -90,10 +90,7 @@ export default function FeedItem({
     setCommentsShown(!commentsShown);
   } //toggles between shown and not shown
 
-  const [numComments, setNumComments] = useState(commentState.length);
-
   function newCommentClick() {
-    setNumComments(numComments + 1);
     addComment({
       //id: "104",
       // foreign key relations
