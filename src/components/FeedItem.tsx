@@ -45,6 +45,7 @@ interface FeedItemProps {
   likedBy: string[];
   isLiked: boolean;
   profilePic: string;
+  userId: string;
 }
 
 export default function FeedItem({
@@ -59,6 +60,7 @@ export default function FeedItem({
   likedBy,
   isLiked,
   profilePic,
+  userId,
 }: FeedItemProps) {
   // Context
   const { user } = useContext(UserContext);
@@ -136,6 +138,7 @@ export default function FeedItem({
         onClick={toggleCommentClick}
         commentsShown={commentsShown}
         profilePic={profilePic}
+        userId={userId}
       />
 
       {commentState.length > 0 ? (

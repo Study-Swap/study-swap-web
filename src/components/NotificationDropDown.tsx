@@ -38,7 +38,7 @@ const NotificationDropDown = ({
     getNotifications(user.id) // userId is hardcoded for now
       .then((res) => {
         setNotificationData(res);
-        setNumNotifs(res.length);
+        setNumNotifs(res.filter((notif: any) => notif.read).length);
       })
       .catch((err) => console.error(err));
   }, []);

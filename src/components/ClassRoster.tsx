@@ -51,7 +51,7 @@ export default function ClassRoster() {
 
   useEffect(() => {
     getClassRoster("1").then((roster) => setClassRoster(roster));
-  });
+  }, []);
 
   return (
     <Paper

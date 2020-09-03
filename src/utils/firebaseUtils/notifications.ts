@@ -16,6 +16,7 @@ const notificationsDB = firebase
 @desc     get all notifications for a certain userId
 */
 function getNotifications(userId: string): Promise<any> {
+  console.log("getting notifications");
   return notificationsDB
     .where("userId", "==", userId)
     .orderBy("timestamp", "asc")

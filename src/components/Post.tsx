@@ -14,6 +14,8 @@ import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import ShareIcon from "@material-ui/icons/Share";
+import Link from "@material-ui/icons/Link";
+import history from "../utils/historyUtils";
 
 import { addLike, removeLike } from "../utils/firebaseUtils/posts";
 
@@ -25,6 +27,9 @@ const useStyles = makeStyles({
   title: {
     fontSize: 14,
     fontWeight: "bold",
+    "&:hover": {
+      textDecoration: "underline",
+    },
   },
   pos: {
     fontSize: 12,
@@ -64,6 +69,7 @@ interface PostProps {
   postClassName?: string;
   classId?: string;
   edited?: boolean;
+  userId: string;
 }
 
 export default function Post({
@@ -80,6 +86,7 @@ export default function Post({
   postClassName,
   edited,
   classId,
+  userId,
 }: PostProps) {
   // Context
   const { user, setUser } = useContext(UserContext);
@@ -137,7 +144,15 @@ export default function Post({
             />
 
             <div style={{ display: "block", marginLeft: "8px" }}>
-              <Typography className={classes.title} gutterBottom>
+              <Typography
+                onClick={() =>
+                  history.push({
+                    pathname: "/profile",
+                    state: { userId: userId },
+                  })
+                }
+                className={classes.title}
+              >
                 {postUserName}
               </Typography>
               <Typography className={classes.pos} color="textSecondary">

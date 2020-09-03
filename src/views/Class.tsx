@@ -62,6 +62,7 @@ export default function Class(props: any) {
                       likedBy={thisPost.likedBy}
                       isLiked={isLiked}
                       profilePic={thisPost.postUserProfilePic}
+                      userId={thisPost.userId}
                     />
                     <br />
                   </Fragment>

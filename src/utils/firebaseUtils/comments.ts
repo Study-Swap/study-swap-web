@@ -14,6 +14,7 @@ const commentsDB = firebase.firestore().collection(collections.comments);
 @desc     get all comments for a certain post
 */
 function getComments(postId: string): Promise<any> {
+  console.log("getting comments for post");
   return commentsDB
     .where("postId", "==", postId)
     .orderBy("timestamp", "desc")

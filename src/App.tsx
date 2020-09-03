@@ -30,6 +30,7 @@ function App() {
     bio: "",
     grade: "",
     classNames: [""],
+    profilePicture: "",
   });
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
@@ -55,7 +56,10 @@ function App() {
       <div className={classes.root}>
         <CssBaseline />
         <Router history={history}>
-          <AppLayout menuList={menuList} />
+          <AppLayout
+            menuList={menuList}
+            userProfilePic={user.profilePicture ? user.profilePicture : ""}
+          />
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>

@@ -71,6 +71,7 @@ export default function Feed({ categoryFilter }: FeedProps) {
             <Grid item key={thisPost.id} style={{ width: "500px" }}>
               <FeedItem
                 id={thisPost.id}
+                userId={thisPost.userId}
                 postUserName={thisPost.postUserName}
                 postClassName={thisPost.postClassName}
                 postText={thisPost.postText}

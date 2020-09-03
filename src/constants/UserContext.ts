@@ -11,7 +11,7 @@ interface initState {
     schedule: string[];
     grade: string;
     classNames: Array<string>;
-    profilePicture?: string;
+    profilePicture: string;
   };
   setUser: Dispatch<
     SetStateAction<{
@@ -25,7 +25,7 @@ interface initState {
       schedule: string[];
       grade: string;
       classNames: Array<string>;
-      profilePicture?: string;
+      profilePicture: string;
     }>
   >;
 }

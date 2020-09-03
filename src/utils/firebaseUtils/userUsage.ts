@@ -14,6 +14,7 @@ interface graphDataType {
 }
 
 function getGraphData(): Promise<graphDataType[]> {
+  console.log("getting user graph data");
   return usageDB
     .get()
     .then((snapshot: firebaseApp.firestore.QuerySnapshot): graphDataType[] => {
