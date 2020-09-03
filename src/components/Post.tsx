@@ -65,7 +65,7 @@ interface PostProps {
   postCategory: string;
   postText: string;
   commentsShown: boolean;
-  onClick: Function;
+  onToggleClick: Function;
   postClassName?: string;
   classId?: string;
   edited?: boolean;
@@ -83,7 +83,7 @@ export default function Post({
   postCategory,
   postText,
   commentsShown,
-  onClick,
+  onToggleClick,
   postClassName,
   edited,
   classId,
@@ -187,7 +187,7 @@ export default function Post({
           }
           className={classes.button}
           size="small"
-          onClick={() => onClick()}
+          onClick={() => onToggleClick()}
         >
           Comments {numberComments !== 0 ? numberComments : ""}
         </Button>

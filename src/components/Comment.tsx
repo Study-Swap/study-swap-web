@@ -109,7 +109,7 @@ export default function Comment({
           size="small"
           onClick={minusLike}
         >
-          {lengthState}
+          {lengthState === 0 ? "" : lengthState}
         </Button>
       );
     } else {
@@ -120,7 +120,7 @@ export default function Comment({
           size="small"
           onClick={plusLike}
         >
-          {lengthState}
+          {lengthState === 0 ? "" : lengthState}
         </Button>
       );
     }
@@ -136,24 +136,26 @@ export default function Comment({
         />
       </Grid>
 
-      <Grid item xs={9}>
-        <div className={classes.commentText}>
-          <Typography
-            className={classes.title}
-            onClick={() => {
-              history.push({
-                pathname: "/profile",
-                state: { userId: commenterId },
-              });
-            }}
-          >
-            <b>{commenterName}</b>
-          </Typography>
-          <Typography className={classes.comment} gutterBottom>
-            {commentText}
-          </Typography>
+      <Grid item xs={11}>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div className={classes.commentText}>
+            <Typography
+              className={classes.title}
+              onClick={() => {
+                history.push({
+                  pathname: "/profile",
+                  state: { userId: commenterId },
+                });
+              }}
+            >
+              <b>{commenterName}</b>
+            </Typography>
+            <Typography className={classes.comment} gutterBottom>
+              {commentText}
+            </Typography>
+          </div>
+          <HasLiked />
         </div>
-        <HasLiked />
         <Typography className={classes.timestamp} color="textSecondary">
           {timestamp}
         </Typography>

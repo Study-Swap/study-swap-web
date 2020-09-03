@@ -87,6 +87,7 @@ export default function FeedItem({
   }; //updates stored value of new comment input field
 
   function toggleCommentClick() {
+    console.log("toggling comments");
     setCommentsShown(!commentsShown);
   } //toggles between shown and not shown
 
@@ -135,7 +136,7 @@ export default function FeedItem({
         classId={classId}
         likedBy={likedBy}
         isLiked={isLiked}
-        onClick={toggleCommentClick}
+        onToggleClick={toggleCommentClick}
         commentsShown={commentsShown}
         profilePic={profilePic}
         userId={userId}
