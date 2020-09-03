@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 
@@ -103,25 +103,27 @@ export default function Comment({
   function HasLiked() {
     if (likeState) {
       return (
-        <Button
-          startIcon={<ThumbUpIcon />}
-          className={classes.button}
+        <IconButton
           size="small"
+          color="primary"
+          component="span"
           onClick={minusLike}
         >
-          {lengthState === 0 ? "" : lengthState}
-        </Button>
+          <ThumbUpIcon style={{ marginRight: 2 }} />
+          {lengthState === 0 ? " " : lengthState}
+        </IconButton>
       );
     } else {
       return (
-        <Button
-          startIcon={<ThumbUpAltOutlinedIcon />}
-          className={classes.button}
+        <IconButton
           size="small"
+          color="primary"
+          component="span"
           onClick={plusLike}
         >
-          {lengthState === 0 ? "" : lengthState}
-        </Button>
+          <ThumbUpAltOutlinedIcon style={{ marginRight: 2 }} />
+          {lengthState === 0 ? " " : lengthState}
+        </IconButton>
       );
     }
   }

@@ -78,7 +78,6 @@ function App() {
                       path={element.path}
                       component={element.component}
                       key={element.path}
-                      userId={user.id}
                     />
                   ))}
                 </Switch>
