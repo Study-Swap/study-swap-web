@@ -21,6 +21,7 @@ import {
 import { chatsModel } from "../constants/Models";
 
 import { nameAndId } from "../constants/types/rosterTypes";
+import { FormatListBulleted } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,6 +57,18 @@ export default function EditChat({ currentChat, handleClose }: EditChatProps) {
   const [toDelete, setToDelete] = useState<string[]>([]);
   const [toAdd, setToAdd] = useState<string[]>([]);
 
+  function checkIfPresent(temp: nameAndId[], el: nameAndId) {
+    let toReturn = false;
+    temp.forEach((mem: nameAndId) => {
+      if (mem.memberId == el.memberId) {
+        console.log(mem.memberId + " is equal to " + el.memberId);
+        toReturn = true;
+      }
+    });
+
+    return toReturn;
+  }
+
   useEffect(() => {
     getUsersForChatCreation(user.id)
       .then((options: any) => {
@@ -65,8 +78,12 @@ export default function EditChat({ currentChat, handleClose }: EditChatProps) {
           .then((members: any) => {
             setCurrentMembers(members);
 
-            options = options.filter((el: nameAndId) => !members.includes(el));
+            options = options.filter(
+              (el: nameAndId) => !checkIfPresent(members, el)
+            );
             //console.log(temp);
+            //console.log(members.includes(options[1]))
+            //console.log(members)
 
             setCurrentOptions(options);
           })
