@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     height: "30%",
-    width: "5%",
+    width: "2%",
     justifyContent: "flex-start",
   },
   commentText: {
