@@ -153,6 +153,7 @@ export default function FeedItem({
                 <Grid item key={index} xs={12}>
                   <Comment
                     id={thisComment.id}
+                    commenterId={thisComment.userId}
                     profilePic={thisComment.commenterProfilePic}
                     commenterName={thisComment.commenterName}
                     timestamp={thisComment.timestamp}
@@ -191,6 +192,7 @@ export default function FeedItem({
                 timestamp={commentState[0].timestamp}
                 commentText={commentState[0].commentText}
                 likedBy={commentState[0].likedBy}
+                commenterId={commentState[0].userId}
                 commentLiked={
                   commentState[0].likedBy.indexOf(user.id) !== -1 ? true : false
                 }

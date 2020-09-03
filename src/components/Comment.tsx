@@ -9,6 +9,8 @@ import Button from "@material-ui/core/Button";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 
+import history from "../utils/historyUtils";
+
 import {
   addCommentLike,
   removeCommentLike,
@@ -21,7 +23,12 @@ const useStyles = makeStyles((theme) => ({
 
   title: {
     fontSize: 14,
-    //fontWeight: "regular"
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
+  comment: {
+    fontSize: 14,
   },
   timestamp: {
     fontSize: 12,
@@ -57,6 +64,7 @@ interface CommentProps {
   commentText: string;
   timestamp: string;
   onLike: Function;
+  commenterId: string;
 }
 
 export default function Comment({
@@ -69,6 +77,7 @@ export default function Comment({
   profilePic,
   commentText,
   timestamp,
+  commenterId,
 }: CommentProps) {
   // Context
   const { user, setUser } = useContext(UserContext);
@@ -129,10 +138,18 @@ export default function Comment({
 
       <Grid item xs={9}>
         <div className={classes.commentText}>
-          <Typography className={classes.title}>
+          <Typography
+            className={classes.title}
+            onClick={() => {
+              history.push({
+                pathname: "/profile",
+                state: { userId: commenterId },
+              });
+            }}
+          >
             <b>{commenterName}</b>
           </Typography>
-          <Typography className={classes.title} gutterBottom>
+          <Typography className={classes.comment} gutterBottom>
             {commentText}
           </Typography>
         </div>

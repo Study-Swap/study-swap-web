@@ -15,7 +15,7 @@ export default function Profile() {
 
   return (
     <Container component="main" maxWidth="md">
-      {location.state.userId ? (
+      {location.state?.userId ? (
         <OtherProfile userId={location.state.userId} />
       ) : (
         <PersonalProfile />

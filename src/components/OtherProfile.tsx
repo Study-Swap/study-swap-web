@@ -32,7 +32,10 @@ export default function OtherProfile({ userId }: OtherProfileProps) {
           classNames={user.classNames}
           profilePicture={user.profilePicture ? user.profilePicture : ""}
         />
-        <Scheduler timeStrings={user.schedule ? user.schedule : []} />
+        <Scheduler
+          timeStrings={user.schedule ? user.schedule : []}
+          isUser={false}
+        />
         <br />
         <UserFeed userId={userId} />
       </>

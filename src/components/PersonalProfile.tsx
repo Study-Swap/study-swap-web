@@ -121,7 +121,7 @@ export default function PersonalProfile() {
         setUser={setUser}
         profilePicture={user.profilePicture ? user.profilePicture : ""}
       />
-      <Scheduler timeStrings={user.schedule} />
+      <Scheduler timeStrings={user.schedule} isUser={true} />
       <br />
       <UserFeed userId={user.id} />
 

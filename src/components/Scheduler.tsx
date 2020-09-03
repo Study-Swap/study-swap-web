@@ -88,9 +88,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface SchedulerProps {
   timeStrings: string[];
+  isUser: boolean;
 }
 
-export default function Scheduler({ timeStrings }: SchedulerProps) {
+export default function Scheduler({ timeStrings, isUser }: SchedulerProps) {
   /*
     Scheduling Alogorithm:
     - Pivots around mouse down and mouse up listeners
@@ -244,11 +245,13 @@ export default function Scheduler({ timeStrings }: SchedulerProps) {
         </AccordionSummary>
         <AccordionDetails>
           <Card raised={false} className={classes.content}>
-            <SchedulerEditing
-              editing={editing}
-              setEditing={setEditing}
-              timeSlots={timeSlots}
-            />
+            {isUser && (
+              <SchedulerEditing
+                editing={editing}
+                setEditing={setEditing}
+                timeSlots={timeSlots}
+              />
+            )}
 
             <CardContent>
               <div className={classes.row}>
