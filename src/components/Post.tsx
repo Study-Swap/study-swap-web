@@ -70,6 +70,7 @@ interface PostProps {
   classId?: string;
   edited?: boolean;
   userId: string;
+  numComments: number;
 }
 
 export default function Post({
@@ -87,6 +88,7 @@ export default function Post({
   edited,
   classId,
   userId,
+  numComments,
 }: PostProps) {
   // Context
   const { user, setUser } = useContext(UserContext);
@@ -187,7 +189,7 @@ export default function Post({
           size="small"
           onClick={() => onClick}
         >
-          Toggle
+          Comments {numComments !== 0 ? numComments : ""}
         </Button>
         <Button
           startIcon={<ShareIcon />}

@@ -139,6 +139,7 @@ export default function FeedItem({
         commentsShown={commentsShown}
         profilePic={profilePic}
         userId={userId}
+        numComments={commentState.length}
       />
 
       {commentState.length > 0 ? (
