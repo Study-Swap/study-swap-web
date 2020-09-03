@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
-// eslint-disable-next-line
 import { UserContext } from "../constants/UserContext";
-import Container from "@material-ui/core/Container";
+
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+
 import NewPost from "../components/NewPost";
 import FeedItem from "../components/FeedItem";
-import { getPosts, getFeed, addPost } from "../utils/firebaseUtils";
+
+import { getPosts, addPost } from "../utils/firebaseUtils";
 import { postModel } from "../constants/Models";
 
-// eslint-disable-next-line
-import history from "../utils/historyUtils";
+interface FeedProps {
+  categoryFilter: any;
+}
 
-export default function Feed(props: any) {
-  // eslint-disable-next-line
-  const [postState, setPostState] = useState<any[]>([]);
-
+export default function Feed({ categoryFilter }: FeedProps) {
   // Context
   const { user, setUser } = useContext(UserContext);
+
+  const [postState, setPostState] = useState<any[]>([]);
 
   useEffect(() => {
     console.log(postState);
@@ -31,8 +31,8 @@ export default function Feed(props: any) {
   function isInToShow(post: postModel) {
     var toShow = true;
     try {
-      toShow = props.categoryFilter[post.postCategory];
-      console.log(props.categoryFilter);
+      toShow = categoryFilter[post.postCategory];
+      console.log(categoryFilter);
     } catch (error) {
       console.error(error);
     }
@@ -71,13 +71,13 @@ export default function Feed(props: any) {
             <Grid item key={thisPost.id} style={{ width: "500px" }}>
               <FeedItem
                 id={thisPost.id}
+                userId={thisPost.userId}
                 postUserName={thisPost.postUserName}
                 postClassName={thisPost.postClassName}
                 postText={thisPost.postText}
                 timestamp={thisPost.timestamp}
                 postCategory={thisPost.postCategory}
                 edited={thisPost.edited}
-                userId={thisPost.userId}
                 classId={thisPost.classId}
                 likedBy={thisPost.likedBy}
                 isLiked={isLiked}

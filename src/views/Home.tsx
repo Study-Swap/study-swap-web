@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, ChangeEvent } from "react";
 import { UserContext } from "../constants/UserContext";
 
 import Container from "@material-ui/core/Container";
@@ -74,7 +74,7 @@ export default function Home() {
     Social: true,
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter({ ...filter, [event.target.name]: event.target.checked });
   };
 

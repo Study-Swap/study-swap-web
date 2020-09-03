@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import firebase from "../constants/Firebase";
 const storage = firebase.storage();
 
@@ -41,7 +42,7 @@ Inside React Code:
 
 export const getImageBase64String = (
   image: File,
-  setBase64String: React.Dispatch<React.SetStateAction<string>>
+  setBase64String: Dispatch<SetStateAction<string>>
 ) => {
   var reader = new FileReader();
   reader.onload = function () {
@@ -53,7 +54,7 @@ export const getImageBase64String = (
 
 export const setImageFile = (
   image: File,
-  setImageAsFile: React.Dispatch<React.SetStateAction<File>>
+  setImageAsFile: Dispatch<SetStateAction<File>>
 ) => {
   setImageAsFile(image);
 };
@@ -61,7 +62,7 @@ export const setImageFile = (
 export const firebaseUploadImageFile = (
   fileName: string,
   imageFile: File,
-  setImageAsUrl: React.Dispatch<React.SetStateAction<string>>
+  setImageAsUrl: Dispatch<SetStateAction<string>>
 ) => {
   storage
     .ref(`/images/profileImages/${fileName}`)

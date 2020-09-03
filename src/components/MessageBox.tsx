@@ -1,17 +1,19 @@
 // eslint-disable-next-line
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  Fragment,
+} from "react";
 import { UserContext } from "../constants/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
 import { watchMessages } from "../utils/firebaseUtils";
 
-// eslint-disable-next-line
-import history from "../utils/historyUtils";
 import { messageModel } from "../constants/Models";
-import CardContent from "@material-ui/core/CardContent";
 import { theme } from "../constants/theme";
 
 const useStyles = makeStyles((theme) => ({
@@ -56,14 +58,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MessageBox(props: any) {
+interface MessageBoxProps {
+  chatId: string;
+}
+
+export default function MessageBox({ chatId }: MessageBoxProps) {
   // Context
   const { user, setUser } = useContext(UserContext);
 
   const classes = useStyles();
 
   const [messageArray, setMessageArray] = useState<messageModel[]>([]);
-  //const tempUserId = "7k1MF9w490XOeFH5ygGY";
 
   function isUser(senderID: string) {
     if (user.id === senderID) {
@@ -99,13 +104,11 @@ export default function MessageBox(props: any) {
   }
 
   useEffect(() => {
-    console.log(props.chatId + "messages is loading");
-    //ask chintan how to get watchMessages working and async properly
-    const unsubscribe = watchMessages(props.chatId, setMessageArray); // userId is hardcoded for now
+    console.log(chatId + "messages is loading");
+    const unsubscribe = watchMessages(chatId, setMessageArray); // userId is hardcoded for now
 
     return () => unsubscribe();
-    //.catch((err) => console.error(err));
-  }, [props.chatId]);
+  }, [chatId]);
 
   const lastMessage = useRef<HTMLDivElement>(null);
 
@@ -117,7 +120,7 @@ export default function MessageBox(props: any) {
   }, [messageArray]);
 
   return (
-    <React.Fragment>
+    <>
       {messageArray.map((thisMessage, index) => {
         const {
           id,
@@ -129,7 +132,7 @@ export default function MessageBox(props: any) {
         console.log(thisMessage);
 
         return (
-          <React.Fragment key={id}>
+          <Fragment key={id}>
             {checkTimestamp(timestamp) ? (
               <Grid
                 container
@@ -203,7 +206,7 @@ export default function MessageBox(props: any) {
                 <Grid item>
                   <div
                     className={classes.textMessageRight}
-                    style={{ backgroundColor: theme.palette.primary.main }} //"#000C76"    //</Grid></Grid>#4bbbfa
+                    style={{ backgroundColor: theme.palette.primary.main }}
                   >
                     <Typography
                       className={classes.textOnly}
@@ -215,10 +218,10 @@ export default function MessageBox(props: any) {
                 </Grid>
               </Grid>
             )}
-          </React.Fragment>
+          </Fragment>
         );
       })}
       <Grid item ref={lastMessage}></Grid>
-    </React.Fragment>
+    </>
   );
 }

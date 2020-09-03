@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, Fragment } from "react";
 import clsx from "clsx";
 import history from "../utils/historyUtils";
 import { UserContext } from "../constants/UserContext";
@@ -126,7 +126,7 @@ export default function AdminDashboard() {
                 {recentActivity.map((activity) => {
                   const { id, subject, data, type } = activity;
                   return (
-                    <React.Fragment key={id}>
+                    <Fragment key={id}>
                       {" "}
                       <ListItem
                         alignItems="flex-start"
@@ -143,11 +143,11 @@ export default function AdminDashboard() {
                         </ListItemAvatar>
                         <ListItemText
                           primary={subject}
-                          secondary={<React.Fragment>{data}</React.Fragment>}
+                          secondary={<>{data}</>}
                         />
                       </ListItem>
                       <Divider variant="fullWidth" component="li" />{" "}
-                    </React.Fragment>
+                    </Fragment>
                   );
                 })}
               </List>
@@ -163,7 +163,7 @@ export default function AdminDashboard() {
               {dummyUnreadMessages.map((message, index) => {
                 const { senderName, subject, messageText } = message;
                 return (
-                  <React.Fragment key={index}>
+                  <Fragment key={index}>
                     {" "}
                     <ListItem
                       alignItems="flex-start"
@@ -180,13 +180,11 @@ export default function AdminDashboard() {
                       </ListItemAvatar>
                       <ListItemText
                         primary={subject}
-                        secondary={
-                          <React.Fragment>{messageText}</React.Fragment>
-                        }
+                        secondary={<>{messageText}</>}
                       />
                     </ListItem>
                     <Divider variant="fullWidth" component="li" />{" "}
-                  </React.Fragment>
+                  </Fragment>
                 );
               })}
             </List>

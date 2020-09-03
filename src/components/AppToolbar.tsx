@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import InputBase from "@material-ui/core/InputBase";
+import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
@@ -22,20 +22,26 @@ interface AppToolbarProps {
   classes: any;
   title: string;
   toggleDrawer: Function;
+  profilePic: string;
 }
 
-const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
-  const [open, setOpen] = React.useState(false);
-  const [numNotifs, setNumNotifs] = React.useState<number>(0);
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
+const AppToolbar = ({
+  classes,
+  title,
+  toggleDrawer,
+  profilePic,
+}: AppToolbarProps) => {
+  const [open, setOpen] = useState(false);
+  const [numNotifs, setNumNotifs] = useState<number>(0);
+  const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
+  const prevOpen = useRef(open);
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current!.focus();
     }
@@ -85,12 +91,20 @@ const AppToolbar = ({ classes, title, toggleDrawer }: AppToolbarProps) => {
           aria-haspopup="true"
           onClick={handleToggle}
         >
-          <Badge badgeContent={numNotifs} color="error">
+          {numNotifs > 0 ? (
+            <Badge badgeContent={numNotifs} color="error">
+              <NotificationIcon />
+            </Badge>
+          ) : (
             <NotificationIcon />
-          </Badge>
+          )}
         </IconButton>
         <IconButton color="inherit" component={Link} to={"/profile"}>
-          <AccountIcon />
+          {profilePic ? (
+            <Avatar alt="Profile" src={profilePic} />
+          ) : (
+            <AccountIcon />
+          )}
         </IconButton>
       </Toolbar>
     </AppBar>

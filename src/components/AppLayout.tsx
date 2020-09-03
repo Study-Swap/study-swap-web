@@ -7,9 +7,13 @@ import AppDrawer from "./AppDrawer";
 
 interface AppLayoutProps {
   menuList: any;
+  userProfilePic: string;
 }
 
-export default function AppLayout({ menuList }: AppLayoutProps) {
+export default function AppLayout({
+  menuList,
+  userProfilePic,
+}: AppLayoutProps) {
   const classes = useStyles();
   const [drawer, setDrawer] = useState(false);
   const toggleDrawer = (open: boolean) => (event: any) => {
@@ -24,11 +28,12 @@ export default function AppLayout({ menuList }: AppLayoutProps) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <AppToolbar
         classes={classes}
         title={"Study Swap"}
         toggleDrawer={toggleDrawer}
+        profilePic={userProfilePic}
       />
       <AppDrawer
         classes={classes}
@@ -36,7 +41,7 @@ export default function AppLayout({ menuList }: AppLayoutProps) {
         open={drawer}
         toggleDrawer={toggleDrawer}
       />
-    </React.Fragment>
+    </>
   );
 }
 

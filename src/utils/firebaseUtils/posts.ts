@@ -14,6 +14,7 @@ const commentsDB = firebase.firestore().collection(collections.comments);
 @desc     get all posts in a certain class
 */
 function getPosts(classId: string): Promise<any> {
+  console.log("getting posts");
   return postsDB
     .where("classId", "==", classId)
     .orderBy("timestamp", "asc")
@@ -50,6 +51,7 @@ function getPosts(classId: string): Promise<any> {
   @desc     get all posts made by a certain user
 */
 function getUserPosts(userId: string): Promise<postModel[] | void> {
+  console.log("getting users posts");
   return postsDB
     .where("userId", "==", userId)
     .orderBy("timestamp", "asc")

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -61,9 +61,10 @@ export default function NewPost({ onClick }: newPostProps) {
   const { user, setUser } = useContext(UserContext);
 
   const classes = useStyles();
-  const [value, setValue] = React.useState("");
-  const [len, setLen] = React.useState(0);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [value, setValue] = useState("");
+  const [len, setLen] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleChange = (event: any) => {
     if (event.target.value.length <= 300) {
@@ -71,8 +72,6 @@ export default function NewPost({ onClick }: newPostProps) {
       setLen(event.target.value.length);
     }
   };
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);

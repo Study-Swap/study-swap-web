@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -146,7 +146,7 @@ export default function ClassEditModal({
               label="Class Name"
               name="name"
               value={editClassTitle}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setEditClassTitle(event.target.value);
               }}
             />
@@ -159,7 +159,7 @@ export default function ClassEditModal({
               label="Class Time"
               name="name"
               value={editClassTime}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setEditClassTime(event.target.value);
               }}
             />
@@ -172,7 +172,7 @@ export default function ClassEditModal({
               label="Section"
               name="name"
               value={editClassSection}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setEditClassSection(event.target.value);
               }}
             />
@@ -185,7 +185,7 @@ export default function ClassEditModal({
               label="Professor Name"
               name="name"
               value={editProfName}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setEditProfName(event.target.value);
               }}
             />
@@ -198,7 +198,7 @@ export default function ClassEditModal({
               label="GSI Name"
               name="name"
               value={editGSIName}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setEditGSIName(event.target.value);
               }}
             />
@@ -211,7 +211,7 @@ export default function ClassEditModal({
               label="IA Names"
               name="name"
               value={editIANames}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setEditIANames(event.target.value);
               }}
             />
@@ -224,7 +224,7 @@ export default function ClassEditModal({
               label="Canvas Link"
               name="canvas link"
               value={editCanvasLink}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setEditCanvasLink(event.target.value);
               }}
             />
@@ -237,7 +237,7 @@ export default function ClassEditModal({
               label="Email Link"
               name="email link"
               value={editEmailLink}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setEditEmailLink(event.target.value);
               }}
             />
@@ -250,7 +250,7 @@ export default function ClassEditModal({
               label="Class Website Link"
               name="class link"
               value={editClassWebsiteLink}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setEditClassWebsiteLink(event.target.value);
               }}
             />

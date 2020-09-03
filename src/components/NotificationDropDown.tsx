@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, MouseEvent } from "react";
 import { UserContext } from "../constants/UserContext";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
@@ -38,12 +38,12 @@ const NotificationDropDown = ({
     getNotifications(user.id) // userId is hardcoded for now
       .then((res) => {
         setNotificationData(res);
-        setNumNotifs(res.length);
+        setNumNotifs(res.filter((notif: any) => notif.read).length);
       })
       .catch((err) => console.error(err));
   }, []);
 
-  const handleClose = (event: React.MouseEvent<EventTarget>) => {
+  const handleClose = (event: MouseEvent<EventTarget>) => {
     if (
       anchorRef.current &&
       anchorRef.current.contains(event.target as HTMLElement)

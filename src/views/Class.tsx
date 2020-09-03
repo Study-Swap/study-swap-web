@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -20,7 +20,7 @@ export default function Class(props: any) {
   const classes = useStyles();
   const [postState, setPostState] = useState<postModel[]>([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     getPosts("1") // classId is hardcoded for now
       .then((res) => {
         setPostState(res);
@@ -49,7 +49,7 @@ export default function Class(props: any) {
                   ? (isLiked = true)
                   : (isLiked = false);
                 return (
-                  <React.Fragment key={index}>
+                  <Fragment key={index}>
                     <FeedItem
                       id={thisPost.id}
                       postUserName={thisPost.postUserName}
@@ -58,14 +58,14 @@ export default function Class(props: any) {
                       timestamp={thisPost.timestamp}
                       postCategory={thisPost.postCategory}
                       edited={thisPost.edited}
-                      userId={thisPost.userId}
                       classId={thisPost.classId}
                       likedBy={thisPost.likedBy}
                       isLiked={isLiked}
                       profilePic={thisPost.postUserProfilePic}
+                      userId={thisPost.userId}
                     />
                     <br />
-                  </React.Fragment>
+                  </Fragment>
                 );
               })
             ) : (

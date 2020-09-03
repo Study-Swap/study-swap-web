@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import React from "react";
+import React, { useState, MouseEvent } from "react";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Paper";
@@ -15,7 +14,6 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 
-// eslint-disable-next-line
 import history from "../utils/historyUtils";
 import { logoutUser } from "../utils/firebaseUtils";
 
@@ -49,10 +47,10 @@ interface ViewProfileProps {
   lastName: string;
   grade: string;
   bio: string;
-  editingClick: Function;
+  editingClick?: Function;
   classIds: string[];
   classNames: string[];
-  setUser: Function;
+  setUser?: Function;
   profilePicture: string;
 }
 
@@ -68,9 +66,9 @@ export default function ViewProfile({
   profilePicture,
 }: ViewProfileProps) {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -112,47 +110,64 @@ export default function ViewProfile({
           </Grid>
           <Grid container item xs={3} direction="column" alignItems="flex-end">
             <Grid item>
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={() => {
-                  editingClick();
-                }}
-              >
-                Edit Profile
-              </Button>
-              <IconButton aria-label="more-options" onClick={handleClick}>
-                <MoreVertIcon />
-              </IconButton>
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem
-                  onClick={() =>
-                    logoutUser(setUser).then(() => {
-                      history.push("/login");
-                    })
-                  }
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "flex-end",
+              {editingClick ? (
+                <>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={() => {
+                      editingClick();
+                    }}
+                  >
+                    Edit Profile
+                  </Button>
+                  <IconButton aria-label="more-options" onClick={handleClick}>
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        if (setUser) {
+                          logoutUser(setUser).then(() => {
+                            history.push("/login");
+                          });
+                        }
+                      }}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "flex-end",
+                      }}
+                    >
+                      <ExitToAppIcon />
+                      <div style={{ fontSize: 15, marginLeft: 5 }}>Logout</div>
+                    </MenuItem>
+                  </Menu>
+                </>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={() => {
+                    //editingClick();
                   }}
                 >
-                  <ExitToAppIcon />
-                  <div style={{ fontSize: 15, marginLeft: 5 }}>Logout</div>
-                </MenuItem>
-              </Menu>
+                  Message
+                </Button>
+              )}
             </Grid>
             <br />
             {classNames.map((name: string, index: number) => {
               return (
-                <Grid item>
+                <Grid item key={index}>
                   <div
                     style={{
                       display: "flex",

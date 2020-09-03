@@ -1,34 +1,21 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
 import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import CardContent from "@material-ui/core/CardContent";
 
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
-import MembersList from "./MembersList";
 import SearchBox from "./SearchBox";
-import { CardContent } from "@material-ui/core";
-import Popper from "@material-ui/core/Popper";
+import MembersList from "./MembersList";
+
 import { addChats } from "../utils/firebaseUtils";
 import { getUsersForChatCreation } from "../utils/firebaseUtils/users";
 
-interface nameAndId {
-  memberName: string;
-  memberId: string;
-  profilePicture: string;
-}
-
-//const options: nameAndId[] = [
-//  { memberName: "Ashish Mahuli", memberId: "7k1MF9w490XOeFH5ygGY" },
-//  { memberName: "Chintan Modi", memberId: "6loalAzoo6UpCo00zFucLfexm8t1" },
-//];
+import { nameAndId } from "../constants/types/rosterTypes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,18 +37,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function NewChat(props: any) {
-  //const [newSelection, setSelection] = useState<string | null>("");
+interface NewChatProps {
+  closeModal: Function;
+}
+
+export default function NewChat({ closeModal }: NewChatProps) {
   const classes = useStyles();
-  const [chatName, setChatName] = React.useState("");
+  const [chatName, setChatName] = useState("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
   const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
-  //const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   useEffect(() => {
     getUsersForChatCreation()
       .then((res: any) => {
         setCurrentOptions(res);
+        console.log("new chat");
         console.log(res);
       })
       .catch((err: any) => {
@@ -91,7 +81,7 @@ export default function NewChat(props: any) {
               placeholder="Name your group"
               inputProps={{ "aria-label": "post to feed" }}
               value={chatName}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
                 setChatName(event.target.value);
               }}
             />
@@ -153,7 +143,7 @@ export default function NewChat(props: any) {
               <Button
                 size="small"
                 variant="contained"
-                onClick={() => props.closeModal()}
+                onClick={() => closeModal()}
               >
                 Cancel
               </Button>

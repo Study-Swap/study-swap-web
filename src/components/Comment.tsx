@@ -1,15 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../constants/UserContext";
+
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
 import Avatar from "@material-ui/core/Avatar";
-import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { commentModel } from "../constants/Models";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
+
+import history from "../utils/historyUtils";
+
 import {
   addCommentLike,
   removeCommentLike,
@@ -22,7 +23,12 @@ const useStyles = makeStyles((theme) => ({
 
   title: {
     fontSize: 14,
-    //fontWeight: "regular"
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
+  comment: {
+    fontSize: 14,
   },
   timestamp: {
     fontSize: 12,
@@ -48,26 +54,49 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Comment(props: any) {
+interface CommentProps {
+  id: string | undefined;
+  commentLiked: boolean;
+  likedBy: string[];
+  index: number;
+  commenterName: string;
+  profilePic: string;
+  commentText: string;
+  timestamp: string;
+  onLike: Function;
+  commenterId: string;
+}
+
+export default function Comment({
+  id,
+  commentLiked,
+  likedBy,
+  onLike,
+  index,
+  commenterName,
+  profilePic,
+  commentText,
+  timestamp,
+  commenterId,
+}: CommentProps) {
   // Context
   const { user, setUser } = useContext(UserContext);
 
   const classes = useStyles();
-  const [likeState, setLikeState] = React.useState(props.commentLiked);
-  const [lengthState, setLengthState] = React.useState(props.likedBy.length);
-  //const theme = useTheme();
+  const [likeState, setLikeState] = useState(commentLiked);
+  const [lengthState, setLengthState] = useState(likedBy.length);
 
   function plusLike() {
-    props.onLike(props.index, likeState);
+    onLike(index, likeState);
     setLikeState(true);
-    addCommentLike(props.id, user.id);
+    if (id) addCommentLike(id, user.id);
     setLengthState(lengthState + 1);
   }
 
   function minusLike() {
-    props.onLike(props.index, likeState);
+    onLike(index, likeState);
     setLikeState(false);
-    removeCommentLike(props.id, user.id);
+    if (id) removeCommentLike(id, user.id);
     setLengthState(lengthState - 1);
   }
 
@@ -102,23 +131,31 @@ export default function Comment(props: any) {
       <Grid item xs={1}>
         <Avatar
           className={classes.media}
-          alt={props.commenterName}
-          src={props.profilePic}
+          alt={commenterName}
+          src={profilePic}
         />
       </Grid>
 
       <Grid item xs={9}>
         <div className={classes.commentText}>
-          <Typography className={classes.title}>
-            <b>{props.commenterName}</b>
+          <Typography
+            className={classes.title}
+            onClick={() => {
+              history.push({
+                pathname: "/profile",
+                state: { userId: commenterId },
+              });
+            }}
+          >
+            <b>{commenterName}</b>
           </Typography>
-          <Typography className={classes.title} gutterBottom>
-            {props.commentText}
+          <Typography className={classes.comment} gutterBottom>
+            {commentText}
           </Typography>
         </div>
         <HasLiked />
         <Typography className={classes.timestamp} color="textSecondary">
-          {props.timestamp}
+          {timestamp}
         </Typography>
       </Grid>
     </Grid>
