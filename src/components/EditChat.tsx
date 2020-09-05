@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import InputBase from "@material-ui/core/InputBase";
@@ -44,7 +45,7 @@ export default function EditChat({ currentChat }: EditChatProps) {
   const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     getUsersForChatCreation()
       .then((res: any) => {
         setCurrentOptions(res);

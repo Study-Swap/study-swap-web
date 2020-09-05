@@ -31,14 +31,12 @@ interface RouteType {
   path: string;
   component: any;
 }
-export const privateRoutes: Array<RouteType> = [
-  { path: "/chats", component: Chats },
+
+export const routes: Array<RouteType> = [
   { path: "/profile", component: Profile },
   { path: "/classes", component: Class },
   { path: "/home", component: Home },
-];
-
-export const routes: Array<RouteType> = [
+  { path: "/chats", component: Chats },
   { path: "/dashboard", component: AdminDashboard },
   { path: "/login", component: Login },
   { path: "/signup", component: SignUp },

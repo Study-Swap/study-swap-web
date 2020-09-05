@@ -22,6 +22,7 @@ import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel, messageModel } from "../constants/Models";
 import { addMessages, watchChats } from "../utils/firebaseUtils/chats";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,7 +115,7 @@ export default function Chats() {
     setCurrentChat(chat);
   };
 
-  useEffect(() => {
+  useAuthEffect(() => {
     const unsubscribe = watchChats(user.id, setMyChats); // userId is hardcoded for now
 
     return () => unsubscribe();

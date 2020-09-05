@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -49,7 +50,7 @@ export default function ClassRoster() {
   const [open, setOpen] = useState<boolean>(false);
   const [classRoster, setClassRoster] = useState<any[]>([]);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     getClassRoster("1").then((roster) => setClassRoster(roster));
   }, []);
 

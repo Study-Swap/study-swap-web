@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
@@ -53,7 +54,7 @@ export default function ClassCard() {
     "www.google.com"
   );
 
-  useEffect(() => {
+  useAuthEffect(() => {
     getClasses(["1"]).then((classList) => {
       setClassTitle(classList[0].classTitle);
       setClassTime(classList[0].classTime);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import Grid from "@material-ui/core/Grid";
 
@@ -17,7 +18,7 @@ export default function UserFeed({ userId }: UserFeedProps) {
 
   const [postState, setPostState] = useState<any[]>([]);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     getUserPosts(userId)
       .then((res) => {
         if (res) setPostState(res);

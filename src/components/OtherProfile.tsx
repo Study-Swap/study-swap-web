@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import ViewProfile from "../components/ViewProfile2";
 import Scheduler from "../components/Scheduler";
@@ -14,7 +15,7 @@ interface OtherProfileProps {
 export default function OtherProfile({ userId }: OtherProfileProps) {
   const [user, setUser] = useState<userModel | null>();
 
-  useEffect(() => {
+  useAuthEffect(() => {
     getUser(userId).then((res) => {
       setUser(res);
     });

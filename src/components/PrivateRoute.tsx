@@ -15,11 +15,9 @@ export default function PrivateRoute({
   key,
 }: PrivateRouteProps) {
   useEffect(() => {
-    setTimeout(() => {
-      if (!firebase.auth().currentUser) {
-        history.push("/not-logged-in");
-      }
-    }, 0);
+    if (!firebase.auth().currentUser) {
+      history.push("/not-logged-in");
+    }
   }, []);
   return <Route path={path} component={component} key={key} />;
 }

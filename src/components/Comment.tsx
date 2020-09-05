@@ -109,7 +109,7 @@ export default function Comment({
           component="span"
           onClick={minusLike}
         >
-          <ThumbUpIcon style={{ marginRight: 2 }} />
+          <ThumbUpIcon fontSize="small" style={{ marginRight: 2 }} />
           {lengthState === 0 ? " " : lengthState}
         </IconButton>
       );
@@ -121,7 +121,7 @@ export default function Comment({
           component="span"
           onClick={plusLike}
         >
-          <ThumbUpAltOutlinedIcon style={{ marginRight: 2 }} />
+          <ThumbUpAltOutlinedIcon fontSize="small" style={{ marginRight: 2 }} />
           {lengthState === 0 ? " " : lengthState}
         </IconButton>
       );

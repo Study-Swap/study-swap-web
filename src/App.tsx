@@ -8,7 +8,7 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 
 import { theme } from "./constants/theme";
-import { menuList, routes, privateRoutes } from "./views";
+import { menuList, routes } from "./views";
 import { Copyright } from "./components/Copyright";
 import AppLayout from "./components/AppLayout";
 import { UserContext } from "./constants/UserContext";
@@ -71,13 +71,6 @@ function App() {
                       component={element.component}
                       key={element.path}
                       userId={user.id}
-                    />
-                  ))}
-                  {privateRoutes.map((element: any) => (
-                    <PrivateRoute
-                      path={element.path}
-                      component={element.component}
-                      key={element.path}
                     />
                   ))}
                 </Switch>

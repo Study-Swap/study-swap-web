@@ -1,5 +1,6 @@
 // eslint-disable-next-line
 import React, { useState, useEffect } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
@@ -73,7 +74,7 @@ export default function ChatSelect({
     senderProfilePic: "", // TODO: MAKE WORK
   });
 
-  useEffect(() => {
+  useAuthEffect(() => {
     if (messages.length > 0) {
       getMessage(messages[messages.length - 1]) // classId is hardcoded for now
         .then((res) => {

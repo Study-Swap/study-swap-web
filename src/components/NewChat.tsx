@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -47,7 +48,7 @@ export default function NewChat({ closeModal }: NewChatProps) {
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
   const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     getUsersForChatCreation()
       .then((res: any) => {
         setCurrentOptions(res);

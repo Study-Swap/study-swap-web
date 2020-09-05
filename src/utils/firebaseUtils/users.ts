@@ -6,6 +6,7 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { userModel, userUsageModel } from "../../constants/Models";
 import { nameAndId } from "../../constants/types/rosterTypes";
+import { loginAnalytics, editProfileAnalytics } from "../analyticsUtils";
 
 const userDB = firebase.firestore().collection(collections.users);
 const usageDB = firebase.firestore().collection(collections.userUsage);
@@ -136,6 +137,7 @@ async function loginUser(email: string, password: string): Promise<any> {
               (): Promise<userModel> => {
                 const user = firebaseApp.auth().currentUser;
                 if (user?.emailVerified) {
+                  loginAnalytics();
                   return userDB
                     .doc(user.uid)
                     .get()
@@ -216,6 +218,7 @@ function editUserSchedule(timeStrings: string[], userId: string): void {
 }
 
 function editUser(user: userModel): void {
+  editProfileAnalytics();
   userDB.doc(user.id).update({
     ...user,
   });

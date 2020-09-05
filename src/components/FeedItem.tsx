@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, ChangeEvent } from "react";
 import { UserContext } from "../constants/UserContext";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -73,7 +74,7 @@ export default function FeedItem({
   //stores whether or not comments shown
   const [commentsShown, setCommentsShown] = useState(false);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     let postId = String(id);
     getComments(postId) // classId is hardcoded for now
       .then((res) => {

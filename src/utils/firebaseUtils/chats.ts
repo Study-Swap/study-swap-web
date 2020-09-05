@@ -4,6 +4,8 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { chatsModel, messageModel } from "../../constants/Models";
 
+import { chatAnalytics, messageAnalytics } from "../analyticsUtils";
+
 // Makes code cleaner
 const messagesDB = firebase.firestore().collection(collections.messages);
 const chatsDB = firebase.firestore().collection(collections.chats);
@@ -123,6 +125,7 @@ function addMessages(message: messageModel): void {
         .catch((err: any): void => {
           console.error(err); // will be changed to redirect to error screen
         });
+      messageAnalytics(message.messageText, res.id);
     })
     .catch((err: any): void => {
       console.error(err); // will be changed to redirect to error screen
@@ -192,6 +195,7 @@ function addChats(newChat: any): any {
             console.error(err); // will be changed to redirect to error screen
           });
       });
+      chatAnalytics(newChat.members, chat.id);
     })
 
     .catch((err: any): void => {
