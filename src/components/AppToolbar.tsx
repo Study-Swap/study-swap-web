@@ -73,6 +73,9 @@ const AppToolbar = ({
         <img
           src={require("../constants/StudySwapLogo.jpeg")}
           style={{ height: 45, width: 160 }}
+          onClick={() => {
+            history.push("/home");
+          }}
         />
         <div className={classes.title} />
         <IconButton
