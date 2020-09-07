@@ -50,9 +50,8 @@ export default function NewChat({ closeModal }: NewChatProps) {
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
   const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
 
-
   useAuthEffect(() => {
-    getUsersForChatCreation()
+    getUsersForChatCreation(user.id)
       .then((res: any) => {
         setCurrentOptions(res);
         console.log("new chat");

@@ -47,6 +47,8 @@ import {
   leaveChat,
   getMessage,
   watchChats,
+  getCurrentChatMembers,
+  updateChatName,
 } from "./chats";
 
 import {
@@ -116,4 +118,6 @@ export {
   addUsagePoint,
   getClassRoster,
   getGraphData,
+  getCurrentChatMembers,
+  updateChatName,
 };

@@ -12,18 +12,17 @@ import { UserContext } from "../constants/UserContext";
 
 import MembersList from "./MembersList";
 import SearchBox from "./SearchBox";
-  
+
 import {
+  getUsersForChatCreation,
   getCurrentChatMembers,
   addMember,
   leaveChat,
   updateChatName,
-} from "../utils/firebaseUtils/chats";
-import { getUsersForChatCreation } from "../utils/firebaseUtils";
-  
+} from "../utils/firebaseUtils";
+
 import { chatsModel } from "../constants/Models";
 import { nameAndId } from "../constants/types/rosterTypes";
-import { FormatListBulleted } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
