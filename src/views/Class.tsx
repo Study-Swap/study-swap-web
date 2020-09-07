@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -20,7 +21,7 @@ export default function Class(props: any) {
   const classes = useStyles();
   const [postState, setPostState] = useState<postModel[]>([]);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     getPosts("1") // classId is hardcoded for now
       .then((res) => {
         setPostState(res);

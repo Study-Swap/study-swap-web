@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, MouseEvent } from "react";
 import { UserContext } from "../constants/UserContext";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Grow from "@material-ui/core/Grow";
 import Paper from "@material-ui/core/Paper";
@@ -35,13 +36,19 @@ const NotificationDropDown = ({
   const { innerWidth, innerHeight } = useWindowDimensions();
 
   useEffect(() => {
-    getNotifications(user.id) // userId is hardcoded for now
-      .then((res) => {
-        setNotificationData(res);
-        setNumNotifs(res.filter((notif: any) => notif.read).length);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+    console.log("getting notificaitons");
+    console.log(user.id);
+    if (user.id) {
+      console.log(user.id);
+      getNotifications(user.id) // userId is hardcoded for now
+        .then((res) => {
+          console.log(res);
+          setNotificationData(res);
+          setNumNotifs(res.filter((notif: any) => !notif.read).length);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [user.id]);
 
   const handleClose = (event: MouseEvent<EventTarget>) => {
     if (

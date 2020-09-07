@@ -6,6 +6,7 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { userModel, userUsageModel } from "../../constants/Models";
 import { nameAndId } from "../../constants/types/rosterTypes";
+import { loginAnalytics, editProfileAnalytics } from "../analyticsUtils";
 
 const userDB = firebase.firestore().collection(collections.users);
 const usageDB = firebase.firestore().collection(collections.userUsage);
@@ -72,6 +73,7 @@ async function addUser(
                   chats,
                   signedUp: true,
                   schedule: [],
+                  isAdmin: false,
                 })
                 .then(() => {
                   // To make sure they validate email
@@ -92,6 +94,7 @@ async function addUser(
                   signedUp: true,
                   schedule: [],
                   classNames: ["EECS 281", "EECS 376"],
+                  isAdmin: false,
                 })
                 .then(() => {
                   // To make sure they validate email
@@ -136,6 +139,7 @@ async function loginUser(email: string, password: string): Promise<any> {
               (): Promise<userModel> => {
                 const user = firebaseApp.auth().currentUser;
                 if (user?.emailVerified) {
+                  loginAnalytics();
                   return userDB
                     .doc(user.uid)
                     .get()
@@ -197,6 +201,7 @@ function addUsersByEmail(
               signedUp: false,
               firstName: fullNames[index][0],
               lastName: fullNames[index][1],
+              isAdmin: false,
             });
           } else {
             userDB.doc(res.docs[0].id).update({
@@ -216,6 +221,7 @@ function editUserSchedule(timeStrings: string[], userId: string): void {
 }
 
 function editUser(user: userModel): void {
+  editProfileAnalytics();
   userDB.doc(user.id).update({
     ...user,
   });
@@ -273,7 +279,11 @@ function addUsagePoint(userId: string): void {
     .get()
     .then((model: firebaseApp.firestore.DocumentData): void => {
       if (model.empty) {
-        usageDB.add({ date: date.toDateString(), users: [userId] });
+        usageDB.add({
+          date: date.toDateString(),
+          users: [userId],
+          timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+        });
       } else {
         usageDB.doc(model.docs[0].id).update({
           users: firebaseApp.firestore.FieldValue.arrayUnion(userId),

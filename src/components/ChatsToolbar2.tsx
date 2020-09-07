@@ -16,6 +16,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const formatString = (text: string | undefined, maxSize: number): string => {
+  return text
+    ? text.length > maxSize
+      ? text.slice(0, maxSize) + "..."
+      : text
+    : "Chat";
+};
+
 interface ChatsToolbarProps {
   currentChat: chatsModel;
 }
@@ -37,7 +45,9 @@ export default function ChatsToolbar2({ currentChat }: ChatsToolbarProps) {
     <>
       <Grid item>
         <Typography className={classes.name}>
-          {"To: " + currentChat.chatName}
+          {"To: " + currentChat.chatName
+            ? currentChat.chatName
+            : formatString(currentChat.memberNames?.join(", "), 10)}
         </Typography>
       </Grid>
 

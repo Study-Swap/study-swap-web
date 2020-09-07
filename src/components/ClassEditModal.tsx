@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -103,7 +104,7 @@ export default function ClassEditModal({
     classWebsiteLink
   );
 
-  useEffect(() => {
+  useAuthEffect(() => {
     // Sometimes state vars dont reset on close
     if (editing) {
       setEditClassTitle(classTitle);

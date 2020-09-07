@@ -61,7 +61,7 @@ const AppToolbar = ({
         >
           <MenuIcon />
         </IconButton>
-        <Typography
+        {/*<Typography
           component="h1"
           variant="h6"
           color="inherit"
@@ -69,7 +69,12 @@ const AppToolbar = ({
           className={classes.title}
         >
           {title}
-        </Typography>
+        </Typography>*/}
+        <img
+          src={require("../constants/StudySwapLogo.jpeg")}
+          style={{ height: 45, width: 160 }}
+        />
+        <div className={classes.title} />
         <IconButton
           onClick={() => {
             history.push("/help");

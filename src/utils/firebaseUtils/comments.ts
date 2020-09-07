@@ -6,6 +6,8 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { commentModel } from "../../constants/Models";
 
+import { commentAnalytics } from "../analyticsUtils";
+
 // Makes code cleaner
 const commentsDB = firebase.firestore().collection(collections.comments);
 
@@ -55,6 +57,7 @@ function addComment(comment: commentModel): Promise<any> {
     })
     .then((ref: firebaseApp.firestore.DocumentData): any => {
       const date = new Date();
+      commentAnalytics(comment.commentText, ref.id);
       return {
         id: ref.id,
         timestamp: date.toDateString(),

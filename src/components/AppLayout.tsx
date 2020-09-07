@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 36,
   },
   title: {
-    flexGrow: 1,
+    flexGrow: 0.94,
   },
   search: {
     position: "relative",

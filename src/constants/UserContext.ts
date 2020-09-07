@@ -12,6 +12,7 @@ interface initState {
     grade: string;
     classNames: Array<string>;
     profilePicture: string;
+    isAdmin: string;
   };
   setUser: Dispatch<
     SetStateAction<{
@@ -26,6 +27,7 @@ interface initState {
       grade: string;
       classNames: Array<string>;
       profilePicture: string;
+      isAdmin: string;
     }>
   >;
 }
@@ -42,6 +44,7 @@ const initialState: initState = {
     grade: "Junior",
     classNames: [],
     profilePicture: "",
+    isAdmin: "",
   },
   setUser: () => {},
 };

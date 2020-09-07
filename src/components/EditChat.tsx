@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ChangeEvent, useContext } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import InputBase from "@material-ui/core/InputBase";
@@ -11,16 +12,16 @@ import { UserContext } from "../constants/UserContext";
 
 import MembersList from "./MembersList";
 import SearchBox from "./SearchBox";
-
-import { getUsersForChatCreation } from "../utils/firebaseUtils/users";
+  
 import {
   getCurrentChatMembers,
   addMember,
   leaveChat,
   updateChatName,
 } from "../utils/firebaseUtils/chats";
+import { getUsersForChatCreation } from "../utils/firebaseUtils";
+  
 import { chatsModel } from "../constants/Models";
-
 import { nameAndId } from "../constants/types/rosterTypes";
 import { FormatListBulleted } from "@material-ui/icons";
 
@@ -72,7 +73,7 @@ export default function EditChat({ currentChat, handleClose }: EditChatProps) {
     return toReturn;
   }
 
-  useEffect(() => {
+  useAuthEffect(() => {
     getUsersForChatCreation(user.id)
       .then((options: any) => {
         //setCurrentOptions(res);

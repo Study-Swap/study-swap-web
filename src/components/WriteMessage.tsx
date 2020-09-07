@@ -13,8 +13,10 @@ const useStyles = makeStyles((theme) => ({
   rootInput: {
     display: "flex",
     alignItems: "center",
-    height: "100%",
+    //height: "100%",
     width: "100%",
+    paddingTop: 3,
+    paddingBottom: 3,
   },
   input: {
     //marginLeft: theme.spacing(1),
@@ -22,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     backgroundColor: "white",
     borderRadius: "15px",
-    height: "70%",
+    //height: "70%",
     fontSize: 14,
   },
   iconButton: {

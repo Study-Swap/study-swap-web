@@ -5,16 +5,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 
 import history from "../utils/historyUtils";
 
-import {
-  addCommentLike,
-  removeCommentLike,
-} from "../utils/firebaseUtils/comments";
+import { addCommentLike, removeCommentLike } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     height: "30%",
-    width: "5%",
+    width: "2%",
     justifyContent: "flex-start",
   },
   commentText: {
@@ -103,25 +100,27 @@ export default function Comment({
   function HasLiked() {
     if (likeState) {
       return (
-        <Button
-          startIcon={<ThumbUpIcon />}
-          className={classes.button}
+        <IconButton
           size="small"
+          color="primary"
+          component="span"
           onClick={minusLike}
         >
-          {lengthState}
-        </Button>
+          <ThumbUpIcon fontSize="small" style={{ marginRight: 2 }} />
+          {lengthState === 0 ? " " : lengthState}
+        </IconButton>
       );
     } else {
       return (
-        <Button
-          startIcon={<ThumbUpAltOutlinedIcon />}
-          className={classes.button}
+        <IconButton
           size="small"
+          color="primary"
+          component="span"
           onClick={plusLike}
         >
-          {lengthState}
-        </Button>
+          <ThumbUpAltOutlinedIcon fontSize="small" style={{ marginRight: 2 }} />
+          {lengthState === 0 ? " " : lengthState}
+        </IconButton>
       );
     }
   }
@@ -136,24 +135,26 @@ export default function Comment({
         />
       </Grid>
 
-      <Grid item xs={9}>
-        <div className={classes.commentText}>
-          <Typography
-            className={classes.title}
-            onClick={() => {
-              history.push({
-                pathname: "/profile",
-                state: { userId: commenterId },
-              });
-            }}
-          >
-            <b>{commenterName}</b>
-          </Typography>
-          <Typography className={classes.comment} gutterBottom>
-            {commentText}
-          </Typography>
+      <Grid item xs={11}>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <div className={classes.commentText}>
+            <Typography
+              className={classes.title}
+              onClick={() => {
+                history.push({
+                  pathname: "/profile",
+                  state: { userId: commenterId },
+                });
+              }}
+            >
+              <b>{commenterName}</b>
+            </Typography>
+            <Typography className={classes.comment} gutterBottom>
+              {commentText}
+            </Typography>
+          </div>
+          <HasLiked />
         </div>
-        <HasLiked />
         <Typography className={classes.timestamp} color="textSecondary">
           {timestamp}
         </Typography>

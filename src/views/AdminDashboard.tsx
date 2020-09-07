@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, Fragment } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 import clsx from "clsx";
 import history from "../utils/historyUtils";
 import { UserContext } from "../constants/UserContext";
@@ -47,6 +48,7 @@ import {
   getClassRoster,
   getClasses,
   getGraphData,
+  getChats,
 } from "../utils/firebaseUtils";
 import { createRecentActivity } from "../utils/recentActivityUtils";
 
@@ -65,7 +67,7 @@ export default function AdminDashboard() {
 
   const [graphData, setGraphData] = useState<any[]>([]);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     getClasses(["1"]).then((res) => {
       setHasRoster(res[0].hasRoster);
     });
@@ -74,9 +76,9 @@ export default function AdminDashboard() {
       setRecentLoading(false);
     });
     getGraphData().then((data) => setGraphData(data));
-  });
+  }, []);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     if (hasRoster) {
       getClassRoster("1").then((classRoster) => {
         setRoster(classRoster);

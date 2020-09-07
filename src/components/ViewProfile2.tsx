@@ -52,6 +52,7 @@ interface ViewProfileProps {
   classNames: string[];
   setUser?: Function;
   profilePicture: string;
+  messagingClick?: Function;
 }
 
 export default function ViewProfile({
@@ -64,6 +65,7 @@ export default function ViewProfile({
   classNames,
   setUser,
   profilePicture,
+  messagingClick,
 }: ViewProfileProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -157,7 +159,7 @@ export default function ViewProfile({
                   color="primary"
                   className={classes.button}
                   onClick={() => {
-                    //editingClick();
+                    if (messagingClick) messagingClick();
                   }}
                 >
                   Message

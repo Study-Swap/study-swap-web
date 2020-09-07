@@ -1,4 +1,5 @@
 import React, { useState, useEffect, ChangeEvent, useContext } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -13,8 +14,7 @@ import { UserContext } from "../constants/UserContext";
 import SearchBox from "./SearchBox";
 import MembersList from "./MembersList";
 
-import { addChats } from "../utils/firebaseUtils";
-import { getUsersForChatCreation } from "../utils/firebaseUtils/users";
+import { addChats, getUsersForChatCreation } from "../utils/firebaseUtils";
 
 import { nameAndId } from "../constants/types/rosterTypes";
 
@@ -50,8 +50,9 @@ export default function NewChat({ closeModal }: NewChatProps) {
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
   const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
 
-  useEffect(() => {
-    getUsersForChatCreation(user.id)
+
+  useAuthEffect(() => {
+    getUsersForChatCreation()
       .then((res: any) => {
         setCurrentOptions(res);
         console.log("new chat");

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../constants/UserContext";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import Grid from "@material-ui/core/Grid";
 
@@ -19,7 +20,7 @@ export default function Feed({ categoryFilter }: FeedProps) {
 
   const [postState, setPostState] = useState<any[]>([]);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     console.log(postState);
     getPosts("1") // classId is hardcoded for now
       .then((res) => {

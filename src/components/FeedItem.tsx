@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, ChangeEvent } from "react";
 import { UserContext } from "../constants/UserContext";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
@@ -11,7 +12,7 @@ import Comment from "../components/Comment";
 import NewComment from "../components/NewComment";
 
 import { commentModel } from "../constants/Models";
-import { getComments, addComment } from "../utils/firebaseUtils";
+import { getComments, addComment, sendComment } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles({
   root: {
@@ -73,7 +74,7 @@ export default function FeedItem({
   //stores whether or not comments shown
   const [commentsShown, setCommentsShown] = useState(false);
 
-  useEffect(() => {
+  useAuthEffect(() => {
     let postId = String(id);
     getComments(postId) // classId is hardcoded for now
       .then((res) => {
@@ -87,6 +88,7 @@ export default function FeedItem({
   }; //updates stored value of new comment input field
 
   function toggleCommentClick() {
+    console.log("toggling comments");
     setCommentsShown(!commentsShown);
   } //toggles between shown and not shown
 
@@ -118,6 +120,12 @@ export default function FeedItem({
           commenterProfilePic: user.profilePicture ? user.profilePicture : "",
         },
       ]);
+      sendComment({
+        userId: user.id,
+        senderName: `${user.firstName} ${user.lastName}`,
+        notificationText: newCommentInput,
+        profilePicture: user.profilePicture,
+      });
       setNewCommentInput("");
     });
   }
@@ -135,10 +143,11 @@ export default function FeedItem({
         classId={classId}
         likedBy={likedBy}
         isLiked={isLiked}
-        onClick={toggleCommentClick}
+        onToggleClick={toggleCommentClick}
         commentsShown={commentsShown}
         profilePic={profilePic}
         userId={userId}
+        numberComments={commentState.length}
       />
 
       {commentState.length > 0 ? (

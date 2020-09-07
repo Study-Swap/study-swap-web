@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../constants/UserContext";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
@@ -7,6 +8,7 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
+import DashboardIcon from "@material-ui/icons/Dashboard";
 
 interface AppDrawerProps {
   classes: any;
@@ -21,6 +23,7 @@ export default function AppDrawer({
   open,
   toggleDrawer,
 }: AppDrawerProps) {
+  const { user } = useContext(UserContext);
   return (
     <SwipeableDrawer
       anchor="left"
@@ -58,6 +61,29 @@ export default function AppDrawer({
               </Button>
             </ListItem>
           ))}
+          {user.isAdmin ? (
+            <ListItem
+              key={"Dashboard"}
+              className={classes.menuItem}
+              component={Link}
+              to={"/dashboard"}
+            >
+              <Button
+                variant={
+                  window.location.pathname === "/dashboard"
+                    ? "contained"
+                    : "text"
+                }
+                color="secondary"
+                className={classes.button}
+                startIcon={<DashboardIcon />}
+              >
+                Dashboard
+              </Button>
+            </ListItem>
+          ) : (
+            <div />
+          )}
         </List>
       </div>
     </SwipeableDrawer>

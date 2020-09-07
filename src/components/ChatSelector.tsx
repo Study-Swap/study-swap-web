@@ -1,5 +1,6 @@
 // eslint-disable-next-line
 import React, { useState, useEffect } from "react";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import { makeStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
@@ -9,7 +10,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 
-import { getMessage } from "../utils/firebaseUtils/chats";
+import { getMessage } from "../utils/firebaseUtils";
 import { messageModel } from "../constants/Models";
 
 const useStyles = makeStyles((theme) => ({
@@ -44,10 +45,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface CHatSelectProps {
-  picture: string;
-  id: string;
-  chatName: string;
+const formatString = (text: string | undefined, maxSize: number): string => {
+  return text
+    ? text.length > maxSize
+      ? text.slice(0, maxSize) + "..."
+      : text
+    : "Chat";
+};
+
+interface ChatSelectProps {
+  picture: string | undefined;
+  id: string | undefined;
+  chatName: string | undefined;
   memberNames?: string[];
   messages: any[];
   onClick: Function;
@@ -62,7 +71,7 @@ export default function ChatSelect({
   messages,
   onClick,
   lastMessageTimestamp,
-}: any) {
+}: ChatSelectProps) {
   const classes = useStyles();
 
   const [firstMessage, setFirstMessage] = useState<messageModel>({
@@ -73,7 +82,7 @@ export default function ChatSelect({
     senderProfilePic: "", // TODO: MAKE WORK
   });
 
-  useEffect(() => {
+  useAuthEffect(() => {
     if (messages.length > 0) {
       getMessage(messages[messages.length - 1]) // classId is hardcoded for now
         .then((res) => {
@@ -119,7 +128,9 @@ export default function ChatSelect({
                 }}
                 noWrap={true}
               >
-                {chatName}
+                {chatName
+                  ? chatName
+                  : formatString(memberNames?.join(", "), 10)}
               </Typography>
               <Typography
                 component="span"

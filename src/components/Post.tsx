@@ -14,10 +14,9 @@ import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import ShareIcon from "@material-ui/icons/Share";
-import Link from "@material-ui/icons/Link";
 import history from "../utils/historyUtils";
 
-import { addLike, removeLike } from "../utils/firebaseUtils/posts";
+import { addLike, removeLike, sendLike } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles({
   root: {
@@ -65,11 +64,12 @@ interface PostProps {
   postCategory: string;
   postText: string;
   commentsShown: boolean;
-  onClick: Function;
+  onToggleClick: Function;
   postClassName?: string;
   classId?: string;
   edited?: boolean;
   userId: string;
+  numberComments: number;
 }
 
 export default function Post({
@@ -82,11 +82,12 @@ export default function Post({
   postCategory,
   postText,
   commentsShown,
-  onClick,
+  onToggleClick,
   postClassName,
   edited,
   classId,
   userId,
+  numberComments,
 }: PostProps) {
   // Context
   const { user, setUser } = useContext(UserContext);
@@ -97,14 +98,24 @@ export default function Post({
 
   function hitLike() {
     setLikeState(true);
-    if (id) addLike(id, user.id);
-    setLengthState(lengthState + 1);
+    if (id) {
+      addLike(id, user.id);
+      setLengthState(lengthState + 1);
+      sendLike({
+        userId: user.id,
+        senderName: `${user.firstName} ${user.lastName}`,
+        notificationText: postText,
+        profilePicture: user.profilePicture,
+      });
+    }
   }
 
   function hitUnlike() {
     setLikeState(false);
-    if (id) removeLike(id, user.id);
-    setLengthState(lengthState - 1);
+    if (id) {
+      removeLike(id, user.id);
+      setLengthState(lengthState - 1);
+    }
   }
 
   const UserHasLiked = () => {
@@ -185,9 +196,9 @@ export default function Post({
           }
           className={classes.button}
           size="small"
-          onClick={() => onClick}
+          onClick={() => onToggleClick()}
         >
-          Toggle
+          Comments {numberComments !== 0 ? numberComments : ""}
         </Button>
         <Button
           startIcon={<ShareIcon />}

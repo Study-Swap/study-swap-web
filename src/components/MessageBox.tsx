@@ -7,6 +7,7 @@ import React, {
   Fragment,
 } from "react";
 import { UserContext } from "../constants/UserContext";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 import { makeStyles } from "@material-ui/core/styles";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
@@ -103,7 +104,7 @@ export default function MessageBox({ chatId }: MessageBoxProps) {
     }
   }
 
-  useEffect(() => {
+  useAuthEffect(() => {
     console.log(chatId + "messages is loading");
     const unsubscribe = watchMessages(chatId, setMessageArray); // userId is hardcoded for now
 

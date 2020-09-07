@@ -1,5 +1,11 @@
 // eslint-disable-next-line
-import React, { useState, useContext, useEffect, Fragment } from "react";
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useRef,
+  Fragment,
+} from "react";
 import { UserContext } from "../constants/UserContext";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,7 +21,8 @@ import ChatsToolbar2 from "../components/ChatsToolbar2";
 import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel, messageModel } from "../constants/Models";
-import { addMessages, watchChats } from "../utils/firebaseUtils/chats";
+import { addMessages, watchChats } from "../utils/firebaseUtils";
+import { useAuthEffect } from "../hooks/useAuthEffect";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   rootChat: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
-    height: 355,
+    //maxHeight: 355,
     overflow: "auto",
   },
 
@@ -63,6 +70,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function InputGrid({ setHeight, currentChat }: any) {
+  const ref = useRef<null | HTMLDivElement>(null);
+  console.log(ref);
+
+  useEffect(() => {
+    console.log("changing");
+    if (ref !== null) {
+      if (ref.current) {
+        console.log(ref.current.clientHeight);
+        setHeight(ref.current.clientHeight);
+      }
+    }
+  }, [ref.current?.clientHeight]);
+
+  return (
+    <Grid item style={{ minHeight: 40, backgroundColor: "#f0f0f0" }} ref={ref}>
+      <WriteMessage
+        chatId={currentChat.id}
+        submitMessage={(message: messageModel) => {
+          addMessages(message);
+        }}
+      />
+    </Grid>
+  );
+}
+
 export default function Chats() {
   // Context
   const { user, setUser } = useContext(UserContext);
@@ -76,11 +109,13 @@ export default function Chats() {
     messages: [],
   });
 
+  const [divHeight, setHeight] = useState<number>(40);
+
   const onClick = (chat: chatsModel) => {
     setCurrentChat(chat);
   };
 
-  useEffect(() => {
+  useAuthEffect(() => {
     const unsubscribe = watchChats(user.id, setMyChats); // userId is hardcoded for now
 
     return () => unsubscribe();
@@ -136,25 +171,21 @@ export default function Chats() {
               <ChatsToolbar2 currentChat={currentChat} />
             </Grid>
             <Divider />
-            <Grid // all the messages rendered in this at Grid items in MessageBox
-              item
-              container
-              className={classes.rootChat}
-              direction="row"
-              alignContent="flex-start"
-              spacing={0}
-            >
-              <MessageBox chatId={currentChat.id ? currentChat.id : ""} />
-            </Grid>
-            <Divider />
-            <Grid item style={{ height: 40, backgroundColor: "#f0f0f0" }}>
-              <WriteMessage
-                chatId={currentChat.id}
-                submitMessage={(message: messageModel) => {
-                  addMessages(message);
-                }}
-              />
-            </Grid>
+            <div style={{ maxHeight: 395 }}>
+              <Grid // all the messages rendered in this at Grid items in MessageBox
+                item
+                container
+                className={classes.rootChat}
+                style={{ height: 395 - divHeight }}
+                direction="row"
+                alignContent="flex-start"
+                spacing={0}
+              >
+                <MessageBox chatId={currentChat.id ? currentChat.id : ""} />
+              </Grid>
+              <Divider />
+              <InputGrid setHeight={setHeight} currentChat={currentChat} />
+            </div>
           </Grid>
         </Grid>
       </div>

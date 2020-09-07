@@ -8,7 +8,7 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 
 import { theme } from "./constants/theme";
-import { menuList, routes, privateRoutes } from "./views";
+import { menuList, routes } from "./views";
 import { Copyright } from "./components/Copyright";
 import AppLayout from "./components/AppLayout";
 import { UserContext } from "./constants/UserContext";
@@ -31,6 +31,7 @@ function App() {
     grade: "",
     classNames: [""],
     profilePicture: "",
+    isAdmin: "",
   });
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
@@ -56,14 +57,14 @@ function App() {
       <div className={classes.root}>
         <CssBaseline />
         <Router history={history}>
-          <AppLayout
-            menuList={menuList}
-            userProfilePic={user.profilePicture ? user.profilePicture : ""}
-          />
-          <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
-              <UserContext.Provider value={value}>
+          <UserContext.Provider value={value}>
+            <AppLayout
+              menuList={menuList}
+              userProfilePic={user.profilePicture ? user.profilePicture : ""}
+            />
+            <main className={classes.content}>
+              <div className={classes.appBarSpacer} />
+              <Container maxWidth="lg" className={classes.container}>
                 <Switch>
                   {routes.map((element: any) => (
                     <Route
@@ -73,21 +74,14 @@ function App() {
                       userId={user.id}
                     />
                   ))}
-                  {privateRoutes.map((element: any) => (
-                    <PrivateRoute
-                      path={element.path}
-                      component={element.component}
-                      key={element.path}
-                      userId={user.id}
-                    />
-                  ))}
                 </Switch>
-              </UserContext.Provider>
-              <Box pt={4}>
-                <Copyright />
-              </Box>
-            </Container>
-          </main>
+
+                <Box pt={4}>
+                  <Copyright />
+                </Box>
+              </Container>
+            </main>
+          </UserContext.Provider>
         </Router>
       </div>
     </ThemeProvider>
@@ -97,7 +91,7 @@ function App() {
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    backgroundColor: "#D7D7D7",
+    backgroundColor: "#DBE6F5",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
