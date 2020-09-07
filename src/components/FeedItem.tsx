@@ -83,7 +83,9 @@ export default function FeedItem({
       .catch((err) => console.error(err));
   }, []);
 
-  const handleCommentChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleCommentChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setNewCommentInput(event.target.value);
   }; //updates stored value of new comment input field
 

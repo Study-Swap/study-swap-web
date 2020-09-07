@@ -137,9 +137,8 @@ export default function ViewProfile({
                     <MenuItem
                       onClick={() => {
                         if (setUser) {
-                          logoutUser(setUser).then(() => {
-                            history.push("/login");
-                          });
+                          history.push("/login");
+                          logoutUser(setUser);
                         }
                       }}
                       style={{

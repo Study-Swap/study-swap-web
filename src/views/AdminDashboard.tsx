@@ -31,12 +31,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import {
-  dummyClassList,
-  dummyChartData,
-  dummyUnreadMessages,
-  dummyRecentActivity,
-} from "../DummyData/adminDashboard";
+
 import { recentActivityTypes } from "../constants/types/recentActivityTypes";
 import {
   Warning as WarningIcon,
@@ -66,6 +61,7 @@ export default function AdminDashboard() {
 
   const [rosterLoading, setRosterLoading] = useState<boolean>(true);
   const [recentLoading, setRecentLoading] = useState<boolean>(true);
+  const [messageLoading, setMessageLoading] = useState<boolean>(true);
 
   const [graphData, setGraphData] = useState<any[]>([]);
 
@@ -80,6 +76,7 @@ export default function AdminDashboard() {
     getGraphData().then((data) => setGraphData(data));
     getRecentMessages(3, user.chats).then((res) => {
       setUnreadMessages(res);
+      setMessageLoading(false);
     });
   }, []);
 
@@ -163,35 +160,39 @@ export default function AdminDashboard() {
         </Grid>
         <Grid item xs={12} sm={12} md={5}>
           <DashboardItemTitle>
-            Unread Messages ({dummyUnreadMessages.length})
+            Unread Messages ({unreadMessages.length})
           </DashboardItemTitle>
           <Paper className={clsx(classes.paper, classes.secondRow)}>
-            <List disablePadding={true}>
-              {unreadMessages.map((message: any, index: number) => {
-                const { senderName, senderProfilePic, messageText } = message;
-                return (
-                  <Fragment key={index}>
-                    {" "}
-                    <ListItem
-                      alignItems="flex-start"
-                      className={classes.message}
-                      onClick={() => {
-                        history.push(`/chats/${index}`);
-                      }}
-                    >
-                      <ListItemAvatar>
-                        <Avatar alt={senderName} src={senderProfilePic} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={senderName}
-                        secondary={<>{messageText}</>}
-                      />
-                    </ListItem>
-                    <Divider variant="fullWidth" component="li" />{" "}
-                  </Fragment>
-                );
-              })}
-            </List>
+            {messageLoading ? (
+              <CircularProgress style={{ marginTop: 65 }} />
+            ) : (
+              <List disablePadding={true}>
+                {unreadMessages.map((message: any, index: number) => {
+                  const { senderName, senderProfilePic, messageText } = message;
+                  return (
+                    <Fragment key={index}>
+                      {" "}
+                      <ListItem
+                        alignItems="flex-start"
+                        className={classes.message}
+                        onClick={() => {
+                          history.push(`/chats/${index}`);
+                        }}
+                      >
+                        <ListItemAvatar>
+                          <Avatar alt={senderName} src={senderProfilePic} />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={senderName}
+                          secondary={<>{messageText}</>}
+                        />
+                      </ListItem>
+                      <Divider variant="fullWidth" component="li" />{" "}
+                    </Fragment>
+                  );
+                })}
+              </List>
+            )}
           </Paper>
         </Grid>
         <Grid item xs={12} sm={12} md={7}>

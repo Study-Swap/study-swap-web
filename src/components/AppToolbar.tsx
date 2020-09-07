@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import HelpIcon from "@material-ui/icons/Help";
@@ -61,15 +60,6 @@ const AppToolbar = ({
         >
           <MenuIcon />
         </IconButton>
-        {/*<Typography
-          component="h1"
-          variant="h6"
-          color="inherit"
-          noWrap
-          className={classes.title}
-        >
-          {title}
-        </Typography>*/}
         <img
           src={require("../constants/StudySwapLogo.jpeg")}
           style={{ height: 45, width: 160 }}

@@ -93,7 +93,7 @@ async function addUser(
                   chats,
                   signedUp: true,
                   schedule: [],
-                  classNames: ["EECS 281", "EECS 376"],
+                  classNames: ["ENGR 100"],
                   isAdmin: false,
                 })
                 .then(() => {

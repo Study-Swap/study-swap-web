@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, ChangeEvent } from "react";
 import { UserContext } from "../constants/UserContext";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,11 +35,17 @@ const useStyles = makeStyles((theme) => ({
 
 interface NewCommentProps {
   value: string;
-  onChange: Function;
-  onClick: Function;
+  onChange: (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
+  onClick: any;
 }
 
-export default function NewComment({ value, onChange, onClick }: any) {
+export default function NewComment({
+  value,
+  onChange,
+  onClick,
+}: NewCommentProps) {
   // Context
   const { user, setUser } = useContext(UserContext);
   const classes = useStyles();
@@ -67,7 +73,6 @@ export default function NewComment({ value, onChange, onClick }: any) {
       </Grid>
       <Grid item xs={1}>
         <IconButton
-          type="submit"
           className={classes.iconButton}
           aria-label="Comment"
           onClick={onClick}

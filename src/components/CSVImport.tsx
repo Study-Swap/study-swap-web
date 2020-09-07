@@ -13,7 +13,7 @@ interface CSVImportProps {
   setHasRoster?: Function;
 }
 
-export default function CSVImport({ classId, setHasRoster }: any) {
+export default function CSVImport({ classId, setHasRoster }: CSVImportProps) {
   return (
     <input
       type="file"
@@ -47,7 +47,7 @@ export default function CSVImport({ classId, setHasRoster }: any) {
           console.log(uniquenames);
           console.log(names);
           addUsersByEmail("1", uniquenames, names).then(() => {
-            setHasRoster(true);
+            if (setHasRoster) setHasRoster(true);
           });
         };
         reader.readAsBinaryString(file);
