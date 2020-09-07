@@ -17,6 +17,7 @@ import {
   getCurrentChatMembers,
   addMember,
   leaveChat,
+  updateChatName,
 } from "../utils/firebaseUtils/chats";
 import { chatsModel } from "../constants/Models";
 
@@ -48,7 +49,9 @@ export default function EditChat({ currentChat, handleClose }: EditChatProps) {
   const { user, setUser } = useContext(UserContext);
 
   const classes = useStyles();
-  const [chatName, setChatName] = useState(currentChat.chatName);
+  const [chatName, setChatName] = useState<string | undefined>(
+    currentChat.chatName
+  );
   const [newSelection, setSelection] = useState<string | null>("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
   const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
@@ -217,6 +220,7 @@ export default function EditChat({ currentChat, handleClose }: EditChatProps) {
             size="small"
             variant="contained"
             color="secondary"
+            disabled={chatName == "" || chatName == null}
             onClick={() => {
               handleClose();
 
@@ -232,6 +236,10 @@ export default function EditChat({ currentChat, handleClose }: EditChatProps) {
               toDelete.forEach((userId: string) => {
                 leaveChat(userId, currentId);
               });
+
+              if (chatName != null && chatName != "") {
+                updateChatName(currentChat.id, chatName);
+              }
             }}
           >
             Confirm

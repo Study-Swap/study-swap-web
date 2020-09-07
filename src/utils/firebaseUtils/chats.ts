@@ -310,6 +310,18 @@ function getCurrentChatMembers(chatId: any, userId: string): Promise<any> {
     });
 }
 
+function updateChatName(chatId: any, newName: string) {
+  const ref = chatsDB.doc(chatId);
+
+  ref
+    .update({
+      chatName: newName,
+    })
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
+
 export {
   watchMessages,
   addMessages,
@@ -320,4 +332,5 @@ export {
   getMessage,
   watchChats,
   getCurrentChatMembers,
+  updateChatName,
 };
