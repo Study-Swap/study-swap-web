@@ -52,13 +52,23 @@ export default function ChatsToolbar2({ currentChat }: ChatsToolbarProps) {
       </Grid>
 
       <Grid item>
-        <IconButton aria-describedby={id} type="button" onClick={handleClick}>
+        <IconButton
+          aria-describedby={id}
+          type="button"
+          onClick={handleClick}
+          disabled={currentChat.id == ""}
+        >
           <InfoIcon />
         </IconButton>
         <Popper id={id} open={open} anchorEl={anchorEl} placement="bottom-end">
           <div>
             {" "}
-            <EditChat currentChat={currentChat} />
+            <EditChat
+              currentChat={currentChat}
+              handleClose={() => {
+                setAnchorEl(null);
+              }}
+            />
           </div>
         </Popper>
       </Grid>

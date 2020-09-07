@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, useContext } from "react";
 import { useAuthEffect } from "../hooks/useAuthEffect";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -8,14 +8,22 @@ import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
+import { UserContext } from "../constants/UserContext";
 
 import MembersList from "./MembersList";
 import SearchBox from "./SearchBox";
-
+  
+import {
+  getCurrentChatMembers,
+  addMember,
+  leaveChat,
+  updateChatName,
+} from "../utils/firebaseUtils/chats";
 import { getUsersForChatCreation } from "../utils/firebaseUtils";
+  
 import { chatsModel } from "../constants/Models";
-
 import { nameAndId } from "../constants/types/rosterTypes";
+import { FormatListBulleted } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,21 +43,57 @@ const useStyles = makeStyles((theme) => ({
 
 interface EditChatProps {
   currentChat: chatsModel;
+  handleClose: Function;
 }
 
-export default function EditChat({ currentChat }: EditChatProps) {
+export default function EditChat({ currentChat, handleClose }: EditChatProps) {
+  const { user, setUser } = useContext(UserContext);
+
   const classes = useStyles();
-  const [chatName, setChatName] = useState(currentChat.chatName);
+  const [chatName, setChatName] = useState<string | undefined>(
+    currentChat.chatName
+  );
   const [newSelection, setSelection] = useState<string | null>("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
   const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  const [toDelete, setToDelete] = useState<string[]>([]);
+  const [toAdd, setToAdd] = useState<string[]>([]);
+
+  function checkIfPresent(temp: nameAndId[], el: nameAndId) {
+    let toReturn = false;
+    temp.forEach((mem: nameAndId) => {
+      if (mem.memberId == el.memberId) {
+        console.log(mem.memberId + " is equal to " + el.memberId);
+        toReturn = true;
+      }
+    });
+
+    return toReturn;
+  }
+
   useAuthEffect(() => {
-    getUsersForChatCreation()
-      .then((res: any) => {
-        setCurrentOptions(res);
-        console.log(res);
+    getUsersForChatCreation(user.id)
+      .then((options: any) => {
+        //setCurrentOptions(res);
+
+        getCurrentChatMembers(currentChat.id, user.id)
+          .then((members: any) => {
+            setCurrentMembers(members);
+
+            options = options.filter(
+              (el: nameAndId) => !checkIfPresent(members, el)
+            );
+            //console.log(temp);
+            //console.log(members.includes(options[1]))
+            //console.log(members)
+
+            setCurrentOptions(options);
+          })
+          .catch((err: any) => {
+            console.log(err);
+          });
       })
       .catch((err: any) => {
         console.log(err);
@@ -91,6 +135,8 @@ export default function EditChat({ currentChat }: EditChatProps) {
               options={currentOptions}
               dropDownHeight="90px"
               onChange={(user: nameAndId) => {
+                setToAdd([...toAdd, user.memberId]);
+
                 setCurrentMembers([...currentMembers, user]);
                 let toRemove = 0;
                 currentOptions.filter((member, index) => {
@@ -111,10 +157,11 @@ export default function EditChat({ currentChat }: EditChatProps) {
           <Grid item xs={12} style={{ minHeight: "160px" }}>
             <MembersList
               currentMembers={currentMembers}
-              onDelete={(toDelete: nameAndId) => {
+              onDelete={(user: nameAndId) => {
+                setToDelete([...toDelete, user.memberId]);
                 let toRemove = 0;
                 currentMembers.filter((member, index) => {
-                  if (member.memberId == toDelete.memberId) {
+                  if (member.memberId == user.memberId) {
                     toRemove = index;
                   }
                 });
@@ -122,7 +169,7 @@ export default function EditChat({ currentChat }: EditChatProps) {
                   ...currentMembers.slice(0, toRemove),
                   ...currentMembers.slice(toRemove + 1),
                 ]);
-                setCurrentOptions([...currentOptions, toDelete]);
+                setCurrentOptions([...currentOptions, user]);
               }}
             />
           </Grid>
@@ -136,19 +183,66 @@ export default function EditChat({ currentChat }: EditChatProps) {
       <Grid
         container
         item
-        justifyContent="flex-end"
+        justifyContent="space-between"
         alignItems="center"
         spacing={1}
-        style={{ height: "50px" }}
+        style={{ height: "50px", width: "95%", marginLeft: "10px" }}
       >
         <Grid item>
-          <Button size="small" variant="contained">
+          <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              handleClose();
+              let currentId: string = "";
+              if (currentChat.id != null) {
+                currentId = currentChat.id;
+              }
+              leaveChat(user.id, currentId);
+            }}
+          >
+            Leave
+          </Button>
+        </Grid>
+
+        <Grid item>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={() => handleClose()}
+          >
             Cancel
           </Button>
         </Grid>
 
         <Grid item>
-          <Button size="small" variant="contained" color="secondary">
+          <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            disabled={chatName == "" || chatName == null}
+            onClick={() => {
+              handleClose();
+
+              let currentId: string = "";
+              if (currentChat.id != null) {
+                currentId = currentChat.id;
+              }
+
+              toAdd.forEach((userId: string) => {
+                addMember(userId, currentId);
+              });
+
+              toDelete.forEach((userId: string) => {
+                leaveChat(userId, currentId);
+              });
+
+              if (chatName != null && chatName != "") {
+                updateChatName(currentChat.id, chatName);
+              }
+            }}
+          >
             Confirm
           </Button>
         </Grid>

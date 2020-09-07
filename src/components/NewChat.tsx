@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent, useContext } from "react";
 import { useAuthEffect } from "../hooks/useAuthEffect";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,6 +9,7 @@ import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import CardContent from "@material-ui/core/CardContent";
+import { UserContext } from "../constants/UserContext";
 
 import SearchBox from "./SearchBox";
 import MembersList from "./MembersList";
@@ -42,10 +43,13 @@ interface NewChatProps {
 }
 
 export default function NewChat({ closeModal }: NewChatProps) {
+  const { user, setUser } = useContext(UserContext);
+
   const classes = useStyles();
   const [chatName, setChatName] = useState("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
   const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
+
 
   useAuthEffect(() => {
     getUsersForChatCreation()
@@ -162,12 +166,15 @@ export default function NewChat({ closeModal }: NewChatProps) {
                     memberIds[index] = member.memberId;
                     memberNames[index] = member.memberName;
                   });
+                  memberNames.push(user.firstName + " " + user.lastName);
+                  memberIds.push(user.id);
                   addChats({
                     chatName: chatName,
                     members: memberIds,
                     memberNames: memberNames,
                     messages: [],
                   });
+                  closeModal();
                 }}
               >
                 Create
