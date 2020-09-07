@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   leftSide: {
-    backgroundColor: "#dedcdf",
+    backgroundColor: "#f0f0f0",
   },
 
   list: {

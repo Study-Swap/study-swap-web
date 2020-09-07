@@ -106,7 +106,7 @@ export default function SignUp() {
         <img
           src={require("../constants/Class_Logos/Company.png")}
           alt="Website Logo"
-          style={{ height: 98, padding: 3, width: 348 }}
+          style={{ height: 118.2, padding: 3, width: 322.8 }}
         />
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
