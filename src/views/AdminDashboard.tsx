@@ -49,6 +49,7 @@ import {
   getClasses,
   getGraphData,
   getChats,
+  getRecentMessages,
 } from "../utils/firebaseUtils";
 import { createRecentActivity } from "../utils/recentActivityUtils";
 
@@ -61,6 +62,7 @@ export default function AdminDashboard() {
   const [hasRoster, setHasRoster] = useState<boolean | null>(false);
   const [roster, setRoster] = useState<any[]>([]);
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
+  const [unreadMessages, setUnreadMessages] = useState<any>([]);
 
   const [rosterLoading, setRosterLoading] = useState<boolean>(true);
   const [recentLoading, setRecentLoading] = useState<boolean>(true);
@@ -76,6 +78,9 @@ export default function AdminDashboard() {
       setRecentLoading(false);
     });
     getGraphData().then((data) => setGraphData(data));
+    getRecentMessages(3, user.chats).then((res) => {
+      setUnreadMessages(res);
+    });
   }, []);
 
   useAuthEffect(() => {
@@ -162,8 +167,8 @@ export default function AdminDashboard() {
           </DashboardItemTitle>
           <Paper className={clsx(classes.paper, classes.secondRow)}>
             <List disablePadding={true}>
-              {dummyUnreadMessages.map((message, index) => {
-                const { senderName, subject, messageText } = message;
+              {unreadMessages.map((message: any, index: number) => {
+                const { senderName, senderProfilePic, messageText } = message;
                 return (
                   <Fragment key={index}>
                     {" "}
@@ -175,13 +180,10 @@ export default function AdminDashboard() {
                       }}
                     >
                       <ListItemAvatar>
-                        <Avatar
-                          alt={senderName}
-                          src="/static/images/avatar/1.jpg"
-                        />
+                        <Avatar alt={senderName} src={senderProfilePic} />
                       </ListItemAvatar>
                       <ListItemText
-                        primary={subject}
+                        primary={senderName}
                         secondary={<>{messageText}</>}
                       />
                     </ListItem>

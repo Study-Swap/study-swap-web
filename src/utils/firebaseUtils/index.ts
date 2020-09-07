@@ -49,6 +49,7 @@ import {
   watchChats,
   getCurrentChatMembers,
   updateChatName,
+  getRecentMessages,
 } from "./chats";
 
 import {
@@ -120,4 +121,5 @@ export {
   getGraphData,
   getCurrentChatMembers,
   updateChatName,
+  getRecentMessages,
 };

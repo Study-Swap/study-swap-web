@@ -326,6 +326,40 @@ function updateChatName(chatId: any, newName: string) {
     });
 }
 
+function getRecentMessages(
+  numDays: number,
+  chatList: string[]
+): Promise<messageModel[]> {
+  var date = new Date();
+  date.setDate(date.getDate() - numDays);
+  const dayRange = firebaseApp.firestore.Timestamp.fromDate(date);
+  return messagesDB
+    .where("chatId", "in", chatList)
+    .where("timestamp", ">=", dayRange)
+    .orderBy("timestamp", "asc")
+    .get()
+    .then((querySnapshot) => {
+      const messages: Array<messageModel> = [];
+      querySnapshot.forEach(
+        async (message: any): Promise<void> => {
+          const data = await message.data({ serverTimestamps: "estimate" });
+          messages.unshift({
+            id: message.id,
+            chatId: data.chatId,
+            messageText: data.messageText,
+            senderId: data.senderId,
+            senderName: data.senderName,
+            senderProfilePic: data.senderProfilePic,
+            timestamp: data.timestamp
+              ? data.timestamp.toDate().toDateString()
+              : new Date().toDateString(),
+          });
+        }
+      );
+      return messages;
+    });
+}
+
 export {
   watchMessages,
   addMessages,
@@ -337,4 +371,5 @@ export {
   watchChats,
   getCurrentChatMembers,
   updateChatName,
+  getRecentMessages,
 };
