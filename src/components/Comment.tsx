@@ -11,10 +11,7 @@ import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 
 import history from "../utils/historyUtils";
 
-import {
-  addCommentLike,
-  removeCommentLike,
-} from "../utils/firebaseUtils/comments";
+import { addCommentLike, removeCommentLike } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles((theme) => ({
   root: {

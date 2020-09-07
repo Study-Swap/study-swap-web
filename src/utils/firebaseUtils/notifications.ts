@@ -37,6 +37,7 @@ function getNotifications(userId: string): Promise<any> {
             timestamp: data.timestamp.toDate().toDateString(),
           });
         });
+        console.log(notifications);
         return notifications;
       }
     )
@@ -84,7 +85,7 @@ function sendTrending(notificationData: notificationDataType) {
   });
 }
 
-function sendLikeComment(notificationData: notificationDataType) {
+function sendLike(notificationData: notificationDataType) {
   const {
     userId,
     senderName,
@@ -96,7 +97,25 @@ function sendLikeComment(notificationData: notificationDataType) {
     senderName,
     notificationText,
     profilePicture,
-    kind: notificationTypes.LIKE_COMMENT,
+    kind: notificationTypes.LIKE,
+  }).then(() => {
+    console.log("notification sent");
+  });
+}
+
+function sendComment(notificationData: notificationDataType) {
+  const {
+    userId,
+    senderName,
+    notificationText,
+    profilePicture,
+  } = notificationData;
+  sendNotification({
+    userId,
+    senderName,
+    notificationText,
+    profilePicture,
+    kind: notificationTypes.COMMENT,
   }).then(() => {
     console.log("notification sent");
   });
@@ -142,7 +161,8 @@ export {
   getNotifications,
   readNotification,
   sendTrending,
-  sendLikeComment,
+  sendLike,
   sendNewChat,
   sendAdminAccess,
+  sendComment,
 };

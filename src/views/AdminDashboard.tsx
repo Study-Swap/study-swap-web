@@ -48,6 +48,7 @@ import {
   getClassRoster,
   getClasses,
   getGraphData,
+  getChats,
 } from "../utils/firebaseUtils";
 import { createRecentActivity } from "../utils/recentActivityUtils";
 

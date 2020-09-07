@@ -73,6 +73,7 @@ async function addUser(
                   chats,
                   signedUp: true,
                   schedule: [],
+                  isAdmin: false,
                 })
                 .then(() => {
                   // To make sure they validate email
@@ -93,6 +94,7 @@ async function addUser(
                   signedUp: true,
                   schedule: [],
                   classNames: ["EECS 281", "EECS 376"],
+                  isAdmin: false,
                 })
                 .then(() => {
                   // To make sure they validate email
@@ -199,6 +201,7 @@ function addUsersByEmail(
               signedUp: false,
               firstName: fullNames[index][0],
               lastName: fullNames[index][1],
+              isAdmin: false,
             });
           } else {
             userDB.doc(res.docs[0].id).update({
@@ -274,7 +277,11 @@ function addUsagePoint(userId: string): void {
     .get()
     .then((model: firebaseApp.firestore.DocumentData): void => {
       if (model.empty) {
-        usageDB.add({ date: date.toDateString(), users: [userId] });
+        usageDB.add({
+          date: date.toDateString(),
+          users: [userId],
+          timestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+        });
       } else {
         usageDB.doc(model.docs[0].id).update({
           users: firebaseApp.firestore.FieldValue.arrayUnion(userId),

@@ -21,7 +21,7 @@ import ChatsToolbar2 from "../components/ChatsToolbar2";
 import WriteMessage from "../components/WriteMessage";
 
 import { chatsModel, messageModel } from "../constants/Models";
-import { addMessages, watchChats } from "../utils/firebaseUtils/chats";
+import { addMessages, watchChats } from "../utils/firebaseUtils";
 import { useAuthEffect } from "../hooks/useAuthEffect";
 
 const useStyles = makeStyles((theme) => ({

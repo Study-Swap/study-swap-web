@@ -183,7 +183,7 @@ interface LikeCommentProps {
   profilePicture: string;
 }
 
-const LikeCommentNotification = ({
+const LikeNotification = ({
   senderName,
   notificationText,
   timestamp,
@@ -227,6 +227,112 @@ const LikeCommentNotification = ({
                 <Typography gutterBottom variant="body2">
                   <strong>{senderName}</strong> <strong>liked</strong> your
                   post: {formatString(notificationText, 70)}
+                </Typography>
+              </Grid>
+              <Grid item xs>
+                <Typography variant="body2" gutterBottom>
+                  {timestamp}
+                </Typography>
+              </Grid>
+            </Grid>
+            <Grid item xs={1}>
+              <Popover
+                id={open ? "notification-popup" : undefined}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+                <Paper className={classes.popper}>
+                  <Paper
+                    className={classes.popperItem}
+                    elevation={0}
+                    onClick={() => {
+                      setNotifRead(true);
+                      setAnchorEl(null);
+                      readNotification(id);
+                    }}
+                  >
+                    Mark as Read
+                  </Paper>
+                  <Paper
+                    className={classes.popperItem}
+                    elevation={0}
+                    onClick={handleClose}
+                  >
+                    Remove Notification
+                  </Paper>
+                  <Paper
+                    className={classes.popperItem}
+                    elevation={0}
+                    onClick={handleClose}
+                  >
+                    Report to Notification Team
+                  </Paper>
+                </Paper>
+              </Popover>
+              <IconButton aria-label="more-options" onClick={handleClick}>
+                <MoreVertIcon fontSize="small" />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Paper>
+    </div>
+  );
+};
+
+const CommentNotification = ({
+  senderName,
+  notificationText,
+  timestamp,
+  read,
+  id,
+  profilePicture,
+}: LikeCommentProps) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [notifRead, setNotifRead] = useState<boolean>(read);
+
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+  return (
+    <div className={classes.root}>
+      <Paper
+        className={notifRead ? classes.readPaper : classes.unreadPaper}
+        elevation={0}
+      >
+        <Grid container spacing={2}>
+          <Grid item>
+            <div className={classes.profileImage}>
+              <img
+                className={classes.img}
+                alt="profile pic"
+                src={profilePicture}
+              />
+            </div>
+          </Grid>
+          <Grid item xs={12} sm container>
+            <Grid item xs={11} container direction="column">
+              <Grid item xs>
+                <Typography gutterBottom variant="body2">
+                  <strong>{senderName}</strong> <strong>commented</strong> on
+                  your post: {formatString(notificationText, 70)}
                 </Typography>
               </Grid>
               <Grid item xs>
@@ -559,9 +665,20 @@ export default function NotificationItem({
           profilePicture={profilePicture}
         />
       );
-    case notificationTypes.LIKE_COMMENT:
+    case notificationTypes.LIKE:
       return (
-        <LikeCommentNotification
+        <LikeNotification
+          senderName={senderName}
+          notificationText={notificationText}
+          timestamp={timestamp}
+          read={read}
+          id={id}
+          profilePicture={profilePicture}
+        />
+      );
+    case notificationTypes.COMMENT:
+      return (
+        <CommentNotification
           senderName={senderName}
           notificationText={notificationText}
           timestamp={timestamp}

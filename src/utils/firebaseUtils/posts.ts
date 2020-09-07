@@ -4,6 +4,8 @@ import firebase from "../../constants/Firebase";
 import { collections } from "../../constants/FirebaseStrings";
 import { postModel } from "../../constants/Models";
 
+import { postAnalytics } from "../analyticsUtils";
+
 // Makes code cleaner
 const postsDB = firebase.firestore().collection(collections.posts);
 const usersDB = firebase.firestore().collection(collections.users);
@@ -61,7 +63,7 @@ function getUserPosts(userId: string): Promise<postModel[] | void> {
         const posts: Array<postModel> = [];
         snapShot.forEach((post: any): void => {
           const data = post.data();
-          posts.push({
+          posts.unshift({
             userId: data.userId,
             classId: data.classId,
             postText: data.postText,
@@ -127,6 +129,7 @@ function addPost(
     })
     .then((addedPost: any) => {
       const date = new Date();
+      postAnalytics(post.postText, addedPost.id);
       return { id: addedPost.id, timestamp: date.toDateString() };
     })
     .catch((err: any): void => {

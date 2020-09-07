@@ -36,14 +36,19 @@ const NotificationDropDown = ({
   const { innerWidth, innerHeight } = useWindowDimensions();
 
   useEffect(() => {
-    if (user.id)
+    console.log("getting notificaitons");
+    console.log(user.id);
+    if (user.id) {
+      console.log(user.id);
       getNotifications(user.id) // userId is hardcoded for now
         .then((res) => {
+          console.log(res);
           setNotificationData(res);
-          setNumNotifs(res.filter((notif: any) => notif.read).length);
+          setNumNotifs(res.filter((notif: any) => !notif.read).length);
         })
         .catch((err) => console.error(err));
-  }, []);
+    }
+  }, [user.id]);
 
   const handleClose = (event: MouseEvent<EventTarget>) => {
     if (

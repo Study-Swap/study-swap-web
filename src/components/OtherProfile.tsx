@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useAuthEffect } from "../hooks/useAuthEffect";
+import { UserContext } from "../constants/UserContext";
 
 import ViewProfile from "../components/ViewProfile2";
 import Scheduler from "../components/Scheduler";
 import UserFeed from "../components/UserFeed";
 
-import { getUser } from "../utils/firebaseUtils";
+import history from "../utils/historyUtils";
+import { getUser, addChats } from "../utils/firebaseUtils";
 import { userModel } from "../constants/Models";
 
 interface OtherProfileProps {
@@ -13,7 +15,8 @@ interface OtherProfileProps {
 }
 
 export default function OtherProfile({ userId }: OtherProfileProps) {
-  const [user, setUser] = useState<userModel | null>();
+  const { user } = useContext(UserContext);
+  const [otherUser, setUser] = useState<userModel | null>();
 
   useAuthEffect(() => {
     getUser(userId).then((res) => {
@@ -21,20 +24,35 @@ export default function OtherProfile({ userId }: OtherProfileProps) {
     });
   }, []);
 
-  if (user) {
+  const messagingClick = () => {
+    addChats({
+      chatName: "",
+      members: [userId, user.id],
+      memberNames: [
+        `${user.firstName} ${user.lastName}`,
+        `${otherUser?.firstName} ${otherUser?.lastName}`,
+      ],
+    });
+    history.push("/chats");
+  };
+
+  if (otherUser) {
     return (
       <>
         <ViewProfile
-          firstName={user.firstName}
-          lastName={user.lastName}
-          grade={user.grade ? user.grade : ""}
-          bio={user.bio ? user.bio : ""}
-          classIds={user.classes}
-          classNames={user.classNames}
-          profilePicture={user.profilePicture ? user.profilePicture : ""}
+          firstName={otherUser.firstName}
+          lastName={otherUser.lastName}
+          grade={otherUser.grade ? otherUser.grade : ""}
+          bio={otherUser.bio ? otherUser.bio : ""}
+          classIds={otherUser.classes}
+          classNames={otherUser.classNames}
+          profilePicture={
+            otherUser.profilePicture ? otherUser.profilePicture : ""
+          }
+          messagingClick={messagingClick}
         />
         <Scheduler
-          timeStrings={user.schedule ? user.schedule : []}
+          timeStrings={otherUser.schedule ? otherUser.schedule : []}
           isUser={false}
         />
         <br />

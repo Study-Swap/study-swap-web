@@ -13,8 +13,7 @@ import CardContent from "@material-ui/core/CardContent";
 import SearchBox from "./SearchBox";
 import MembersList from "./MembersList";
 
-import { addChats } from "../utils/firebaseUtils";
-import { getUsersForChatCreation } from "../utils/firebaseUtils/users";
+import { addChats, getUsersForChatCreation } from "../utils/firebaseUtils";
 
 import { nameAndId } from "../constants/types/rosterTypes";
 

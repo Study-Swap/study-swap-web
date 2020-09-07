@@ -1,6 +1,7 @@
 export enum notificationTypes {
   TRENDING_POST,
-  LIKE_COMMENT,
+  LIKE,
   NEW_CHAT,
   ADMIN_ACCESS,
+  COMMENT,
 }

@@ -12,7 +12,7 @@ import Comment from "../components/Comment";
 import NewComment from "../components/NewComment";
 
 import { commentModel } from "../constants/Models";
-import { getComments, addComment } from "../utils/firebaseUtils";
+import { getComments, addComment, sendComment } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles({
   root: {
@@ -120,6 +120,12 @@ export default function FeedItem({
           commenterProfilePic: user.profilePicture ? user.profilePicture : "",
         },
       ]);
+      sendComment({
+        userId: user.id,
+        senderName: `${user.firstName} ${user.lastName}`,
+        notificationText: newCommentInput,
+        profilePicture: user.profilePicture,
+      });
       setNewCommentInput("");
     });
   }

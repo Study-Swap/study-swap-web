@@ -31,6 +31,7 @@ function App() {
     grade: "",
     classNames: [""],
     profilePicture: "",
+    isAdmin: "",
   });
 
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
@@ -56,14 +57,14 @@ function App() {
       <div className={classes.root}>
         <CssBaseline />
         <Router history={history}>
-          <AppLayout
-            menuList={menuList}
-            userProfilePic={user.profilePicture ? user.profilePicture : ""}
-          />
-          <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-            <Container maxWidth="lg" className={classes.container}>
-              <UserContext.Provider value={value}>
+          <UserContext.Provider value={value}>
+            <AppLayout
+              menuList={menuList}
+              userProfilePic={user.profilePicture ? user.profilePicture : ""}
+            />
+            <main className={classes.content}>
+              <div className={classes.appBarSpacer} />
+              <Container maxWidth="lg" className={classes.container}>
                 <Switch>
                   {routes.map((element: any) => (
                     <Route
@@ -74,12 +75,13 @@ function App() {
                     />
                   ))}
                 </Switch>
-              </UserContext.Provider>
-              <Box pt={4}>
-                <Copyright />
-              </Box>
-            </Container>
-          </main>
+
+                <Box pt={4}>
+                  <Copyright />
+                </Box>
+              </Container>
+            </main>
+          </UserContext.Provider>
         </Router>
       </div>
     </ThemeProvider>

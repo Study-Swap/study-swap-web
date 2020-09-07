@@ -14,6 +14,7 @@ export interface userModel {
   signedUp?: boolean;
   schedule?: string[];
   profilePicture?: string; // will be firebase uri
+  isAdmin?: string;
 }
 
 export interface classModel {

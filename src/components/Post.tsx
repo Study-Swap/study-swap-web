@@ -14,10 +14,9 @@ import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import ChatBubbleIcon from "@material-ui/icons/ChatBubble";
 import ChatBubbleOutlineOutlinedIcon from "@material-ui/icons/ChatBubbleOutlineOutlined";
 import ShareIcon from "@material-ui/icons/Share";
-import Link from "@material-ui/icons/Link";
 import history from "../utils/historyUtils";
 
-import { addLike, removeLike } from "../utils/firebaseUtils/posts";
+import { addLike, removeLike, sendLike } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles({
   root: {
@@ -99,14 +98,24 @@ export default function Post({
 
   function hitLike() {
     setLikeState(true);
-    if (id) addLike(id, user.id);
-    setLengthState(lengthState + 1);
+    if (id) {
+      addLike(id, user.id);
+      setLengthState(lengthState + 1);
+      sendLike({
+        userId: user.id,
+        senderName: `${user.firstName} ${user.lastName}`,
+        notificationText: postText,
+        profilePicture: user.profilePicture,
+      });
+    }
   }
 
   function hitUnlike() {
     setLikeState(false);
-    if (id) removeLike(id, user.id);
-    setLengthState(lengthState - 1);
+    if (id) {
+      removeLike(id, user.id);
+      setLengthState(lengthState - 1);
+    }
   }
 
   const UserHasLiked = () => {
