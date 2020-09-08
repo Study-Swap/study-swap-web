@@ -76,6 +76,7 @@ export default function AdminDashboard() {
     getGraphData().then((data) => setGraphData(data));
     getRecentMessages(3, user.chats).then((res) => {
       setUnreadMessages(res);
+      console.log(res);
       setMessageLoading(false);
     });
   }, []);

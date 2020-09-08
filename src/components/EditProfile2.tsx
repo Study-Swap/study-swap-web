@@ -8,6 +8,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { getImageBase64String } from "../utils/imageUtils";
@@ -24,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     width: 150,
   },
   input: {
-    width: "80%",
+    width: "70%",
     padding: theme.spacing(2, 0),
   },
 }));
@@ -70,7 +71,7 @@ export default function EditProfile({
   return (
     <Paper
       className={classes.paper}
-      style={{ width: innerWidth * 0.8, height: innerHeight * 0.75 }}
+      style={{ width: innerWidth * 0.7, height: innerHeight * 0.75 }}
     >
       <div
         style={{
@@ -144,7 +145,21 @@ export default function EditProfile({
             name="bio"
             value={bio}
             onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              setBio(event.target.value as string);
+              if (event.target.value.length <= 200)
+                setBio(event.target.value as string);
+            }}
+            InputProps={{
+              endAdornment: (
+                <>
+                  {bio.length !== 0 ? (
+                    <InputAdornment position="end">
+                      <div>{bio.length}/200</div>
+                    </InputAdornment>
+                  ) : (
+                    <div />
+                  )}
+                </>
+              ),
             }}
           />
         </div>

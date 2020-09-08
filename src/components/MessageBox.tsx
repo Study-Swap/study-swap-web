@@ -129,6 +129,7 @@ export default function MessageBox({ chatId }: MessageBoxProps) {
           senderName,
           messageText,
           timestamp,
+          senderProfilePic,
         } = thisMessage;
         console.log(thisMessage);
 
@@ -164,8 +165,8 @@ export default function MessageBox({ chatId }: MessageBoxProps) {
               >
                 <Grid item>
                   <Avatar
-                    alt="Remy Sharp"
-                    src="/static/images/avatar/1.jpg"
+                    alt={senderName}
+                    src={senderProfilePic}
                     className={classes.media}
                     style={{
                       marginTop: checkName(senderName) ? "20px" : "0px",

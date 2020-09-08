@@ -103,6 +103,7 @@ export default function WriteMessage({
             messageText: value,
             senderId: user.id,
             senderName: `${user.firstName} ${user.lastName}`,
+            senderProfilePic: user.profilePicture,
           });
           setValue("");
         }}

@@ -166,27 +166,35 @@ export default function ViewProfile({
               )}
             </Grid>
             <br />
-            {classNames.map((name: string, index: number) => {
-              return (
-                <Grid item key={index}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "flex-end",
-                    }}
-                  >
-                    <ComputerIcon />
-                    <Link
-                      href={`/classes/${classIds[index]}`}
-                      style={{ fontSize: 15, marginRight: 30, marginLeft: 5 }}
-                    >
-                      {name}
-                    </Link>
-                  </div>
-                </Grid>
-              );
-            })}
+            <div style={{ maxHeight: 110, overflow: "auto" }}>
+              {classNames.map((name: string, index: number) => {
+                return (
+                  name && (
+                    <Grid item key={index}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "flex-end",
+                        }}
+                      >
+                        <ComputerIcon />
+                        <Link
+                          href={`/classes/${classIds[index]}`}
+                          style={{
+                            fontSize: 15,
+                            marginRight: 30,
+                            marginLeft: 5,
+                          }}
+                        >
+                          {name}
+                        </Link>
+                      </div>
+                    </Grid>
+                  )
+                );
+              })}
+            </div>
           </Grid>
         </Grid>
       </CardContent>

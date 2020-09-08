@@ -334,7 +334,7 @@ function getRecentMessages(
   date.setDate(date.getDate() - numDays);
   const dayRange = firebaseApp.firestore.Timestamp.fromDate(date);
   return messagesDB
-    .where("chatId", "in", chatList)
+    .where("chatId", "in", chatList.slice(0, 10))
     .where("timestamp", ">=", dayRange)
     .orderBy("timestamp", "asc")
     .get()
