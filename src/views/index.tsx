@@ -24,7 +24,7 @@ import HelpReqd from "./HelpReqd";
 export const menuList = [
   ["Home", <HomeIcon></HomeIcon>, "/home"],
   ["Chats", <ChatIcon></ChatIcon>, "/chats"],
-  ["Classes", <ClassIcon></ClassIcon>, "./classes"],
+  ["Classes", <ClassIcon></ClassIcon>, "/classes"],
 ];
 
 interface RouteType {

@@ -14,7 +14,7 @@ const usageDB = firebase.firestore().collection(collections.userUsage);
 var actionCodeSettings = {
   // URL you want to redirect back to. The domain (www.example.com) for this
   // URL must be whitelisted in the Firebase Console.
-  url: "http://localhost:3000/login",
+  url: "http://study-swap.com/login",
   // This must be true.
   handleCodeInApp: true,
 };
