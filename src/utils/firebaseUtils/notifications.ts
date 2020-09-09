@@ -26,7 +26,7 @@ function getNotifications(userId: string): Promise<any> {
         const notifications: Array<notificationModel> = [];
         snapShot.forEach((notification: any): void => {
           const data = notification.data();
-          notifications.push({
+          notifications.unshift({
             userId: data.userId,
             senderId: data.senderId,
             senderName: data.senderName,

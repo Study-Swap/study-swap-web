@@ -11,7 +11,13 @@ export function useAuthEffect(
       console.log("using auth divider");
       effectFunction();
     } else {
-      history.push("/not-logged-in");
+      setTimeout(() => {
+        if (firebase.auth().currentUser) {
+          effectFunction();
+        } else {
+          history.push("/not-logged-in");
+        }
+      }, 1000);
     }
   }, dependancyArray);
 }

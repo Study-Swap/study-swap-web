@@ -7,7 +7,7 @@ import Divider from "@material-ui/core/Divider";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import Avatar from "@material-ui/core/Avatar";
-import Link from "@material-ui/core/Link";
+import history from "../utils/historyUtils";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { getClassRoster } from "../utils/firebaseUtils";
@@ -42,6 +42,13 @@ const useStyles = makeStyles({
     paddingTop: 5,
     paddingRight: 12,
     paddingLeft: 12,
+  },
+  classItem: {
+    "&:hover": {
+      textDecoration: "underline",
+    },
+    color: "black",
+    fontSize: 16,
   },
 });
 
@@ -83,9 +90,17 @@ export default function ClassRoster() {
                 src={item.profilePicture}
               />
               <div style={{ marginLeft: 20 }}>
-                <Link style={{ color: "black", fontSize: 16 }}>
+                <Typography
+                  onClick={() => {
+                    history.push({
+                      pathname: "/profile",
+                      state: { userId: item.id },
+                    });
+                  }}
+                  className={classes.classItem}
+                >
                   {item.name}
-                </Link>
+                </Typography>
                 <Typography>{item.email.split("@")[0]}</Typography>
               </div>
             </Paper>

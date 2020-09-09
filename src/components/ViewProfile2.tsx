@@ -17,7 +17,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import history from "../utils/historyUtils";
 import { logoutUser } from "../utils/firebaseUtils";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     height: 200,
@@ -40,7 +40,16 @@ const useStyles = makeStyles({
   button: {
     height: 40,
   },
-});
+  classesNames: {
+    fontSize: 15,
+    marginRight: 30,
+    marginLeft: 5,
+    color: theme.palette.primary.main,
+    "&:hover": {
+      textDecoration: "underline",
+    },
+  },
+}));
 
 interface ViewProfileProps {
   firstName: string;
@@ -179,16 +188,16 @@ export default function ViewProfile({
                         }}
                       >
                         <ComputerIcon />
-                        <Link
-                          href={`/classes/${classIds[index]}`}
-                          style={{
-                            fontSize: 15,
-                            marginRight: 30,
-                            marginLeft: 5,
+                        <Typography
+                          className={classes.classesNames}
+                          onClick={() => {
+                            history.push({
+                              pathname: "https://www.google.com",
+                            });
                           }}
                         >
                           {name}
-                        </Link>
+                        </Typography>
                       </div>
                     </Grid>
                   )

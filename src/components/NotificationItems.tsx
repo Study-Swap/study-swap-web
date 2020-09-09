@@ -100,7 +100,7 @@ const TrendingPostNotification = ({
             <div className={classes.profileImage}>
               <img
                 className={classes.img}
-                alt="profile pic"
+                alt={senderName}
                 src={profilePicture}
               />
             </div>
@@ -216,7 +216,7 @@ const LikeNotification = ({
             <div className={classes.profileImage}>
               <img
                 className={classes.img}
-                alt="profile pic"
+                alt={senderName}
                 src={profilePicture}
               />
             </div>
@@ -322,7 +322,7 @@ const CommentNotification = ({
             <div className={classes.profileImage}>
               <img
                 className={classes.img}
-                alt="profile pic"
+                alt={senderName}
                 src={profilePicture}
               />
             </div>
@@ -437,7 +437,7 @@ const NewChatNotification = ({
             <div className={classes.profileImage}>
               <img
                 className={classes.img}
-                alt="profile pic"
+                alt={senderName}
                 src={profilePicture}
               />
             </div>

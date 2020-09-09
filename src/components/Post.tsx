@@ -102,7 +102,7 @@ export default function Post({
       addLike(id, user.id);
       setLengthState(lengthState + 1);
       sendLike({
-        userId: user.id,
+        userId: userId,
         senderName: `${user.firstName} ${user.lastName}`,
         notificationText: postText,
         profilePicture: user.profilePicture,

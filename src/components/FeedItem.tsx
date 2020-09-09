@@ -123,7 +123,7 @@ export default function FeedItem({
         },
       ]);
       sendComment({
-        userId: user.id,
+        userId: userId,
         senderName: `${user.firstName} ${user.lastName}`,
         notificationText: newCommentInput,
         profilePicture: user.profilePicture,

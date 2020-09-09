@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 
 import { ThemeProvider, makeStyles } from "@material-ui/core/styles";
@@ -74,6 +74,16 @@ function App() {
                       userId={user.id}
                     />
                   ))}
+                  <Route
+                    path="/"
+                    component={() => {
+                      return (
+                        <div>
+                          <Redirect to="/home" />
+                        </div>
+                      );
+                    }}
+                  />
                 </Switch>
 
                 <Box pt={4}>

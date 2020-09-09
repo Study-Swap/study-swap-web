@@ -59,7 +59,7 @@ export default function Login() {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email Address or uniquename"
             name="email"
             autoComplete="email"
             autoFocus
@@ -90,7 +90,12 @@ export default function Login() {
             color="primary"
             className={classes.submit}
             onClick={() => {
-              loginUser(email, password)
+              loginUser(
+                email.split("@").length === 1
+                  ? email.concat("@umich.edu")
+                  : email,
+                password
+              )
                 .then((user: any) => {
                   setUser(user);
                   history.push("/home");

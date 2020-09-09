@@ -263,6 +263,7 @@ function getClassRoster(classId: string): Promise<any> {
       snapshot.forEach((user) => {
         const { firstName, lastName, email, profilePicture } = user.data();
         classRoster.push({
+          id: user.id,
           name: `${firstName} ${lastName}`,
           email,
           profilePicture: profilePicture ? profilePicture : "",
