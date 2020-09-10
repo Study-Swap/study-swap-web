@@ -117,11 +117,12 @@ export default function Chats() {
   };
 
   useAuthEffect(() => {
+    if (user.id === "") return;
     let combinedName = user.firstName + " " + user.lastName;
     const unsubscribe = watchChats(user.id, combinedName, setMyChats); // userId is hardcoded for now
 
     return () => unsubscribe();
-  }, []);
+  }, [user.id]);
 
   return (
     <Container component="main" maxWidth="md">

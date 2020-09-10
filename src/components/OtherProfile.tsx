@@ -26,13 +26,19 @@ export default function OtherProfile({ userId }: OtherProfileProps) {
 
   const messagingClick = () => {
     addChats({
-      chatName: "",
+      chatName:
+        `${user.firstName} ${user.lastName}` +
+        "/" +
+        `${otherUser?.firstName} ${otherUser?.lastName}`,
       members: [userId, user.id],
       memberNames: [
         `${user.firstName} ${user.lastName}`,
         `${otherUser?.firstName} ${otherUser?.lastName}`,
       ],
+      messages: [],
+      isGroup: false,
     });
+
     history.push("/chats");
   };
 

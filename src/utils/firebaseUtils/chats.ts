@@ -120,6 +120,7 @@ function watchChats(
         }
       );
       setTimeout(() => {
+        console.log(chats);
         setChatArray(chats);
       }, 0);
     });
