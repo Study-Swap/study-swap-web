@@ -49,7 +49,6 @@ function configureDate(timestamp?: any) {
   var currentTime = new Date();
 
   if (timestamp) {
-    currentTime.toDateString() + " ---" + timestamp.toDate().toDateString();
     if (currentTime.toDateString() === timestamp.toDate().toDateString()) {
       return timestamp
         .toDate()
