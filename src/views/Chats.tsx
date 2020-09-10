@@ -72,13 +72,10 @@ const useStyles = makeStyles((theme) => ({
 
 function InputGrid({ setHeight, currentChat }: any) {
   const ref = useRef<null | HTMLDivElement>(null);
-  console.log(ref);
 
   useEffect(() => {
-    console.log("changing");
     if (ref !== null) {
       if (ref.current) {
-        console.log(ref.current.clientHeight);
         setHeight(ref.current.clientHeight);
       }
     }

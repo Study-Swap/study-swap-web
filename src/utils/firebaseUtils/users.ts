@@ -229,7 +229,6 @@ function editUser(user: userModel): void {
 
 //ENGR100 hardcoded for now, will take in a userModel once we set that up
 function getUsersForChatCreation(userId: string): Promise<any> {
-  console.log("getting users for chat creation");
   return userDB
     .where("classes", "array-contains", "1")
     .orderBy("firstName", "desc")
@@ -249,12 +248,11 @@ function getUsersForChatCreation(userId: string): Promise<any> {
       return toReturn;
     })
     .catch((err: any) => {
-      console.log(err);
+      console.error(err);
     });
 }
 
 function getClassRoster(classId: string): Promise<any> {
-  console.log("getting class roster");
   return userDB
     .where("classes", "array-contains", classId)
     .get()

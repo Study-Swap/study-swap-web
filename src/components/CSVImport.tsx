@@ -44,8 +44,6 @@ export default function CSVImport({ classId, setHasRoster }: CSVImportProps) {
               names.push([firstName, lastName]);
             }
           });
-          console.log(uniquenames);
-          console.log(names);
           addUsersByEmail("1", uniquenames, names).then(() => {
             if (setHasRoster) setHasRoster(true);
           });

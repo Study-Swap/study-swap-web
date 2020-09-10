@@ -17,13 +17,11 @@ const usersDB = firebase.firestore().collection(collections.users);
   @desc     watch all messages that belong to a chat -> return on change
 */
 function watchMessages(chatId: string, setMessageArray: Function): any {
-  console.log("watching messages");
   //TODO Fix any return....
   return messagesDB
     .where("chatId", "==", chatId)
     .orderBy("timestamp", "desc")
     .onSnapshot((querySnapshot: any): void => {
-      console.log("in messages snapshot");
       const messages: Array<messageModel> = [];
       querySnapshot.forEach(
         async (message: any): Promise<void> => {
@@ -51,15 +49,12 @@ function configureDate(timestamp?: any) {
   var currentTime = new Date();
 
   if (timestamp) {
-    console.log(
-      currentTime.toDateString() + " ---" + timestamp.toDate().toDateString()
-    );
+    currentTime.toDateString() + " ---" + timestamp.toDate().toDateString();
     if (currentTime.toDateString() === timestamp.toDate().toDateString()) {
       return timestamp
         .toDate()
         .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     } else {
-      console.log(timestamp.toDate().toDateString());
       return timestamp
         .toDate()
         .toLocaleString("default", { month: "short", day: "2-digit" });
@@ -93,13 +88,11 @@ function watchChats(
   userName: string,
   setChatArray: Function
 ): any {
-  console.log("watching chats");
   //TODO Fix any return....
   return chatsDB
     .where("members", "array-contains", userId)
     .orderBy("lastMessageTimestamp", "asc")
     .onSnapshot((querySnapshot: any): void => {
-      console.log("in chats snapshot");
       const chats: Array<chatsModel> = [];
       querySnapshot.forEach(
         async (chat: any): Promise<void> => {
@@ -120,7 +113,6 @@ function watchChats(
         }
       );
       setTimeout(() => {
-        console.log(chats);
         setChatArray(chats);
       }, 0);
     });
@@ -137,7 +129,6 @@ function addMessages(message: messageModel): void {
       ...message,
     })
     .then((res: any) => {
-      console.log(res);
       chatsDB
         .doc(message.chatId)
         .update({
@@ -186,7 +177,7 @@ function getChats(userId: string): Promise<any> {
       }
     )
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 }
 
@@ -208,8 +199,6 @@ function addChats(newChat: any): any {
       isGroup: newChat.isGroup,
     })
     .then((chat: any): void => {
-      //console.log(chat.id);
-
       // Then add chat to users chat list
       newChat.members.forEach((memberId: string) => {
         usersDB
@@ -294,7 +283,6 @@ function leaveChat(memberId: string, chatId: string): any {
 }
 
 function getMessage(messageId: string): Promise<any> {
-  console.log("get message called");
   return messagesDB
     .doc(messageId)
     .get()
@@ -309,13 +297,12 @@ function getMessage(messageId: string): Promise<any> {
       };
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 }
 
 //ENGR100 hardcoded for now, will take in a userModel once we set that up
 function getCurrentChatMembers(chatId: any, userId: string): Promise<any> {
-  console.log("getting current members " + chatId);
   return usersDB
     .where("chats", "array-contains", chatId)
     .orderBy("firstName", "desc")
@@ -335,7 +322,7 @@ function getCurrentChatMembers(chatId: any, userId: string): Promise<any> {
       return toReturn;
     })
     .catch((err: any) => {
-      console.log(err);
+      console.error(err);
     });
 }
 

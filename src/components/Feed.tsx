@@ -21,7 +21,6 @@ export default function Feed({ categoryFilter }: FeedProps) {
   const [postState, setPostState] = useState<any[]>([]);
 
   useAuthEffect(() => {
-    console.log(postState);
     getPosts("1") // classId is hardcoded for now
       .then((res) => {
         setPostState(res);
@@ -33,7 +32,6 @@ export default function Feed({ categoryFilter }: FeedProps) {
     var toShow = true;
     try {
       toShow = categoryFilter[post.postCategory];
-      console.log(categoryFilter);
     } catch (error) {
       console.error(error);
     }
