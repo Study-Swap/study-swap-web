@@ -67,7 +67,7 @@ export default function NewPost({ onClick }: newPostProps) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleChange = (event: any) => {
-    if (event.target.value.length <= 300) {
+    if (event.target.value.length <= 1000) {
       setValue(event.target.value);
       setLen(event.target.value.length);
     }
@@ -157,7 +157,7 @@ export default function NewPost({ onClick }: newPostProps) {
         >
           {options[selectedIndex]}
         </Button>
-        <div className={classes.lengthLimit}>{len}/300</div>
+        <div className={classes.lengthLimit}>{len}/1000</div>
       </div>
     </Paper>
   );
