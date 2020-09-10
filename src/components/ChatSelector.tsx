@@ -59,6 +59,7 @@ interface ChatSelectProps {
   chatName: string | undefined;
   memberNames?: string[];
   messages: any[];
+  isGroup: boolean;
   onClick: Function;
   lastMessageTimestamp: any;
 }
@@ -69,6 +70,7 @@ export default function ChatSelect({
   chatName,
   memberNames,
   messages,
+  isGroup,
   onClick,
   lastMessageTimestamp,
 }: ChatSelectProps) {
@@ -105,7 +107,9 @@ export default function ChatSelect({
       <ListItem
         alignItems="flex-start"
         className={classes.hover}
-        onClick={() => onClick({ id, chatName })}
+        onClick={() =>
+          onClick({ id, chatName, memberNames, messages, isGroup })
+        }
       >
         <ListItemAvatar>
           <Avatar alt="Chat Picture" src={picture} />

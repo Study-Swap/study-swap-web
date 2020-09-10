@@ -20,8 +20,8 @@ import { nameAndId } from "../constants/types/rosterTypes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "360px",
-    width: "500px",
+    height: "370px",
+    width: "280px",
   },
   inputChatName: {
     flex: 1,
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   middleSection: {
-    height: "210px",
+    height: "200px",
   },
 }));
 
@@ -42,11 +42,10 @@ interface NewChatProps {
   closeModal: Function;
 }
 
-export default function NewChat({ closeModal }: NewChatProps) {
+export default function NewDM({ closeModal }: NewChatProps) {
   const { user, setUser } = useContext(UserContext);
 
   const classes = useStyles();
-  const [chatName, setChatName] = useState("");
   const [currentMembers, setCurrentMembers] = useState<nameAndId[]>([]);
   const [currentOptions, setCurrentOptions] = useState<nameAndId[]>([]);
 
@@ -72,74 +71,66 @@ export default function NewChat({ closeModal }: NewChatProps) {
               variant="h6"
               style={{ fontWeight: "bold", fontSize: 14 }}
             >
-              New Group Chat
+              New Direct Message
             </Typography>
           </Grid>
 
           <Divider />
 
-          <Grid item>
-            <InputBase
-              className={classes.inputChatName}
-              placeholder="Name your group"
-              inputProps={{ "aria-label": "post to feed" }}
-              value={chatName}
-              onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                setChatName(event.target.value);
-              }}
-            />
-          </Grid>
-
-          <Divider />
-
-          <Grid container item spacing={2}>
-            <Grid item xs={8} className={classes.middleSection}>
-              <SearchBox
-                placeholder="Search for people to add"
-                options={currentOptions}
-                dropDownHeight="150px"
-                onChange={(user: nameAndId) => {
-                  setCurrentMembers([...currentMembers, user]);
-                  //const tempOptions = currentOptions.slice();
-                  let toRemove = 0;
-                  currentOptions.filter((member, index) => {
-                    if (member.memberId == user.memberId) {
-                      toRemove = index;
-                    }
-                  });
-                  //console.log(toRemove);
+          <div className={classes.middleSection}>
+            <SearchBox
+              options={currentOptions}
+              placeholder="Search for someone to DM"
+              dropDownHeight="130px"
+              onChange={(user: nameAndId) => {
+                //const tempOptions = currentOptions.slice();
+                let toRemove = 0;
+                currentOptions.filter((member, index) => {
+                  if (member.memberId == user.memberId) {
+                    toRemove = index;
+                  }
+                });
+                //console.log(toRemove);
+                if (currentMembers.length > 0) {
+                  setCurrentOptions([
+                    ...currentOptions.slice(0, toRemove),
+                    ...currentOptions.slice(toRemove + 1),
+                    currentMembers[0],
+                  ]);
+                } else {
                   setCurrentOptions([
                     ...currentOptions.slice(0, toRemove),
                     ...currentOptions.slice(toRemove + 1),
                   ]);
-                  //delete tempOptions[toRemove];
-                  //setCurrentOptions([...tempOptions]);
-                }}
-              />
-            </Grid>
+                }
 
-            {/*<Divider orientation="vertical" flexItem />*/}
+                setCurrentMembers([user]);
+                //delete tempOptions[toRemove];
+                //setCurrentOptions([...tempOptions]);
+              }}
+            />
+          </div>
 
-            <Grid item xs={4} className={classes.middleSection}>
-              <MembersList
-                titleText="SELECTED"
-                currentMembers={currentMembers}
-                onDelete={(toDelete: nameAndId) => {
-                  let toRemove = 0;
-                  currentMembers.filter((member, index) => {
-                    if (member.memberId == toDelete.memberId) {
-                      toRemove = index;
-                    }
-                  });
-                  setCurrentMembers([
-                    ...currentMembers.slice(0, toRemove),
-                    ...currentMembers.slice(toRemove + 1),
-                  ]);
-                  setCurrentOptions([...currentOptions, toDelete]);
-                }}
-              />
-            </Grid>
-          </Grid>
+          {/*<Divider orientation="vertical" flexItem />*/}
+
+          <Divider />
+
+          <div style={{ height: "70px" }}>
+            <MembersList
+              titleText="SELECTED"
+              currentMembers={currentMembers}
+              onDelete={(toDelete: nameAndId) => {
+                let toRemove = 0;
+                currentMembers.filter((member, index) => {
+                  if (member.memberId == toDelete.memberId) {
+                    toRemove = index;
+                  }
+                });
+                setCurrentMembers([]);
+                setCurrentOptions([...currentOptions, toDelete]);
+              }}
+            />
+          </div>
 
           <Divider />
 
@@ -159,7 +150,7 @@ export default function NewChat({ closeModal }: NewChatProps) {
                 size="small"
                 variant="contained"
                 color="secondary"
-                disabled={chatName == "" || currentMembers.length == 0}
+                disabled={currentMembers.length == 0}
                 onClick={() => {
                   let memberNames: string[] = [];
                   let memberIds: string[] = [];
@@ -170,16 +161,16 @@ export default function NewChat({ closeModal }: NewChatProps) {
                   memberNames.push(user.firstName + " " + user.lastName);
                   memberIds.push(user.id);
                   addChats({
-                    chatName: chatName,
+                    chatName: memberNames[0] + "/" + memberNames[1],
                     members: memberIds,
                     memberNames: memberNames,
                     messages: [],
-                    isGroup: true,
+                    isGroup: false,
                   });
                   closeModal();
                 }}
               >
-                Create
+                DM
               </Button>
             </Grid>
           </Grid>

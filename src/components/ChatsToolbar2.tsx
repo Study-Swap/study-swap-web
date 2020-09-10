@@ -1,4 +1,5 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState, MouseEvent, useContext } from "react";
+import { UserContext } from "../constants/UserContext";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import EditChat from "./EditChat";
@@ -8,6 +9,8 @@ import Popper from "@material-ui/core/Popper";
 import Typography from "@material-ui/core/Typography";
 
 import { chatsModel } from "../constants/Models";
+import Button from "@material-ui/core/Button";
+import { leaveChat } from "../utils/firebaseUtils";
 
 const useStyles = makeStyles((theme) => ({
   name: {
@@ -30,6 +33,8 @@ interface ChatsToolbarProps {
 
 export default function ChatsToolbar2({ currentChat }: ChatsToolbarProps) {
   //get the ChatSelect working with the .map() function.
+  const { user, setUser } = useContext(UserContext);
+
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -60,15 +65,34 @@ export default function ChatsToolbar2({ currentChat }: ChatsToolbarProps) {
         >
           <InfoIcon />
         </IconButton>
+
         <Popper id={id} open={open} anchorEl={anchorEl} placement="bottom-end">
           <div>
             {" "}
-            <EditChat
-              currentChat={currentChat}
-              handleClose={() => {
-                setAnchorEl(null);
-              }}
-            />
+            {currentChat.isGroup ? (
+              <EditChat
+                currentChat={currentChat}
+                handleClose={() => {
+                  setAnchorEl(null);
+                }}
+              />
+            ) : (
+              <div>
+                <Button
+                  variant="contained"
+                  size="small"
+                  color="secondary"
+                  onClick={() => {
+                    setAnchorEl(null);
+                    if (currentChat.id != null) {
+                      leaveChat(user.id, currentChat.id);
+                    }
+                  }}
+                >
+                  DELETE
+                </Button>
+              </div>
+            )}
           </div>
         </Popper>
       </Grid>
