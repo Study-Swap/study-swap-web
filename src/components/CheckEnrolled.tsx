@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useState, MouseEvent, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import EditIcon from "@material-ui/icons/Edit";
+
+import { UserContext } from "../constants/UserContext";
 
 const useStyles = makeStyles((theme) => ({
   checkButton: {
@@ -50,6 +52,7 @@ interface CheckEnrolledProps {
 export default function CheckEnrolled({ setEditing }: CheckEnrolledProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { user } = useContext(UserContext);
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -64,28 +67,32 @@ export default function CheckEnrolled({ setEditing }: CheckEnrolledProps) {
       <IconButton aria-label="more-options" onClick={handleClick}>
         <MoreVertIcon fontSize="default" />
       </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        <MenuItem
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-end",
-          }}
-          onClick={() => {
-            setEditing(true);
-            handleClose();
-          }}
+      {user.isAdmin ? (
+        <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
         >
-          <EditIcon />
-          <div style={{ fontSize: 15, marginLeft: 5 }}>Edit</div>
-        </MenuItem>
-      </Menu>
+          <MenuItem
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "flex-end",
+            }}
+            onClick={() => {
+              setEditing(true);
+              handleClose();
+            }}
+          >
+            <EditIcon />
+            <div style={{ fontSize: 15, marginLeft: 5 }}>Edit</div>
+          </MenuItem>
+        </Menu>
+      ) : (
+        <div />
+      )}
 
       <div className={classes.checkButton}>
         <CheckRoundedIcon
