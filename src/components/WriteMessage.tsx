@@ -71,6 +71,7 @@ export default function WriteMessage({
         aria-label="image-menu"
         aria-haspopup="true"
         onClick={handleClick}
+        disabled
       >
         <ImageIcon />
       </IconButton>
