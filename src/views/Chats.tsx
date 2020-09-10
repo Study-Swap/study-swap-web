@@ -107,6 +107,7 @@ export default function Chats() {
     memberNames: [],
     members: [],
     messages: [],
+    isGroup: false,
   });
 
   const [divHeight, setHeight] = useState<number>(40);
@@ -116,7 +117,8 @@ export default function Chats() {
   };
 
   useAuthEffect(() => {
-    const unsubscribe = watchChats(user.id, setMyChats); // userId is hardcoded for now
+    let combinedName = user.firstName + " " + user.lastName;
+    const unsubscribe = watchChats(user.id, combinedName, setMyChats); // userId is hardcoded for now
 
     return () => unsubscribe();
   }, []);
@@ -158,6 +160,7 @@ export default function Chats() {
                         thisChatSelector.lastMessageTimestamp
                       }
                       picture={thisChatSelector.chatPicture}
+                      isGroup={thisChatSelector.isGroup}
                     />
                   </Fragment>
                 ))}

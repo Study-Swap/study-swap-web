@@ -131,6 +131,7 @@ export default function EditChat({ currentChat, handleClose }: EditChatProps) {
 
           <Grid item xs={12} style={{ minHeight: "160px" }}>
             <SearchBox
+              placeholder="Search for people to add"
               options={currentOptions}
               dropDownHeight="90px"
               onChange={(user: nameAndId) => {
@@ -155,6 +156,7 @@ export default function EditChat({ currentChat, handleClose }: EditChatProps) {
 
           <Grid item xs={12} style={{ minHeight: "160px" }}>
             <MembersList
+              titleText="MEMBERS LIST"
               currentMembers={currentMembers}
               onDelete={(user: nameAndId) => {
                 setToDelete([...toDelete, user.memberId]);

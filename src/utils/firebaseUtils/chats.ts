@@ -71,11 +71,28 @@ function configureDate(timestamp?: any) {
     });
   }
 }
+
+function getDMName(combined: string, userName: string) {
+  try {
+    let split = combined.split("/");
+    if (split[0] == userName) return split[1];
+    else if (split[1] == userName) {
+      return split[0];
+    }
+  } catch {
+    return combined;
+  }
+  return combined;
+}
 /*
   @type     GET -> Messages
   @desc     watch all messages that belong to a chat -> return on change
 */
-function watchChats(userId: string, setChatArray: Function): any {
+function watchChats(
+  userId: string,
+  userName: string,
+  setChatArray: Function
+): any {
   console.log("watching chats");
   //TODO Fix any return....
   return chatsDB
@@ -89,13 +106,16 @@ function watchChats(userId: string, setChatArray: Function): any {
           const data = await chat.data();
           chats.unshift({
             id: chat.id,
-            chatName: data.chatName,
+            chatName: data.isGroup
+              ? data.chatName
+              : getDMName(data.chatName, userName),
             memberNames: data.memberNames,
             members: data.members,
             messages: data.messages,
             lastMessageTimestamp: data.lastMessageTimestamp
               ? configureDate(data.lastMessageTimestamp)
               : configureDate(),
+            isGroup: data.isGroup,
           });
         }
       );
@@ -141,6 +161,8 @@ function addMessages(message: messageModel): void {
   @type     GET -> Chats
   @desc     get user chats
 */
+
+//OUTDATED FUNCTION.  GO TO watchChats().
 function getChats(userId: string): Promise<any> {
   return chatsDB
     .where("members", "array-contains", userId)
@@ -152,10 +174,11 @@ function getChats(userId: string): Promise<any> {
           const data = chat.data();
           chats.push({
             id: chat.id,
-            chatName: data.chatName,
+            chatName: data.memberNames[0],
             members: data.members,
             memberNames: data.memberNames,
             messages: data.messages,
+            isGroup: data.isGroup,
           });
         });
         return chats;
@@ -181,6 +204,7 @@ function addChats(newChat: any): any {
       memberNames: newChat.memberNames,
       messages: [],
       lastMessageTimestamp: firebaseApp.firestore.FieldValue.serverTimestamp(),
+      isGroup: newChat.isGroup,
     })
     .then((chat: any): void => {
       //console.log(chat.id);

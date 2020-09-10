@@ -28,9 +28,14 @@ const useStyles = makeStyles((theme) => ({
 interface MembersListProps {
   currentMembers: any[];
   onDelete: Function;
+  titleText: string;
 }
 
-export default function MembersList({ currentMembers, onDelete }: any) {
+export default function MembersList({
+  currentMembers,
+  onDelete,
+  titleText,
+}: any) {
   const classes = useStyles();
 
   return (
@@ -40,7 +45,7 @@ export default function MembersList({ currentMembers, onDelete }: any) {
         style={{ fontSize: 12, fontWeight: "bold", color: "textSecondary" }}
       >
         {" "}
-        MEMBERS LIST
+        {titleText}
       </Typography>
       <List style={{}} dense={true} disablePadding={true}>
         {currentMembers.map((member: nameAndId, index: number) => (

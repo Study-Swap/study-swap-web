@@ -26,12 +26,14 @@ interface SearchBoxProps {
   onChange: Function;
   options: any[];
   dropDownHeight: string;
+  placeholder: string;
 }
 
 export default function SearchBox({
   onChange,
   options,
   dropDownHeight,
+  placeholder,
 }: SearchBoxProps) {
   const classes = useStyles();
 
@@ -67,7 +69,7 @@ export default function SearchBox({
         <TextField
           style={{ fontSize: 14 }}
           {...params}
-          label="Search for people to add"
+          label={placeholder}
           margin="dense"
         />
       )}

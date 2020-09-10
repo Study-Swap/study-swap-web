@@ -90,6 +90,7 @@ export interface chatsModel {
   messages: Array<string>; // array of messageIds
   lastMessageTimestamp?: string;
   chatPicture?: string;
+  isGroup: boolean;
 }
 
 export interface messageModel {
