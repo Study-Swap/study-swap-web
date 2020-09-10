@@ -92,9 +92,9 @@ export default function ChatSelect({
     }
   }, [messages]);
 
-  function shortenMessage(message: string) {
-    if (message.length > 60) {
-      return message.slice(0, 59) + " ...";
+  function shortenMessage(message: string, numChar: number) {
+    if (message.length > numChar) {
+      return message.slice(0, numChar - 1) + " ...";
     } else {
       return message;
     }
@@ -123,13 +123,13 @@ export default function ChatSelect({
                   width: "70%",
                   fontSize: 14,
                   marginRight: "5px",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+                  //overflow: "hidden",
+                  //textOverflow: "ellipsis",
                 }}
-                noWrap={true}
+                //noWrap={true}
               >
                 {chatName
-                  ? chatName
+                  ? shortenMessage(chatName, 18)
                   : formatString(memberNames?.join(", "), 10)}
               </Typography>
               <Typography
@@ -152,7 +152,7 @@ export default function ChatSelect({
                 color="textSecondary"
                 //noWrap={true}
               >
-                {shortenMessage(firstMessage.messageText)}
+                {shortenMessage(firstMessage.messageText, 60)}
               </Typography>
             </>
           }
