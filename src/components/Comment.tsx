@@ -105,8 +105,9 @@ export default function Comment({
           color="primary"
           component="span"
           onClick={minusLike}
+          style={{ maxHeight: 40 }}
         >
-          <ThumbUpIcon fontSize="small" style={{ marginRight: 2 }} />
+          <ThumbUpIcon fontSize="inherit" style={{ marginRight: 2 }} />
           {lengthState === 0 ? " " : lengthState}
         </IconButton>
       );
@@ -117,6 +118,7 @@ export default function Comment({
           color="primary"
           component="span"
           onClick={plusLike}
+          style={{ maxHeight: 40 }}
         >
           <ThumbUpAltOutlinedIcon fontSize="small" style={{ marginRight: 2 }} />
           {lengthState === 0 ? " " : lengthState}
@@ -136,7 +138,13 @@ export default function Comment({
       </Grid>
 
       <Grid item xs={11}>
-        <div style={{ display: "flex", flexDirection: "row" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-end",
+          }}
+        >
           <div className={classes.commentText}>
             <Typography
               className={classes.title}
