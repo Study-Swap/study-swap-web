@@ -120,7 +120,12 @@ export default function NewChat({ closeModal }: NewChatProps) {
 
             {/*<Divider orientation="vertical" flexItem />*/}
 
-            <Grid item xs={4} className={classes.middleSection}>
+            <Grid
+              item
+              xs={4}
+              className={classes.middleSection}
+              style={{ overflow: "auto" }}
+            >
               <MembersList
                 titleText="SELECTED"
                 currentMembers={currentMembers}
