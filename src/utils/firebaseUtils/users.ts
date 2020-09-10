@@ -40,7 +40,7 @@ async function addUser(
   password: string,
   userInfo: userModel
 ): Promise<any> {
-  const { firstName, lastName, classes, chats } = userInfo;
+  const { firstName, lastName, classes, chats, grade } = userInfo;
   await firebaseApp
     .auth()
     .createUserWithEmailAndPassword(email, password)
@@ -66,7 +66,7 @@ async function addUser(
                 .set({
                   firstName,
                   lastName,
-                  //grade,
+                  grade,
                   email,
                   //bio,
                   classes_,
@@ -86,7 +86,7 @@ async function addUser(
                 .set({
                   firstName,
                   lastName,
-                  grade: "Junior",
+                  grade,
                   email,
                   bio: "",
                   classes,
@@ -129,7 +129,7 @@ async function loginUser(email: string, password: string): Promise<any> {
     firebase
       .auth()
       // User is logged in until tab closed
-      .setPersistence(firebaseApp.auth.Auth.Persistence.SESSION)
+      .setPersistence(firebaseApp.auth.Auth.Persistence.LOCAL)
       .then(
         (): Promise<string | userModel> => {
           return firebase

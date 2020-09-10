@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, MouseEvent } from "react";
 
-import Avatar from "@material-ui/core/Avatar";
+import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
@@ -8,8 +8,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
+import MenuItem from "@material-ui/core/MenuItem";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -34,6 +33,7 @@ export default function SignUp() {
   const [emailError, setEmailError] = useState(false);
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [grade, setGrade] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const [showError, setShowError] = useState(false);
@@ -151,6 +151,30 @@ export default function SignUp() {
               />
             </Grid>
             <FormControl
+              variant="outlined"
+              fullWidth
+              className={classes.margin}
+            >
+              <InputLabel id="demo-mutiple-name-label">Grade</InputLabel>
+              <Select
+                labelId="grade-select-label"
+                id="demo-simple-select"
+                inputProps={{
+                  id: "demo-mutiple-name-label",
+                }}
+                label="Grade"
+                value={grade}
+                onChange={(event: ChangeEvent<{ value: unknown }>) => {
+                  setGrade(event.target.value as string);
+                }}
+              >
+                <MenuItem value={"Freshman"}>Freshman</MenuItem>
+                <MenuItem value={"Sophomore"}>Sophomore</MenuItem>
+                <MenuItem value={"Junior"}>Junior</MenuItem>
+                <MenuItem value={"Senior"}>Senior</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl
               fullWidth
               variant="outlined"
               className={classes.margin}
@@ -237,7 +261,9 @@ export default function SignUp() {
                 firstName.length > 0 &&
                 lastName.length > 0 &&
                 !emailError &&
-                !passwordError
+                !passwordError &&
+                grade.length > 0 &&
+                password.length > 0
               )
             }
             onClick={async (): Promise<any> => {
@@ -251,6 +277,7 @@ export default function SignUp() {
                   classNames: [],
                   chats: [],
                   signedUp: true,
+                  grade,
                 })
                   .then(() => {
                     setShowSuccess(true);
