@@ -105,7 +105,6 @@ export default function MessageBox({ chatId }: MessageBoxProps) {
   }
 
   useAuthEffect(() => {
-    console.log(chatId + "messages is loading");
     const unsubscribe = watchMessages(chatId, setMessageArray); // userId is hardcoded for now
 
     return () => unsubscribe();
@@ -114,7 +113,6 @@ export default function MessageBox({ chatId }: MessageBoxProps) {
   const lastMessage = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log(lastMessage.current);
     if (lastMessage.current !== null) {
       lastMessage.current.scrollIntoView(false);
     }
@@ -131,7 +129,6 @@ export default function MessageBox({ chatId }: MessageBoxProps) {
           timestamp,
           senderProfilePic,
         } = thisMessage;
-        console.log(thisMessage);
 
         return (
           <Fragment key={id}>

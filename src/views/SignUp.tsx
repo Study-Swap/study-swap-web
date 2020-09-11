@@ -273,7 +273,7 @@ export default function SignUp() {
                   firstName,
                   lastName,
                   email,
-                  classes: [],
+                  classes: ["1"],
                   classNames: [],
                   chats: [],
                   signedUp: true,

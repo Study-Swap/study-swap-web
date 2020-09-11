@@ -38,12 +38,9 @@ function App() {
 
   useEffect(() => {
     const subscriber = firebase.auth().onAuthStateChanged((authUser) => {
-      console.log("auth changed");
-      console.log(authUser?.uid);
       if (authUser) {
         getUser(authUser.uid).then((res: any) => {
           setUser(res);
-          console.log(res);
         });
         addUsagePoint(authUser.uid);
       }

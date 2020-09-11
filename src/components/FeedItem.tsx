@@ -90,7 +90,6 @@ export default function FeedItem({
   }; //updates stored value of new comment input field
 
   function toggleCommentClick() {
-    console.log("toggling comments");
     setCommentsShown(!commentsShown);
   } //toggles between shown and not shown
 

@@ -9,7 +9,6 @@ export function useAuthEffect(
 ) {
   useEffect(() => {
     if (firebase.auth().currentUser) {
-      console.log("using auth divider");
       effectFunction();
     } else {
       setTimeout(

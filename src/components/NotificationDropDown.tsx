@@ -36,13 +36,9 @@ const NotificationDropDown = ({
   const { innerWidth, innerHeight } = useWindowDimensions();
 
   useEffect(() => {
-    console.log("getting notificaitons");
-    console.log(user.id);
     if (user.id) {
-      console.log(user.id);
       getNotifications(user.id) // userId is hardcoded for now
         .then((res) => {
-          console.log(res);
           setNotificationData(res);
           setNumNotifs(res.filter((notif: any) => !notif.read).length);
         })

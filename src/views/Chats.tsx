@@ -70,22 +70,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function InputGrid({ setHeight, currentChat }: any) {
+function InputGrid({ height, setHeight, currentChat }: any) {
   const ref = useRef<null | HTMLDivElement>(null);
-  console.log(ref);
 
   useEffect(() => {
-    console.log("changing");
-    if (ref !== null) {
-      if (ref.current) {
-        console.log(ref.current.clientHeight);
-        setHeight(ref.current.clientHeight);
+    const listen = () => {
+      if (ref !== null) {
+        if (ref.current) {
+          if (ref.current.getBoundingClientRect().height !== height) {
+            setHeight(ref.current.getBoundingClientRect().height);
+          }
+        }
       }
-    }
-  }, [ref.current?.clientHeight]);
+    };
+
+    window.addEventListener("keyup", listen, { capture: true });
+    return () => {
+      window.removeEventListener("keyup", listen);
+    };
+  }, []);
 
   return (
-    <Grid item style={{ minHeight: 40, backgroundColor: "#f0f0f0" }} ref={ref}>
+    <Grid item style={{ minHeight: 45, backgroundColor: "#f0f0f0" }} ref={ref}>
       <WriteMessage
         chatId={currentChat.id}
         submitMessage={(message: messageModel) => {
@@ -110,7 +116,7 @@ export default function Chats() {
     isGroup: false,
   });
 
-  const [divHeight, setHeight] = useState<number>(40);
+  const [divHeight, setHeight] = useState<number>(45);
 
   const onClick = (chat: chatsModel) => {
     setCurrentChat(chat);
@@ -188,7 +194,11 @@ export default function Chats() {
                 <MessageBox chatId={currentChat.id ? currentChat.id : ""} />
               </Grid>
               <Divider />
-              <InputGrid setHeight={setHeight} currentChat={currentChat} />
+              <InputGrid
+                setHeight={setHeight}
+                currentChat={currentChat}
+                height={divHeight}
+              />
             </div>
           </Grid>
         </Grid>

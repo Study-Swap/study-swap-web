@@ -5,6 +5,7 @@ export const times: string[] = [
   "11-12 PM",
   "12-1 PM",
   "1-2 PM",
+  "2-3 PM",
   "3-4 PM",
   "4-5 PM",
   "5-6 PM",

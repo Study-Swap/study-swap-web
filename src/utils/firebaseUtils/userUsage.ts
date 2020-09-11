@@ -14,14 +14,12 @@ interface graphDataType {
 }
 
 function getGraphData(): Promise<graphDataType[]> {
-  console.log("getting user graph data");
   return usageDB
     .orderBy("timestamp", "desc")
     .get()
     .then((snapshot: firebaseApp.firestore.QuerySnapshot): graphDataType[] => {
       const graphData: graphDataType[] = [];
       snapshot.forEach((doc): void => {
-        console.log(doc.data());
         const { date, users } = doc.data();
         let newDate = new Date(date);
         if (newDate && users)

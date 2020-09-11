@@ -53,11 +53,9 @@ export default function NewDM({ closeModal }: NewChatProps) {
     getUsersForChatCreation(user.id)
       .then((res: any) => {
         setCurrentOptions(res);
-        console.log("new chat");
-        console.log(res);
       })
       .catch((err: any) => {
-        console.log(err);
+        console.error(err);
       });
   }, []);
 
@@ -90,7 +88,6 @@ export default function NewDM({ closeModal }: NewChatProps) {
                     toRemove = index;
                   }
                 });
-                //console.log(toRemove);
                 if (currentMembers.length > 0) {
                   setCurrentOptions([
                     ...currentOptions.slice(0, toRemove),

@@ -54,8 +54,6 @@ export default function NewChat({ closeModal }: NewChatProps) {
     getUsersForChatCreation(user.id)
       .then((res: any) => {
         setCurrentOptions(res);
-        console.log("new chat");
-        console.log(res);
       })
       .catch((err: any) => {
         console.log(err);
