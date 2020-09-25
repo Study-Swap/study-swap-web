@@ -12,7 +12,12 @@ import Comment from "../components/Comment";
 import NewComment from "../components/NewComment";
 
 import { commentModel } from "../constants/Models";
-import { getComments, addComment, sendComment } from "../utils/firebaseUtils";
+import {
+  getComments,
+  addComment,
+  sendComment,
+  getComment,
+} from "../utils/firebaseUtils";
 
 const useStyles = makeStyles({
   root: {
@@ -76,7 +81,7 @@ export default function FeedItem({
 
   useAuthEffect(() => {
     let postId = String(id);
-    getComments(postId) // classId is hardcoded for now
+    getComment(postId) // classId is hardcoded for now
       .then((res) => {
         setCommentState(res);
       })
@@ -90,7 +95,16 @@ export default function FeedItem({
   }; //updates stored value of new comment input field
 
   function toggleCommentClick() {
-    setCommentsShown(!commentsShown);
+    if (commentState.length === 1) {
+      getComments(String(id)) // classId is hardcoded for now
+        .then((res) => {
+          setCommentState(res);
+          setCommentsShown(!commentsShown);
+        })
+        .catch((err) => console.error(err));
+    } else {
+      setCommentsShown(!commentsShown);
+    }
   } //toggles between shown and not shown
 
   function newCommentClick() {

@@ -9,6 +9,9 @@ import SendIcon from "@material-ui/icons/Send";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
+// TODO: https://www.gavsblog.com/blog/detect-single-and-multiple-keypress-events-javascript
+// Make message go to next line using this logic
+
 const useStyles = makeStyles((theme) => ({
   rootInput: {
     display: "flex",
@@ -93,6 +96,18 @@ export default function WriteMessage({
         rowsMax={7}
         value={value}
         onChange={handleChange}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && value !== "" && chatId !== "") {
+            submitMessage({
+              chatId: chatId,
+              messageText: value,
+              senderId: user.id,
+              senderName: `${user.firstName} ${user.lastName}`,
+              senderProfilePic: user.profilePicture,
+            });
+            setValue("");
+          }
+        }}
       />
       <IconButton
         //type="submit"

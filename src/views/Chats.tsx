@@ -130,6 +130,12 @@ export default function Chats() {
     return () => unsubscribe();
   }, [user.id]);
 
+  useEffect(() => {
+    if (myChats.length > 0 && !currentChat.id) {
+      setCurrentChat(myChats[0]);
+    }
+  }, [myChats]);
+
   return (
     <Container component="main" maxWidth="md">
       <div style={{ justifyContent: "center", display: "flex" }}>

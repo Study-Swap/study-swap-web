@@ -26,6 +26,7 @@ import {
   editComment,
   addCommentLike,
   removeCommentLike,
+  getComment,
 } from "./comments";
 
 import {
@@ -122,4 +123,5 @@ export {
   getCurrentChatMembers,
   updateChatName,
   getRecentMessages,
+  getComment,
 };

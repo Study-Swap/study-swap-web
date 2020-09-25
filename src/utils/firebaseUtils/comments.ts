@@ -45,6 +45,40 @@ function getComments(postId: string): Promise<any> {
 }
 
 /*
+@type     GET -> Comments
+@desc     get all comments for a certain post
+*/
+function getComment(postId: string): Promise<any> {
+  return commentsDB
+    .where("postId", "==", postId)
+    .orderBy("timestamp", "desc")
+    .limit(1)
+    .get()
+    .then(
+      (snapshot: any): Array<commentModel> => {
+        const comments: Array<commentModel> = [];
+        snapshot.forEach((comment: any): void => {
+          const data = comment.data();
+          comments.unshift({
+            id: comment.id,
+            userId: data.userId,
+            postId: data.postId,
+            commenterName: data.commenterName,
+            commentText: data.commentText,
+            timestamp: data.timestamp.toDate().toDateString(),
+            likedBy: data.likedBy,
+            commenterProfilePic: data.commenterProfilePic,
+          });
+        });
+        return comments;
+      }
+    )
+    .catch((err: any): void => {
+      console.error(err); // will be changed to redirect to error screen
+    });
+}
+
+/*
   @type     POST -> Comments
   @desc     add new comment
   */
@@ -119,4 +153,5 @@ export {
   editComment,
   addCommentLike,
   removeCommentLike,
+  getComment,
 };

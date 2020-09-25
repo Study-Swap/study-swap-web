@@ -16,7 +16,7 @@ import { getClasses } from "../utils/firebaseUtils";
 const useStyles = makeStyles((theme) => ({
   mainPaper: {
     width: 870,
-    height: 200,
+    height: 220,
     paddingLeft: 20,
     paddingRight: 20,
     paddingTop: 20,
