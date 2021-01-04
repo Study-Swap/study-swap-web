@@ -1,5 +1,7 @@
 # Study-Swap Web Platform
 
+A social network designed and developed for university classrooms.  Deployed version can be found at study-swap.com 
+
 ## To run the app on the web:
 
 ```bash
