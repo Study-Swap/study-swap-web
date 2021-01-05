@@ -1,6 +1,6 @@
 # Study-Swap Web Platform
 
-A social network designed and developed for university classrooms.  Deployed version can be found [here](study-swap.com)
+A social network designed and developed for university classrooms.  Deployed version can be found [here](https://www.study-swap.com/home)
 
 ## To run the app on the web:
 
