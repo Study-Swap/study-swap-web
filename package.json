@@ -27,7 +27,7 @@
     "react-scripts": "3.4.1",
     "recharts": "^1.8.5",
     "typescript": "~3.7.2",
-    "xlsx": "^0.16.6"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",
